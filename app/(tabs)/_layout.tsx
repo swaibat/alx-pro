@@ -1,6 +1,6 @@
 import { Tabs } from 'expo-router';
 import React, { useEffect } from 'react';
-import { House, ListMagnifyingGlass, ShoppingCart, User, ArrowLeft } from 'phosphor-react-native';
+import { House, ListMagnifyingGlass, ShoppingCart, User, ArrowLeft, Circle, CirclesFour } from 'phosphor-react-native';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
@@ -37,7 +37,7 @@ export default function TabLayout() {
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: theme['color-primary-default'],
-        tabBarLabelStyle:{paddingBottom:15},
+        tabBarLabelStyle: { paddingBottom: 15 },
         tabBarStyle: styles.tabBarStyle,
         headerShown: false,
       }}
@@ -55,7 +55,10 @@ export default function TabLayout() {
         name="category"
         options={{
           title: 'Categories',
-          headerShown: false
+          headerShown: false,
+          tabBarIcon: ({ color, focused }) => (
+            <CirclesFour size={24} color={color} weight={focused ? 'fill' : 'regular'} style={styles.icon} />
+          ),
         }}
       />
       <Tabs.Screen
@@ -63,23 +66,24 @@ export default function TabLayout() {
         options={{
           title: 'Cart',
           headerShown: false,
-          // tabBarIcon: ({ color, focused }) => (
-          //   <View style={styles.iconWithBadge}>
-          //     <ShoppingCart size={24} color={color} weight={focused ? 'fill' : 'regular'} style={styles.icon} />
-          //     {cartCount > 0 && (
-          //       <View style={styles.badge}>
-          //         <Text style={styles.badgeText}>{cartCount}</Text>
-          //       </View>
-          //     )}
-          //   </View>
-          // ),
+          tabBarIcon: ({ color, focused }) => (
+            <View style={styles.iconWithBadge}>
+              <ShoppingCart size={24} color={color} weight={focused ? 'fill' : 'regular'} style={styles.icon} />
+              {cartCount > 0 && (
+                <View style={styles.badge}>
+                  <Text style={styles.badgeText}>{cartCount}</Text>
+                </View>
+              )}
+            </View>
+          ),
         }}
       />
       <Tabs.Screen
         name="account"
         options={{
-          title: 'Account',
+          title: isLoggedIn ? "account" : 'login',
           headerShown: false,
+          href: { pathname: isLoggedIn ? "/account" : '/login', params: { ref: 'account' } },
           headerLeft: () => (
             <TouchableOpacity onPress={() => router.back()}>
               <ArrowLeft size={24} color={activeTintColor} style={styles.backIcon} />
@@ -99,7 +103,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff', // Change this to your desired background color
     borderTopWidth: 1, // Remove default border
     padding: 15,
-    height:70,
+    height: 70,
   },
   iconWithBadge: {
     position: 'relative',

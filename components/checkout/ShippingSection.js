@@ -12,7 +12,7 @@ const ShippingOptions = ({ theme }) => (
         <View style={styles.optionDetails}>
           <Text category='s1'>alxpress Delivery</Text>
           <Text appearance='hint' category='c2' style={{ marginVertical: 3 }}>Estimated arrival: 5 hours</Text>
-          <Text category='h6' style={{ color: theme['color-primary-default'] }}>UGX 10,000</Text>
+          <Text category='h6' style={{ color: theme.colors.primary }}>UGX 10,000</Text>
         </View>
       </View>
 

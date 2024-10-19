@@ -22,9 +22,9 @@ const OrderItems = ({ cartItems }) => {
           />
           <View style={styles.productInfo}>
             <Text category='s1' numberOfLines={1}>{item.title}</Text>
-            <Text appearance='hint' numberOfLines={1} style={{ marginVertical: 3 }} >{item.description}</Text>
+            <Text appearance='hint' numberOfLines={1} >{item.description}</Text>
             <Text appearance='hint'>{`Qty: ${item.quantity}`}</Text>
-            <Text category='s1' style={{ ...styles.productPrice, color: theme['color-primary-default'] }}>
+            <Text category='s1' style={{ ...styles.productPrice }}>
               UGX {item.price.toLocaleString()}
             </Text>
           </View>

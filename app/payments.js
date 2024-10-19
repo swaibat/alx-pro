@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PaymentOption from '../components/PaymentOptions';
-import { View, Keyboard, Text, StyleSheet } from 'react-native';
+import { View, Keyboard, Text, StyleSheet, StatusBar } from 'react-native';
 import { Layout, Input, useTheme } from '@ui-kitten/components';
 import { Phone, CheckCircle, Question } from 'phosphor-react-native'; // Import CheckCircle and Question icons
 import DraggableButton from '@/components/ConfirmRepay';
@@ -15,30 +15,32 @@ const PaymentOptions = () => {
     const { amount, orderId } = useLocalSearchParams();
 
     // Phone number validation
-    const validNum = (v) => v.match(/^0(?:75|74|70|78|77|76|3|2)\d{7}$/);
+    const validNum = (v) => v.match(/^(?:0)?(?:75|74|70|78|77|76|3|2)\d{7}$/);
 
-    const handleChange = (val) => {
-        setPhoneNumber(val);
-        if (val.match(/^0(?:75|74|70|2)/)) {
-            setSelected('AIRTEL');
-        }
-        if (val.match(/^0(?:78|77|76|3)/)) {
-            setSelected('MTN');
-        }
-        if (validNum(val)) {
-            Keyboard.dismiss();
-        }
-    };
+const handleChange = (val) => {
+    setPhoneNumber(val);
 
-    // Check if phone number is valid
+    // Exclude leading '0' and handle AIRTEL/MTN selection
+    const phoneWithoutZero = val.startsWith('0') ? val.slice(1) : val;
+
+    if (phoneWithoutZero.match(/^(75|74|70|2)/)) {
+        setSelected('AIRTEL');
+    }
+    if (phoneWithoutZero.match(/^(78|77|76|3)/)) {
+        setSelected('MTN');
+    }
+    
+    if (validNum(phoneWithoutZero)) {
+        Keyboard.dismiss();
+    }
+};
+
     const isPhoneNumberValid = validNum(phoneNumber);
 
-    // Render phone icon on the left
     const renderPhoneAccessoryLeft = () => (
         <Phone size={20} color={theme['color-basic-600']} />
     );
 
-    // Render checkmark or question mark on the right
     const renderPhoneAccessoryRight = () => (
         isPhoneNumberValid ? (
             <CheckCircle size={20} weight='fill' color={theme['color-success-500']} /> // Check icon for valid phone number
@@ -49,19 +51,20 @@ const PaymentOptions = () => {
 
     return (
         <>
-            <Appbar.Header style={{ borderColor: 'gainsboro', borderWidth: 1, paddingRight: 15 }}>
-                <Appbar.BackAction />
+            <StatusBar barStyle="light-content" />
+            <Appbar.Header dark={true} mode="small" elevated style={{ paddingRight: 15, backgroundColor: '#0C2233' }}>
+                <Appbar.BackAction onPress={() => router.push('checkout')} />
                 <Appbar.Content title="Payments" />
                 <View style={styles.contactContainer}>
                     <Phone
                         size={24}
-                        // color={theme.colors.primary}
+                        color={'#ffffff'}
                         onPress={() => {
                             // Implement the functionality to contact support
                             console.log('Contact Support: +256123456789');
                         }}
                     />
-                    <Text style={styles.contactText} variant="labelLarge">0200922167</Text>
+                    <Text style={styles.contactText} >0200922167</Text>
                 </View>
             </Appbar.Header>
             <Layout style={{ flex: 1, paddingHorizontal: 20 }}>
@@ -82,7 +85,7 @@ const PaymentOptions = () => {
                         }}>
                         <Text
                             style={{
-                                fontSize: 35,
+                                fontSize: 30,
                                 color: theme['color-primary-default'],
                                 textAlign: 'center',
                                 fontWeight: '600',
@@ -110,10 +113,9 @@ const PaymentOptions = () => {
                         label="Enter your Phone Number"
                         onChangeText={handleChange}
                         keyboardType="phone-pad"
-                        placeholder="07## ### ###"
-                        accessoryLeft={renderPhoneAccessoryLeft}  // Phone icon on the left
-                        accessoryRight={renderPhoneAccessoryRight} // Question mark or checkmark on the right
-                    // status={isPhoneNumberValid ? 'success' : 'danger'} // Optional visual feedback
+                        placeholder="7## ### ###"
+                        accessoryLeft={() => <Text style={{ fontWeight: 'bold', backgroundColor: 'gainsboro', padding: 5, paddingHorizontal: 15, borderEndStartRadius: 15 }}>+256</Text>}
+                        accessoryRight={renderPhoneAccessoryRight}
                     />
                 </View>
 
@@ -167,7 +169,7 @@ const styles = StyleSheet.create({
     contactText: {
         marginLeft: 8,
         fontSize: 16,
-        // color: 'black',
+        color: '#ffffff',
     },
 });
 

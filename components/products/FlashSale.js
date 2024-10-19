@@ -1,8 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { ScrollView, Image, View, StyleSheet } from 'react-native';
+import { ScrollView, Image, View, StyleSheet, ActivityIndicator } from 'react-native';
 import { Layout, Text, useTheme } from '@ui-kitten/components';
 import { Lightning } from 'phosphor-react-native';
 import Animated, { Easing, useSharedValue, withTiming, useAnimatedStyle } from 'react-native-reanimated';
+import { useGetProductsQuery } from '@/api'; // Assuming the query is in the 'api' file
+
+// Skeleton Loader for Product Cards
+const ProductSkeleton = () => (
+  <View style={styles.skeletonProductContainer}>
+    <View style={styles.skeletonImage} />
+    <View style={styles.skeletonText} />
+    <View style={styles.skeletonText} />
+  </View>
+);
 
 // Countdown Timer Logic
 const calculateTimeLeft = (expiryDate) => {
@@ -16,7 +26,6 @@ const calculateTimeLeft = (expiryDate) => {
       seconds: String(Math.floor((difference / 1000) % 60)).padStart(2, '0'), // Format seconds
     };
   } else {
-    // If time is up, set all values to "00"
     timeLeft = {
       hours: '00',
       minutes: '00',
@@ -53,16 +62,11 @@ const FlipClockDigit = ({ digit }) => {
 
 const FlashSale = () => {
   const theme = useTheme();
-  const flashSaleProducts = [
-    { id: 1, title: 'Chocolate Cake', discount: 40, image: require('../../assets/placeholder.png') },
-    { id: 2, title: 'Donut Box', discount: 25, image: require('../../assets/placeholder.png') },
-    { id: 3, title: 'Cookies Pack', discount: 30, image: require('../../assets/placeholder.png') },
-    { id: 4, title: 'Cupcake', discount: 35, image: require('../../assets/placeholder.png') },
-    { id: 5, title: 'Pastry', discount: 50, image: require('../../assets/placeholder.png') },
-  ];
-
   const expiryDate = '2024-11-01T23:59:59'; // Replace with actual expiry date
   const [timeLeft, setTimeLeft] = useState(calculateTimeLeft(expiryDate));
+
+  // Fetch flash sale products using the getProducts query with search params
+  const { data: flashSaleProducts, isLoading } = useGetProductsQuery({ flashsale: true });
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -74,12 +78,23 @@ const FlashSale = () => {
 
   // Render a product card for each product in the flash sale
   const renderProduct = (product) => (
-    <View key={product.id} style={styles.productContainer}>
-      <Image source={product.image} style={styles.productImage} />
+    <View key={product._id} style={styles.productContainer}>
+      <Image source={product?.files.length ? { uri: product.files[0].url } : require('@/assets/placeholder.png')} style={styles.productImage} />
       <View style={styles.productDetails}>
-        <Text style={styles.productPrice}>UGX {product.discount}.00000</Text>
-        <Text style={styles.productSold}>240 sold</Text>
+        <Text style={styles.productPrice}>UGX {product?.price}</Text>
+        <Text style={styles.productSold}>{product?.sold} sold</Text>
       </View>
+    </View>
+  );
+
+  // Render skeleton loader while loading
+  const renderSkeleton = () => (
+    <View style={{ flexDirection: 'row' }}>
+      <ProductSkeleton />
+      <ProductSkeleton />
+      <ProductSkeleton />
+      <ProductSkeleton />
+      <ProductSkeleton />
     </View>
   );
 
@@ -105,9 +120,9 @@ const FlashSale = () => {
         </View>
       </View>
 
-      {/* Horizontal Scrollable Products */}
+      {/* Horizontal Scrollable Products or Skeleton */}
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-        {flashSaleProducts.map(renderProduct)}
+        {isLoading ? renderSkeleton() : flashSaleProducts?.data?.docs?.map(renderProduct)}
       </ScrollView>
     </Layout>
   );
@@ -115,7 +130,7 @@ const FlashSale = () => {
 
 const styles = StyleSheet.create({
   layout: {
-    marginVertical: 10,
+    marginVertical: 1,
   },
   header: {
     flexDirection: 'row',
@@ -157,7 +172,7 @@ const styles = StyleSheet.create({
   digitText: {
     fontSize: 20,
     color: 'white',
-    fontFamily: 'digital7', // Make sure to link your digital font
+    fontFamily: 'digital7',
   },
   colon: {
     fontSize: 24,
@@ -187,6 +202,27 @@ const styles = StyleSheet.create({
   productSold: {
     fontSize: 10,
     color: '#555',
+  },
+  // Skeleton styles
+  skeletonProductContainer: {
+    width: 115,
+    paddingVertical: 0,
+    paddingHorizontal: 4,
+    borderRadius: 3,
+    marginHorizontal: 5,
+  },
+  skeletonImage: {
+    height: 100,
+    borderRadius: 5,
+    width: '100%',
+    backgroundColor: '#ddd',
+  },
+  skeletonText: {
+    height: 15,
+    width: '70%',
+    backgroundColor: '#ccc',
+    marginTop: 5,
+    borderRadius: 3,
   },
 });
 

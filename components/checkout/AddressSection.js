@@ -92,13 +92,13 @@ const ShippingAddress = ({ addresses, refetch, createAddress, isLoading }) => {
           <View style={styles.addressRow}>
             <MapPin size={20} color="#8F9BB3" weight="fill" />
             <Text category="s2" style={styles.addressText}>
-              {shippingAddress.addressName},{shippingAddress.city},{shippingAddress.region}, Uganda
+              {shippingAddress.addressName}, {shippingAddress.city}, {shippingAddress.region}, Uganda
             </Text>
             <Text style={styles.addressLabel} category="c2">
               {shippingAddress.addressLabel || 'Home'}
             </Text>
           </View>
-          <Divider style={{ marginVertical: 10 }} />
+          <Divider style={{ marginVertical: 5 }} />
           <View style={styles.addressInfo}>
             <User size={20} color="#8F9BB3" weight="fill" />
             <Text category="p2" style={styles.infoText}>

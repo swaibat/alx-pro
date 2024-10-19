@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, TouchableWithoutFeedback, Keyboard, TouchableOpacity } from 'react-native';
-import { Layout, Input, Button, Text } from '@ui-kitten/components';
-import { Snackbar } from 'react-native-paper'; // Import Snackbar
+import { StyleSheet, TouchableWithoutFeedback, Keyboard, TouchableOpacity, StatusBar } from 'react-native';
+import { Layout, Input, Text } from '@ui-kitten/components';
+import { Appbar, Snackbar, useTheme, Button, Divider } from 'react-native-paper'; // Import Snackbar
 import { useSendOtpMutation, useVerifyOtpMutation, useRegisterMutation } from '@/api';
 import LoginIllustration from '../assets/LoginIllustration';
 import { useLocalSearchParams, useRouter } from 'expo-router';
@@ -10,6 +10,7 @@ import { Eye, EyeClosed, EyeSlash } from 'phosphor-react-native'; // Import Phos
 
 const OtpRegisterScreen = () => {
   const router = useRouter();
+  const theme = useTheme();
   const { step: initialStep, phoneNumber: initialPhoneNumber } = useLocalSearchParams();
 
   const [step, setStep] = useState(Number(initialStep) || 1);
@@ -148,158 +149,169 @@ const OtpRegisterScreen = () => {
   };
 
   return (
-    <Layout style={{ flex: 1 }}>
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <Layout style={styles.container}>
-          {step === 1 && (
-            <>
-              <LoginIllustration />
-              <Text category='h5' style={styles.title}>Enter Phone Number</Text>
-              <Text category='s1' appearance='hint' style={styles.description}>
-                We will send you a one-time password to your mobile number.
-              </Text>
-              <Input
-                style={styles.input}
-                placeholder='Phone Number'
-                onChangeText={handleChangePhoneNumber}
-                accessoryLeft={() => <Text style={styles.countryCode}>+256</Text>}
-                keyboardType='numeric'
-              />
-              <Button
-                style={styles.button}
-                onPress={handleOtpRequest}
-                disabled={!phoneNumber || !phoneValidationRegex.test(phoneNumber) || isSendingOtp}
-              >
-                {isSendingOtp ? 'Sending...' : 'Send OTP'}
-              </Button>
-              <Text style={styles.haveAccountText}>
-                Have an account?{' '}
-                <TouchableOpacity onPress={() => router.push('/login')}>
-                  <Text style={styles.linkText}>Go to login</Text>
-                </TouchableOpacity>
-              </Text>
-            </>
-          )}
-
-          {step === 2 && (
-            <>
-              <LoginIllustration />
-              <Text category='h5' style={styles.title}>Enter OTP Code</Text>
-              <Text category='s1' appearance='hint' style={styles.description}>
-                We have sent a verification code to your mobile number 0{phoneNumber}.
-              </Text>
-              <Input
-                style={styles.otpInput}
-                textStyle={{ fontSize: 60, textAlign: 'center', width: '100%', letterSpacing: 20 }}
-                value={otp}
-                size='large'
-                onChangeText={handleChangeOtp}
-                keyboardType='numeric'
-                maxLength={4}
-                textAlign='center'
-                placeholder='XXXX'
-              />
-              <Text category='s1' appearance='hint' style={styles.description}>
-                Didn’t receive the OTP?
-                <TouchableOpacity onPress={handleResendOtp}>
-                  <Text style={canResend ? styles.resendText : styles.disabledText}> Resend OTP</Text>
-                </TouchableOpacity>
-              </Text>
-              {timer > 0 && <Text style={styles.timerText}>{timer} seconds remaining</Text>}
-              <Button
-                style={styles.button}
-                onPress={handleOtpVerification}
-                disabled={otp.length !== 4 || isVerifyingOtp}
-              >
-                {isVerifyingOtp ? 'Verifying...' : 'Verify OTP'}
-              </Button>
-
-              <TouchableOpacity onPress={handleWrongNumber}>
-                <Text style={styles.wrongNumberText}>Wrong Number? Go Back</Text>
-              </TouchableOpacity>
-            </>
-          )}
-
-          {step === 3 && (
-            <>
-              <LoginIllustration />
-              <Text category='h5' style={styles.title}>Complete Registration</Text>
-              <Text category='s1' style={styles.label}>Full Name</Text>
-              <Input
-                style={styles.input}
-                placeholder='Enter your full name'
-                value={fullName}
-                onChangeText={setFullName}
-              />
-
-              <Text category='s1' style={styles.label}>Phone Number</Text>
-              <Input
-                style={styles.input}
-                value={phoneNumber}
-                disabled={true}
-              />
-
-              <Text category='s1' style={styles.label}>Email</Text>
-              <Input
-                style={styles.input}
-                placeholder='Enter your email'
-                value={email}
-                onChangeText={setEmail}
-              />
-
-              <Text category='s1' style={styles.label}>Password</Text>
-              <Input
-                style={styles.input}
-                placeholder='Enter your password'
-                value={password}
-                onChangeText={setPassword}
-                secureTextEntry={!showPassword} // Use the state for password visibility
-                accessoryRight={() => (
-                  <TouchableOpacity onPress={() => setShowPassword((prev) => !prev)}>
-                    {showPassword ? (
-                      <Eye size={24} weight="bold" />
-                    ) : (
-                      <EyeClosed size={24} weight="bold" />
-                    )}
-                  </TouchableOpacity>
-                )}
-              />
-
-              <TouchableOpacity onPress={() => router.push('/terms-of-service')}>
-                <Text style={styles.termsText}>
-                  By signing up, you accept the <Text style={styles.termsLink}>Terms of Service</Text>.
+    <>
+      <StatusBar barStyle="light-content" />
+      <Appbar.Header style={{ paddingRight: 25, backgroundColor: '#111b2d', borderBottomColor: 'red', borderBottomWidth: 2 }}>
+        <Appbar.BackAction color={theme.colors.outlineVariant} onPress={() => router.push('/login')} />
+        <Appbar.Content color={theme.colors.outlineVariant} title={<Text style={{ color: theme.colors.outlineVariant, fontSize: 18 }}>Register</Text>} />
+      </Appbar.Header>
+      <Layout style={{ flex: 1 }}>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <Layout style={styles.container}>
+            {step === 1 && (
+              <>
+                <LoginIllustration />
+                <Text category='h5' style={styles.title}>Enter Phone Number</Text>
+                <Text category='s1' appearance='hint' style={styles.description}>
+                  We will send you a one-time password to your mobile number.
                 </Text>
-              </TouchableOpacity>
+                <Input
+                  style={styles.input}
+                  placeholder='Phone Number'
+                  onChangeText={handleChangePhoneNumber}
+                  accessoryLeft={() => <Text style={styles.countryCode}>+256</Text>}
+                  keyboardType='numeric'
+                />
+                <Button
+                  style={styles.button}
+                  mode='contained'
+                  onPress={handleOtpRequest}
+                  loading={isSendingOtp}
+                  disabled={!phoneNumber || !phoneValidationRegex.test(phoneNumber) || isSendingOtp}
+                >
+                  {isSendingOtp ? 'Sending...' : 'Send OTP'}
+                </Button>
+                <Divider style={{ marginVertical: 15 }} />
+                <Text style={[styles.registerText, { marginBottom: 15, marginTop: 0 }]}>
+                  Have an account?
+                </Text>
+                <Button mode="contained-tonal" onPress={() => router.push('/login')}>Login</Button>
+              </>
+            )}
 
-              <Button style={styles.button} onPress={handleRegistration} disabled={isRegistering}>
-                {isRegistering ? 'Registering...' : 'Complete Registration'}
-              </Button>
-            </>
-          )}
+            {step === 2 && (
+              <>
+                <LoginIllustration />
+                <Text category='h5' style={styles.title}>Enter OTP Code</Text>
+                <Text category='s1' appearance='hint' style={styles.description}>
+                  We have sent a verification code to your mobile number 0{phoneNumber}.
+                </Text>
+                <Input
+                  style={styles.otpInput}
+                  textStyle={{ fontSize: 40, textAlign: 'center', width: '100%', letterSpacing: 20 }}
+                  value={otp}
+                  size='large'
+                  onChangeText={handleChangeOtp}
+                  keyboardType='numeric'
+                  maxLength={4}
+                  textAlign='center'
+                  placeholder='XXXX'
+                />
+                <Text category='s1' appearance='hint' style={styles.description}>
+                  Didn’t receive the OTP?
+                  <TouchableOpacity onPress={handleResendOtp}>
+                    <Text style={canResend ? styles.resendText : styles.disabledText}> Resend OTP</Text>
+                  </TouchableOpacity>
+                </Text>
+                {timer > 0 && <Text style={styles.timerText}>{timer} seconds remaining</Text>}
+                <Button
+                  style={styles.button}
+                  onPress={handleOtpVerification}
+                  mode='contained'
+                  loading={isVerifyingOtp}
+                  disabled={otp.length !== 4 || isVerifyingOtp}
+                >
+                  {isVerifyingOtp ? 'Verifying...' : 'Verify OTP'}
+                </Button>
+
+                <TouchableOpacity onPress={handleWrongNumber}>
+                  <Text style={styles.wrongNumberText}>Wrong Number? Go Back</Text>
+                </TouchableOpacity>
+              </>
+            )}
+
+            {step === 3 && (
+              <>
+                <LoginIllustration />
+                <Text category='h5' style={styles.title}>Complete Registration</Text>
+                <Text category='s1' style={styles.label}>Full Name</Text>
+                <Input
+                  style={styles.input}
+                  placeholder='Enter your full name'
+                  value={fullName}
+                  onChangeText={setFullName}
+                />
+
+                <Text category='s1' style={styles.label}>Phone Number</Text>
+                <Input
+                  style={styles.input}
+                  value={phoneNumber}
+                  disabled={true}
+                />
+
+                <Text category='s1' style={styles.label}>Email</Text>
+                <Input
+                  style={styles.input}
+                  placeholder='Enter your email'
+                  value={email}
+                  onChangeText={setEmail}
+                />
+
+                <Text category='s1' style={styles.label}>Password</Text>
+                <Input
+                  style={styles.input}
+                  placeholder='Enter your password'
+                  value={password}
+                  onChangeText={setPassword}
+                  secureTextEntry={!showPassword} // Use the state for password visibility
+                  accessoryRight={() => (
+                    <TouchableOpacity onPress={() => setShowPassword((prev) => !prev)}>
+                      {showPassword ? (
+                        <Eye size={24} weight="bold" />
+                      ) : (
+                        <EyeClosed size={24} weight="bold" />
+                      )}
+                    </TouchableOpacity>
+                  )}
+                />
+
+                <TouchableOpacity onPress={() => router.push('/terms-of-service')}>
+                  <Text style={styles.termsText}>
+                    By signing up, you accept the <Text style={styles.termsLink}>Terms of Service</Text>.
+                  </Text>
+                </TouchableOpacity>
+
+                <Button style={styles.button} mode='contained' onPress={handleRegistration} loading={isRegistering} disabled={isRegistering}>
+                  {isRegistering ? 'Registering...' : 'Complete Registration'}
+                </Button>
+              </>
+            )}
 
 
-        </Layout>
-      </TouchableWithoutFeedback>
-      <Snackbar
-        visible={snackVisible}
-        onDismiss={() => setSnackVisible(false)}
-        duration={3000}
-        action={{
-          label: 'Dismiss', // Button label
-          onPress: () => setSnackVisible(false), // Dismiss the Snackbar when pressed
-        }}
-      >
-        {snackMessage}
-      </Snackbar>
-    </Layout>
+          </Layout>
+        </TouchableWithoutFeedback>
+        <Snackbar
+          visible={snackVisible}
+          onDismiss={() => setSnackVisible(false)}
+          duration={3000}
+          action={{
+            label: 'Dismiss', // Button label
+            onPress: () => setSnackVisible(false), // Dismiss the Snackbar when pressed
+          }}
+        >
+          {snackMessage}
+        </Snackbar>
+      </Layout>
+    </>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    // justifyContent: 'center',
     paddingHorizontal: 50,
+    marginTop: 24,
   },
   title: {
     textAlign: 'center',

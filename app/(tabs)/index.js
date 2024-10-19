@@ -6,9 +6,11 @@ import CategoryGridView from '../../components/categories/GridView';
 import FlashSale from '../../components/products/FlashSale';
 import TopDeals from '../../components/products/TopDeals';
 import AdsList from '../../components/products/GridView';
+import { useRouter } from 'expo-router';
 
 const HomeScreen = () => {
   const theme = useTheme()
+  const router = useRouter()
   return (
     <Layout style={{ flex: 1 }}>
       <Layout style={{ backgroundColor: theme['color-primary-default'], height: 180, paddingVertical: 40, paddingHorizontal: 10 }}>
@@ -26,6 +28,8 @@ const HomeScreen = () => {
           <Input
             placeholder="Search"
             style={{ flex: 1 }}
+            // onPressIn={()=>router.push('/search')}
+            onFocus={()=>router.push('/search')}
             accessoryLeft={() => <MagnifyingGlass size={24} />}
             accessoryRight={() => <Sliders size={24} />}
           />

@@ -1,22 +1,24 @@
 import React, { useState } from 'react';
-import { StyleSheet, TouchableWithoutFeedback, Keyboard, TouchableOpacity } from 'react-native';
-import { Layout, Input, Button, Text } from '@ui-kitten/components';
-import { Snackbar } from 'react-native-paper'; // Snackbar for error messages
+import { StyleSheet, TouchableWithoutFeedback, Keyboard, TouchableOpacity, StatusBar } from 'react-native';
+import { Layout, Input, Text } from '@ui-kitten/components';
+import { Appbar, Button, Card, Divider, Snackbar, useTheme } from 'react-native-paper'; // Snackbar for error messages
 import { useLoginMutation } from '@/api'; // Assume you have this mutation for login
-import { Eye, EyeSlash } from 'phosphor-react-native'; // Phosphor icons for password visibility
-import { useRouter } from 'expo-router';
+import { Eye, EyeSlash, Phone } from 'phosphor-react-native'; // Phosphor icons for password visibility
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import LoginIllustration from '../assets/LoginIllustration'; // Assume you have this illustration
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const LoginScreen = () => {
   const router = useRouter();
-  
+  const theme = useTheme();
+
   const [phoneNumber, setPhoneNumber] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false); // Password visibility toggle
   const [snackVisible, setSnackVisible] = useState(false);
   const [snackMessage, setSnackMessage] = useState('');
   const [login, { isLoading }] = useLoginMutation(); // Assume this is the login mutation
+  const { ref } = useLocalSearchParams()
 
   const phoneValidationRegex = /^(75|74|70|78|77|76|3|2)\d{7}$/; // Phone number validation regex
 
@@ -40,8 +42,7 @@ const LoginScreen = () => {
       if (response.status === 200) {
         console.log('response.data', response.data)
         await AsyncStorage.setItem('@user', JSON.stringify(response.data));
-        handleSnackOpen('Login successful!');
-        // router.push('/'); // Navigate to the home screen
+        router.push(ref || '/');
       } else {
         handleSnackOpen(response.message || 'Login failed. Please try again.');
       }
@@ -52,91 +53,97 @@ const LoginScreen = () => {
   };
 
   return (
-    <Layout style={{ flex: 1 }}>
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <Layout style={styles.container}>
-          {/* Illustration at the top */}
-          <LoginIllustration />
-          
-          <Text category='h5' style={styles.title}>Login</Text>
+    <>
+      <StatusBar barStyle="light-content" />
+      <Appbar.Header style={{ paddingRight: 25, backgroundColor: '#111b2d', borderBottomColor: 'red', borderBottomWidth: 2 }}>
+          <Appbar.BackAction color={theme.colors.outlineVariant} onPress={() => router.push('/')} />
+          <Appbar.Content color={theme.colors.outlineVariant} title={<Text style={{ color: theme.colors.outlineVariant, fontSize: 18 }}>Login</Text>} />
+        </Appbar.Header>
+      <Layout style={{ flex: 1 }}>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <Layout style={styles.container}>
+            {/* Illustration at the top */}
+            <LoginIllustration />
 
-          {/* Phone Number Input */}
-          <Text category='s1' style={styles.label}>Phone Number</Text>
-          <Input
-            style={styles.input}
-            placeholder='Enter phone number'
-            onChangeText={(text) => setPhoneNumber(text)}
-            accessoryLeft={() => <Text style={styles.countryCode}>+256</Text>}
-            keyboardType='numeric'
-          />
+            <Input
+              style={styles.input}
+              label='Phone Number'
+              placeholder='Enter phone number'
+              onChangeText={(text) => setPhoneNumber(text)}
+              accessoryLeft={() => <Text style={styles.countryCode}>+256</Text>}
+              keyboardType='numeric'
+            />
 
-          {/* Password Input */}
-          <Text category='s1' style={styles.label}>Password</Text>
-          <Input
-            style={styles.input}
-            placeholder='Enter password'
-            value={password}
-            onChangeText={setPassword}
-            secureTextEntry={!showPassword} // Toggle for password visibility
-            accessoryRight={() => (
-              <TouchableOpacity onPress={() => setShowPassword((prev) => !prev)}>
-                {showPassword ? (
-                  <Eye size={24} weight="bold" />
-                ) : (
-                  <EyeSlash size={24} weight="bold" />
-                )}
-              </TouchableOpacity>
-            )}
-          />
+            <Input
+              style={styles.input}
+              label='Password'
+              placeholder='Enter password'
+              value={password}
+              onChangeText={setPassword}
+              secureTextEntry={!showPassword} // Toggle for password visibility
+              accessoryRight={() => (
+                <TouchableOpacity onPress={() => setShowPassword((prev) => !prev)}>
+                  {showPassword ? (
+                    <Eye size={24} weight="bold" />
+                  ) : (
+                    <EyeSlash size={24} weight="bold" />
+                  )}
+                </TouchableOpacity>
+              )}
+            />
 
-          {/* Forgot Password Link */}
-          <TouchableOpacity onPress={() => router.push('/forgot-password')}>
-            <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
-          </TouchableOpacity>
+            {/* Forgot Password Link */}
+            <TouchableOpacity onPress={() => router.push('/forgot-password')}>
+              <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
+            </TouchableOpacity>
 
-          {/* Login Button */}
-          <Button
-            style={styles.button}
-            onPress={handleLogin}
-            disabled={isLoading} // Disable the button while logging in
-          >
-            {isLoading ? 'Logging in...' : 'Login'}
-          </Button>
+            {/* Login Button */}
+            <Button
+              style={styles.button}
+              mode="contained"
+              onPress={handleLogin}
+              disabled={isLoading} // Disable the button while logging in
+            >
+              {isLoading ? 'Logging in...' : 'Login'}
+            </Button>
 
-          {/* Register Link */}
-          <TouchableOpacity onPress={() => router.push('/register')}>
             <Text style={styles.registerText}>
-              Don’t have an account? <Text style={styles.linkText}>Register</Text>
+              By continuing, you agree to our  <Text style={styles.linkText}>Terms of use</Text> and <Text style={styles.linkText}>Privacy Policy</Text>
             </Text>
-          </TouchableOpacity>
-        </Layout>
-      </TouchableWithoutFeedback>
+            <Divider style={{ marginVertical: 15 }} />
+            <Text style={[styles.registerText, { marginBottom: 15, marginTop: 0 }]}>
+              Don’t have an account?
+            </Text>
+            <Button mode="contained-tonal" onPress={() => router.push('/register')}> Register</Button>
+          </Layout>
+        </TouchableWithoutFeedback>
 
-      {/* Snackbar for Error Messages */}
-      <Snackbar
-        visible={snackVisible}
-        onDismiss={() => setSnackVisible(false)}
-        duration={3000}
-        action={{
-          label: 'Dismiss',
-          onPress: () => setSnackVisible(false),
-        }}
-      >
-        {snackMessage}
-      </Snackbar>
-    </Layout>
+        {/* Snackbar for Error Messages */}
+        <Snackbar
+          visible={snackVisible}
+          onDismiss={() => setSnackVisible(false)}
+          duration={3000}
+          action={{
+            label: 'Dismiss',
+            onPress: () => setSnackVisible(false),
+          }}
+        >
+          {snackMessage}
+        </Snackbar>
+      </Layout>
+    </>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    // justifyContent: 'center',
     paddingHorizontal: 50,
   },
   title: {
     textAlign: 'center',
-    marginVertical: 15,
+    marginVertical: 5,
   },
   label: {
     marginBottom: 5,
@@ -162,7 +169,7 @@ const styles = StyleSheet.create({
   registerText: {
     textAlign: 'center',
     marginTop: 20,
-    fontSize: 16,
+    fontSize: 14,
   },
   linkText: {
     color: '#007BFF',

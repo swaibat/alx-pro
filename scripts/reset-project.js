@@ -71,3 +71,8 @@ fs.rename(oldDirPath, newDirPath, (error) => {
     });
   });
 });
+
+
+// yarn install react-native-svg --save
+// watchman watch-del-all
+// rm -rf node_modules/ && yarn cache clean && yarn install

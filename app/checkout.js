@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { SafeAreaView, ScrollView, View, StyleSheet } from 'react-native';
+import { SafeAreaView, ScrollView, View, StyleSheet, StatusBar } from 'react-native';
 import { Appbar, Text, Button, useTheme } from 'react-native-paper';
 import { useSelector } from 'react-redux';
 import { router } from 'expo-router';
@@ -45,20 +45,20 @@ const CheckoutScreen = () => {
     };
 
     const handlePayNow = async () => {
-        setPayNowLoading(true); // Start loading
+        setPayNowLoading(true);
 
 
         const orderData = {
             items: cartItems,
-            userId: userId, // Add user ID from local storage
-            userAddressId: selectedAddressId, // Add selected address ID from local storage
+            userId: userId,
+            userAddressId: selectedAddressId,
             total: getTotalPrice() + 10000,
-            paymentType:'Mobile Money'
+            paymentType: 'Mobile Money'
         };
         try {
             const res = await createOrder(orderData).unwrap(); // Execute the mutation
             console.log('data', res.data._id)
-            router.push({ pathname: 'payments', params: {orderId: res.data._id, amount: getTotalPrice() + 10000 } });
+            router.push({ pathname: 'payments', params: { orderId: res.data._id, amount: getTotalPrice() + 10000 } });
         } catch (error) {
             console.error('Error creating order:', error);
         } finally {
@@ -67,45 +67,48 @@ const CheckoutScreen = () => {
     };
 
     return (
-        <SafeAreaView style={styles.container}>
-            <Appbar.Header style={{ borderColor: 'gainsboro', borderWidth: 1, paddingRight: 15 }}>
-                <Appbar.BackAction />
-                <Appbar.Content title="Checkout" />
-                <View style={styles.contactContainer}>
-                    <Phone
-                        size={24}
-                        color={theme.colors.primary}
-                        onPress={() => {
-                            // Implement the functionality to contact support
-                            console.log('Contact Support: +256123456789');
-                        }}
-                    />
-                    <Text style={styles.contactText} variant="labelLarge">0200922167</Text>
+        <>
+            <StatusBar barStyle="light-content" />
+            <SafeAreaView style={styles.container}>
+                <Appbar.Header style={{ paddingRight: 15, backgroundColor: '#111b2d', }}>
+                    <Appbar.BackAction color={theme.colors.outlineVariant} onPress={() => router.push('cart')} />
+                    <Appbar.Content color={theme.colors.outlineVariant} title={<Text style={{ color: theme.colors.outlineVariant, fontSize: 18 }}>Checkout</Text>} />
+                    <View style={styles.contactContainer}>
+                        <Phone
+                            size={24}
+                            color={theme.colors.outlineVariant}
+                            onPress={() => {
+                                // Implement the functionality to contact support
+                                console.log('Contact Support: +256123456789');
+                            }}
+                        />
+                        <Text style={[styles.contactText, { color: theme.colors.outlineVariant }]} >0200922167</Text>
+                    </View>
+                </Appbar.Header>
+                <ScrollView style={styles.content}>
+                    <ShippingAddress />
+                    <OrderItems cartItems={cartItems} theme={theme} />
+                    <ShippingOptions theme={theme} />
+                </ScrollView>
+                <View style={styles.footer}>
+                    <View>
+                        <Text variant='titleMedium'>Total</Text>
+                        <Text variant="bodyLarge" style={{ ...styles.totalPrice, color: theme.colors.primary }}>
+                            UGX {(getTotalPrice() + 10000).toLocaleString()}
+                        </Text>
+                    </View>
+                    <Button
+                        mode="contained"
+                        onPress={handlePayNow}
+                        loading={payNowLoading} // Loading state for the button
+                        style={styles.checkoutButton}
+                        disabled={payNowLoading} // Disable the button while loading
+                    >
+                        Pay Now
+                    </Button>
                 </View>
-            </Appbar.Header>
-            <ScrollView style={styles.content}>
-                <ShippingAddress />
-                <OrderItems cartItems={cartItems} theme={theme} />
-                <ShippingOptions theme={theme} />
-            </ScrollView>
-            <View style={styles.footer}>
-                <View>
-                    <Text variant='titleMedium'>Total</Text>
-                    <Text variant="headlineMedium" style={{ ...styles.totalPrice, color: theme.colors.primary }}>
-                        UGX {(getTotalPrice() + 10000).toLocaleString()}
-                    </Text>
-                </View>
-                <Button
-                    mode="contained"
-                    onPress={handlePayNow}
-                    loading={payNowLoading} // Loading state for the button
-                    style={styles.checkoutButton}
-                    disabled={payNowLoading} // Disable the button while loading
-                >
-                    Pay Now
-                </Button>
-            </View>
-        </SafeAreaView>
+            </SafeAreaView>
+        </>
     );
 };
 

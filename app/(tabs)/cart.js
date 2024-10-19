@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { ScrollView, View, Image, StyleSheet, TouchableOpacity, Linking } from 'react-native';
-import { Layout } from '@ui-kitten/components';
+import { Layout, Text } from '@ui-kitten/components';
 import { Minus, Plus, Backspace, ShoppingCart, Phone } from 'phosphor-react-native'; // Import Phone icon from Phosphor
 import { useDispatch, useSelector } from 'react-redux';
 import { removeFromCart, updateItemQuantity } from '@/store/cartSlice';
 import useLogin from '@/hooks/useLogin';
 import { useRouter } from 'expo-router';
-import { Appbar, useTheme, Text, Button } from 'react-native-paper'; // Import Appbar from Native Paper
+import { Appbar, useTheme, Button } from 'react-native-paper'; // Import Appbar from Native Paper
 
 const CartScreen = () => {
     const dispatch = useDispatch();
@@ -52,24 +52,22 @@ const CartScreen = () => {
                             <Backspace size={25} color={theme['color-basic-600']} />
                         </TouchableOpacity>
                     </View>
-                    <Text appearance='hint'>{`Color: ${item?.selectedColor?.colorName || '--'}`}</Text>
                     <Text appearance='hint' style={{ marginVertical: 2 }}>{`Qty: ${item.quantity || 1}`}</Text>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                        <Text category='s1' style={[styles.price, { color: theme['color-primary-default'] }]}>UGX {item.price.toLocaleString()}</Text>
+                        <Text category='s1' style={[styles.price, { color: theme.colors.primary }]}>UGX {item.price.toLocaleString()}</Text>
                         <View style={styles.quantityContainer}>
                             <Button
-                                size='tiny'
-                                accessoryLeft={() => <Minus size={14} color={theme['color-primary-default']} weight="bold" />}
-                                style={styles.quantityButton}
-                                appearance='outline'
+                                icon={'minus'}
+                                // style={styles.quantityButton}
+                                compact={true}
+                                mode="outlined"
                                 onPress={() => handleQuantityChange(item, item.quantity - 1)}  // Decrease quantity
                             />
                             <Text style={styles.quantity}>{item.quantity || 1}</Text>
                             <Button
-                                size='tiny'
-                                appearance='outline'
-                                accessoryLeft={() => <Plus size={14} color={theme['color-primary-default']} weight="bold" />}
-                                style={styles.quantityButton}
+                                mode="outlined"
+                                icon={'plus'}
+                                compact={true}
                                 onPress={() => handleQuantityChange(item, item.quantity + 1)}  // Increase quantity
                             />
                         </View>
@@ -83,7 +81,7 @@ const CartScreen = () => {
         <View style={styles.emptyCartContainer}>
             <ShoppingCart size={48} color={theme['color-primary-default']} />
             <Text category='s1' style={styles.emptyCartText}>Your cart is empty!</Text>
-            <Button onPress={() => router.push('/')}>
+            <Button mode="contained" onPress={() => router.push('/')}>
                 Shop Now
             </Button>
         </View>
@@ -97,16 +95,16 @@ const CartScreen = () => {
 
     return (
         <Layout style={styles.container}>
-            <Appbar.Header style={{ borderColor: 'gainsboro', borderWidth: 1, paddingRight: 15 }}>
+            <Appbar.Header style={{  paddingRight: 15 }}>
                 <Appbar.BackAction onPress={() => router.back()} />
-                <Appbar.Content title="My Cart" />
+                <Appbar.Content title={<Text style={{fontSize:18}}>My Cart</Text>} />
                 <View style={styles.contactContainer}>
                     <Phone
                         size={24}
-                        color={theme.colors.primary}
+                        // color={theme.colors.primary}
                         onPress={() => callSupport()}
                     />
-                    <Text style={styles.contactText} variant="labelLarge">0200922167</Text>
+                    <Text style={styles.contactText} >0200922167</Text>
                 </View>
             </Appbar.Header>
 
@@ -120,11 +118,11 @@ const CartScreen = () => {
                     <Layout style={styles.footer}>
                         <View>
                             <Text category='s1'>Total</Text>
-                            <Text category='h6' style={{ color: theme['color-primary-default'] }}>
+                            <Text category='h6' style={{ color: theme.colors.primary }}>
                                 UGX {getTotalPrice().toLocaleString()}
                             </Text>
                         </View>
-                        <Button style={styles.checkoutButton} onPress={() => router.push(isLoggedIn ? 'checkout' : 'register')}>
+                        <Button mode="contained" style={styles.checkoutButton} onPress={() => router.push(isLoggedIn ? 'checkout' : {pathname:'login',params:{ref:'checkout'}})}>
                             Checkout
                         </Button>
                     </Layout>
@@ -148,17 +146,17 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         padding: 0,
-        position: 'relative', // For positioning remove icon
+        position: 'relative',
     },
     removeIcon: {
         marginLeft: 10,
-        zIndex: 1, // Ensure the icon is above other elements
+        zIndex: 1,
     },
     productImage: {
         width: 80,
         height: 80,
         marginRight: 16,
-        borderRadius: 8,
+        borderRadius: 5,
     },
     productInfo: {
         flex: 1,
@@ -174,11 +172,15 @@ const styles = StyleSheet.create({
         marginTop: 1,
     },
     quantityButton: {
-        width: 25,
+        width: 20,
+        borderRadius:3,
+        justifyContent:'center',
+        alignItems: 'center',
         height: 25,
     },
     quantity: {
         marginHorizontal: 16,
+        fontWeight: 'bold'
     },
     footer: {
         flexDirection: 'row',

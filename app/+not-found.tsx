@@ -1,10 +1,11 @@
-import { Stack } from 'expo-router';
+import { Stack, useRouter } from 'expo-router';
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import { Surface, Text, Button, IconButton } from 'react-native-paper';
 import { Warning } from 'phosphor-react-native'; // Import the warning icon
 
 export default function NotFoundScreen() {
+  const router = useRouter()
   return (
     <>
       <Stack.Screen options={{ title: 'Oops!' }} />
@@ -18,7 +19,7 @@ export default function NotFoundScreen() {
         <Button
           mode="contained"
           style={styles.button}
-          onPress={() => { /* navigate to home screen */ }}
+          onPress={() => router.push('/')}
         >
           Go to home screen!
         </Button>

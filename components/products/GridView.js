@@ -1,15 +1,17 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { StyleSheet, View, ScrollView, SafeAreaView, TouchableOpacity, Image } from 'react-native';
 import { Layout, Text, useTheme } from '@ui-kitten/components';
 import { useGetProductsQuery } from '../../api';
 import { ShoppingCart, Star } from 'phosphor-react-native';
-import { useRouter } from 'expo-router';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useDispatch } from 'react-redux';
 import { addToCart } from '@/store/cartSlice';
+import Placeholder from '../../assets/Placeholder';
 
 // Product Card Component
 const ProductCard = ({ product }) => {
     const router = useRouter();
+    const theme = useTheme()
     const dispatch = useDispatch();
 
     const handleAddToCart = () => {
@@ -19,7 +21,7 @@ const ProductCard = ({ product }) => {
     return (
         <TouchableOpacity style={styles.productCard} onPress={() => router.push(`/ads/${product._id}`)}>
             <View style={styles.productImageContainer}>
-                <Image source={{ uri: product.image || '../../../assets/placeholder.png' }} style={styles.productImage} />
+                <Image source={product?.files?.length ? { uri: product.files[0].url } : require('@/assets/placeholder.png')} style={styles.productImage} />
                 <TouchableOpacity style={styles.addToCartButton} onPress={handleAddToCart}>
                     <ShoppingCart size={20} color="white" weight="bold" />
                 </TouchableOpacity>
@@ -27,13 +29,8 @@ const ProductCard = ({ product }) => {
             <Text style={styles.productTitle} numberOfLines={1} ellipsizeMode="tail">
                 {product.title}
             </Text>
-            <View style={styles.ratingContainer}>
-                <Star size={16} color="orange" weight="fill" />
-                <Text style={styles.ratingText}>{product.rating || '4.7'}</Text>
-                <Text style={{ fontSize: 16, color: 'grey' }}> | </Text>
-                <Text style={styles.soldText}>{product.sold} sold</Text>
-            </View>
-            <Text style={styles.productPrice}>UGX {product.price?.toLocaleString('en-UG')}</Text>
+            <Text style={[{ fontSize: 12, textDecorationLine: 'line-through', }]} appearance='hint'> UGX {product.price?.toLocaleString('en-UG')} </Text>
+            <Text style={[styles.productPrice, { color: theme['color-primary-default'] }]}>UGX {product.price?.toLocaleString('en-UG')}</Text>
         </TouchableOpacity>
     );
 };
@@ -44,10 +41,7 @@ const SkeletonLoader = () => {
     return (
         <View style={styles.skeletonCard}>
             <View style={[styles.skeletonImageContainer, { backgroundColor: theme['color-basic-400'] }]}>
-                <Image
-                    source={require('../../assets/placeholder.png')}
-                    style={styles.skeletonImage}
-                />
+                <Placeholder />
             </View>
             <View style={[styles.skeletonText, { backgroundColor: theme['color-basic-400'] }]} />
             <View style={[styles.skeletonTextSmall, { backgroundColor: theme['color-basic-400'] }]} />
@@ -58,7 +52,13 @@ const SkeletonLoader = () => {
 
 // Ads List Component
 const AdsList = () => {
-    const { data, isLoading, isError } = useGetProductsQuery();
+    const { categoryId, name } = useLocalSearchParams();
+    console.log(categoryId, name)
+    const { data, isLoading, isError } = useGetProductsQuery(categoryId
+        ? { category: categoryId }
+        : name
+            ? { name }
+            : {});
     const products = data?.data?.docs || [];
 
     if (isLoading) {
@@ -66,7 +66,6 @@ const AdsList = () => {
             <SafeAreaView style={styles.safeArea}>
                 <Layout style={styles.container}>
                     <ScrollView contentContainerStyle={styles.productsContainer}>
-                        {/* Display multiple skeleton loaders */}
                         {[...Array(6)].map((_, index) => (
                             <SkeletonLoader key={index} />
                         ))}
@@ -110,7 +109,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
     },
     productCard: {
-        width: '48%',
+        width: '49%',
         backgroundColor: 'white',
         marginBottom: 10,
         borderRadius: 8,
@@ -120,6 +119,8 @@ const styles = StyleSheet.create({
     },
     productImageContainer: {
         position: 'relative',
+        height: 180,
+        backgroundColor: '#f1f1f1f1',
     },
     productImage: {
         width: '100%',
@@ -159,8 +160,8 @@ const styles = StyleSheet.create({
     productPrice: {
         fontSize: 14,
         fontWeight: 'bold',
-        color: '#FF5656',
-        marginVertical: 5,
+        // color: '#FF5656',
+        // marginVertical: 2,
     },
     // Skeleton Loader Styles
     skeletonCard: {
@@ -176,6 +177,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#f0f0f0',
         borderRadius: 8,
         marginBottom: 10,
+        height: 180,
+
     },
     skeletonImage: {
         width: '100%',
@@ -184,21 +187,21 @@ const styles = StyleSheet.create({
     },
     skeletonText: {
         width: '80%',
-        height: 20,
+        height: 16,
         backgroundColor: '#f0f0f0',
         borderRadius: 4,
-        marginBottom: 8,
+        marginBottom: 5,
     },
     skeletonTextSmall: {
         width: '60%',
         height: 15,
         backgroundColor: '#f0f0f0',
         borderRadius: 4,
-        marginBottom: 8,
+        marginBottom: 5,
     },
     skeletonPrice: {
         width: '50%',
-        height: 20,
+        height: 14,
         backgroundColor: '#f0f0f0',
         borderRadius: 4,
     },

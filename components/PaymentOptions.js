@@ -8,7 +8,7 @@ const PaymentOption = ({ selected, type }) => {
   const getBorderColor = () => {
     switch (type) {
       case 'MTN':
-        return selected ? '#FECD02' : '#dee4ec'; // Yellow border for MTN
+        return selected ? 'orange' : '#dee4ec'; // Yellow border for MTN
       case 'AIRTEL':
         return selected ? '#ED1C24' : '#dee4ec'; // Red border for Airtel
       default:
@@ -19,7 +19,7 @@ const PaymentOption = ({ selected, type }) => {
   const getCheckIconColor = () => {
     switch (type) {
       case 'MTN':
-        return '#FECD02'; // Yellow check for MTN
+        return 'orange'; // Yellow check for MTN
       case 'AIRTEL':
         return '#ED1C24'; // Red check for Airtel
       default:

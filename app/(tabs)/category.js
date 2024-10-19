@@ -5,7 +5,7 @@ import { useGetCategoriesQuery } from '@/api';
 import { useRouter } from 'expo-router';
 import { Layout, Menu, MenuGroup, MenuItem, Drawer, DrawerItem, Divider, useTheme } from '@ui-kitten/components';
 import { Stack } from 'expo-router';
-import { Appbar } from 'react-native-paper';
+import { Appbar, Button } from 'react-native-paper';
 import { MagnifyingGlass, ShoppingCart } from 'phosphor-react-native';
 
 
@@ -33,7 +33,7 @@ const SkeletonLoader = () => {
 const CategorySreen = ({ route }) => {
     const [expandedCategory, setExpandedCategory] = useState(null);
     const [expandedSubcategory, setExpandedSubcategory] = useState(null);
-    const { data, isLoading, error } = useGetCategoriesQuery();
+    const { data, isLoading, error, refetch } = useGetCategoriesQuery();
     const [selectedIndex, setSelectedIndex] = useState({ row: route?.params?.index || 0 });
     const router = useRouter();
 
@@ -58,27 +58,15 @@ const CategorySreen = ({ route }) => {
             <MenuItem
                 title={subcategory.name}
                 key={subcategory.id}
-                onPress={() => router.push({ pathname: `/ads/category/${subcategory.id}`, params: { category: subcategory.name } })}
+                onPress={() => router.push({ pathname: `/ads/list`, params: { categoryId: subcategory.id, category: subcategory.name } })}
             />
         ));
     };
 
-    if (isLoading) {
-        return (
-            <>
-                <SkeletonLoader />
-            </>
-        );
-    }
-
-    if (error) {
-        return <Text>Error fetching categories.</Text>;
-    }
-
     return (
         <>
-            <Appbar.Header style={{backgroundColor:"white",borderBottomWidth:1,borderBottomColor:'gainsboro'}}>
-                <Appbar.BackAction onPress={() => { /* Handle back action */ }} />
+            <Appbar.Header style={{ backgroundColor: "white", borderBottomWidth: 1, borderBottomColor: 'gainsboro' }}>
+                <Appbar.BackAction onPress={() => router.back()} />
                 <Appbar.Content title="Categories" />
                 <Appbar.Action
                     icon={({ color }) => (
@@ -86,40 +74,41 @@ const CategorySreen = ({ route }) => {
                             <MagnifyingGlass size={24} color={color} />
                         </View>
                     )}
-                    onPress={() => { /* Handle search action */ }}
+                    onPress={() => router.push('search')}
                 />
-                <Appbar.Action
-                    icon={({ color }) => (
-                        <View style={styles.iconContainer}>
-                            <ShoppingCart size={24} color={color} /> {/* Customize color */}
-                        </View>
-                    )}
-                    onPress={() => { /* Handle shopping action */ }}
-                />
-                
+
             </Appbar.Header>
-            <View style={styles.container}>
-                <Layout style={styles.sidebar}>
-                    {data?.data && (
-                        <Drawer
-                            selectedIndex={selectedIndex}
-                            onSelect={(index) => setSelectedIndex(index)}
-                        >
-                            {data.data.map((item) => (
-                                <DrawerItem
-                                    style={styles.categoryItem}
-                                    key={item.id}
-                                    title={item.name}
-                                    onPress={() => toggleCategory(item.id)}
-                                />
-                            ))}
-                        </Drawer>
-                    )}
-                </Layout>
-                <Menu style={styles.subcategoryView}>
-                    {expandedCategory && renderSubcategories(data.data.find((category) => category.id === expandedCategory))}
-                </Menu>
-            </View>
+            {error ? (
+                <View style={styles.errorContainer}>
+                    <Text style={styles.errorText}>Error fetching categories. Please try again.</Text>
+                    <Button mode="contained" onPress={refetch} >Retry</Button>
+                </View>
+            ) : isLoading ? (
+                <SkeletonLoader />
+            ) : (
+                <View style={styles.container}>
+                    <Layout style={styles.sidebar}>
+                        {data?.data && (
+                            <Drawer
+                                selectedIndex={selectedIndex}
+                                onSelect={(index) => setSelectedIndex(index)}
+                            >
+                                {data.data.map((item) => (
+                                    <DrawerItem
+                                        style={styles.categoryItem}
+                                        key={item.id}
+                                        title={item.name}
+                                        onPress={() => toggleCategory(item.id)}
+                                    />
+                                ))}
+                            </Drawer>
+                        )}
+                    </Layout>
+                    <Menu style={styles.subcategoryView}>
+                        {expandedCategory && renderSubcategories(data.data.find((category) => category.id === expandedCategory))}
+                    </Menu>
+                </View>
+            )}
         </>
     );
 };
@@ -166,6 +155,16 @@ const styles = StyleSheet.create({
         height: 20,
         marginBottom: 10,
         borderRadius: 5,
+    },
+    errorContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    errorText: {
+        fontSize: 16,
+        color: 'red',
+        marginBottom: 10,
     },
 });
 
