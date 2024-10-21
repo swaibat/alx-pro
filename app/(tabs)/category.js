@@ -2,9 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useGetCategoriesQuery } from '@/api';
-import { useRouter } from 'expo-router';
+import { useFocusEffect, useLocalSearchParams, useRouter } from 'expo-router';
 import { Layout, Menu, MenuGroup, MenuItem, Drawer, DrawerItem, Divider, useTheme } from '@ui-kitten/components';
-import { Stack } from 'expo-router';
 import { Appbar, Button } from 'react-native-paper';
 import { MagnifyingGlass, ShoppingCart } from 'phosphor-react-native';
 
@@ -30,21 +29,28 @@ const SkeletonLoader = () => {
         </View>
     );
 };
-const CategorySreen = ({ route }) => {
+const CategorySreen = () => {
     const [expandedCategory, setExpandedCategory] = useState(null);
     const [expandedSubcategory, setExpandedSubcategory] = useState(null);
     const { data, isLoading, error, refetch } = useGetCategoriesQuery();
-    const [selectedIndex, setSelectedIndex] = useState({ row: route?.params?.index || 0 });
+    const params = useLocalSearchParams()
+    const [selectedIndex, setSelectedIndex] = useState({ row: 0 });
     const router = useRouter();
+    const theme = useTheme()
 
-    useEffect(() => {
-        if (route?.params?.category) {
-            setExpandedCategory(route.params.category);
+    useEffect(()=>{
+        if (params?.index) {
+            setSelectedIndex({ row: parseInt(params?.index) })
+            console.log('===',params?.index)
+        }
+        if (params?.category) {
+            setExpandedCategory(params.category);
         } else if (data?.data && data.data.length > 0) {
             // Set the first category as the default expanded category
             setExpandedCategory(data.data[0].id);
         }
-    }, [route?.params, data]);
+    },[params?.index])
+
 
     const toggleCategory = (categoryId) => {
         setExpandedCategory((prev) => (prev === categoryId ? null : categoryId));
@@ -65,9 +71,9 @@ const CategorySreen = ({ route }) => {
 
     return (
         <>
-            <Appbar.Header style={{ backgroundColor: "white", borderBottomWidth: 1, borderBottomColor: 'gainsboro' }}>
+            <Appbar.Header  style={{ backgroundColor: "white", borderBottomWidth: 1, borderBottomColor: 'gainsboro' }}>
                 <Appbar.BackAction onPress={() => router.back()} />
-                <Appbar.Content title="Categories" />
+                <Appbar.Content color={theme['color-basic-800']} title={<Text style={{ color: theme['color-basic-800'], fontSize: 18 }}>Categories</Text>} />
                 <Appbar.Action
                     icon={({ color }) => (
                         <View style={styles.iconContainer}>

@@ -1,7 +1,7 @@
 import React from 'react';
-import { StyleSheet, View, SafeAreaView, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, SafeAreaView, TouchableOpacity, StatusBar } from 'react-native';
 import { Text, Input } from '@ui-kitten/components';
-import { ShoppingCart, MagnifyingGlass, XCircle } from 'phosphor-react-native';
+import { ShoppingCart, MagnifyingGlass, XCircle, X } from 'phosphor-react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useSelector } from 'react-redux';
 import { Appbar } from 'react-native-paper';
@@ -31,16 +31,17 @@ const Ads = () => {
 
     return (
         <>
+            <StatusBar barStyle={'dark-content'} />
             <Appbar.Header style={{ backgroundColor: "white", borderBottomWidth: 1, borderBottomColor: 'gainsboro' }}>
                 <Appbar.BackAction onPress={() => router.back()} />
                 {name ? <Input
                     placeholder="Search"
-                    size='small'
+                    // size='small'
                     style={{ flex: 1 }}
                     accessoryLeft={() => <MagnifyingGlass size={20} />}
                     accessoryRight={() => (
                         <TouchableOpacity onPress={() => router.push('search')}>
-                            <XCircle size={20} color="grey" style={{ marginLeft: 8 }} />
+                            <X size={20} color="grey" style={{ marginLeft: 8 }} />
                         </TouchableOpacity>
 
                     )}
@@ -63,7 +64,7 @@ const Ads = () => {
                             <CartIconWithBadge />
                         </View>
                     )}
-                    onPress={() => { /* Handle shopping action */ }}
+                    onPress={() => router.push('cart')}
                 />
             </Appbar.Header>
 

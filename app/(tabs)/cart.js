@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, View, Image, StyleSheet, TouchableOpacity, Linking } from 'react-native';
+import { ScrollView, View, Image, StyleSheet, TouchableOpacity, Linking, StatusBar } from 'react-native';
 import { Layout, Text } from '@ui-kitten/components';
 import { Minus, Plus, Backspace, ShoppingCart, Phone } from 'phosphor-react-native'; // Import Phone icon from Phosphor
 import { useDispatch, useSelector } from 'react-redux';
@@ -94,6 +94,8 @@ const CartScreen = () => {
     };
 
     return (
+        <>
+        <StatusBar barStyle={'dark-content'} />
         <Layout style={styles.container}>
             <Appbar.Header style={{  paddingRight: 15 }}>
                 <Appbar.BackAction onPress={() => router.back()} />
@@ -129,6 +131,7 @@ const CartScreen = () => {
                 </>
             )}
         </Layout>
+        </>
     );
 };
 

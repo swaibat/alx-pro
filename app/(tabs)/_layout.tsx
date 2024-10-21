@@ -81,7 +81,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="account"
         options={{
-          title: isLoggedIn ? "account" : 'login',
+          title: "account",
           headerShown: false,
           href: { pathname: isLoggedIn ? "/account" : '/login', params: { ref: 'account' } },
           headerLeft: () => (

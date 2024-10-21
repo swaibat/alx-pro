@@ -2,15 +2,17 @@ import React, { useEffect, useState } from 'react';
 import {
   StyleSheet,
   FlatList,
+  StatusBar,
 } from 'react-native';
-import { Button, Layout, Text, IndexPath } from '@ui-kitten/components';
-import { useCreateAddressMutation, useGetAddressQuery, useUpdateAddressMutation } from '../api';
+import { Layout, Text, IndexPath } from '@ui-kitten/components';
+import { useCreateAddressMutation, useGetAddressQuery, useUpdateAddressMutation } from '@/api';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getCountryByShort } from 'countrycitystatejson';
 import AddressItem from '@/components/address/AddressItem';
 import AddressModal from '@/components/address/AddressModal';
 import SkeletonLoader from '@/components/address/SkeletonLoader';
+import { Appbar, useTheme, Button } from 'react-native-paper';
 
 const AddressComponent = () => {
   const { data: fetchedAddresses, error: fetchError, isLoading: isFetching, refetch } = useGetAddressQuery();
@@ -18,6 +20,7 @@ const AddressComponent = () => {
   const [updateAddress, { error: updateError, isLoading: isUpdating }] = useUpdateAddressMutation();
   const { edit } = useLocalSearchParams();
   const router = useRouter();
+  const theme = useTheme();
 
   const [form, setForm] = useState({
     phoneNumber: '',
@@ -176,11 +179,16 @@ const AddressComponent = () => {
 
   return (
     <>
+      <StatusBar barStyle="light-content" />
+      <Appbar.Header style={{ paddingRight: 15, backgroundColor: '#111b2d', }}>
+        <Appbar.BackAction color={theme.colors.outlineVariant} onPress={() => router.back()} />
+        <Appbar.Content color={theme.colors.outlineVariant} title={<Text style={{ color: theme.colors.outlineVariant, fontSize: 18 }}>Address Book</Text>} />
+      </Appbar.Header>
       <Layout style={styles.container}>
         <Button onPress={() => {
           setSelectedAddress(null); // Ensure we're in "create" mode
           setModalVisible(true);
-        }} style={{ marginBottom: 10 }}>Create New Address</Button>
+        }} style={{ marginBottom: 10 }} mode="contained">Create New Address</Button>
         {isFetching ? (
           <FlatList
             data={Array.from({ length: 5 })}
@@ -206,7 +214,7 @@ const AddressComponent = () => {
             contentContainerStyle={styles.listContainer}
           />
         )}
-        {edit && <Button appearance='outline' onPress={() => router.push('/checkout')}>Select and Confirm</Button>}
+        {edit && <Button mode="outlined" onPress={() => router.push('/checkout')}>Select and Confirm</Button>}
       </Layout>
       <AddressModal
         isVisible={isModalVisible}

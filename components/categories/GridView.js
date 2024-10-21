@@ -28,7 +28,7 @@ const GridScreen = () => {
     <TouchableOpacity
       key={item.id}
       style={styles.item}
-      onPress={() => router.push(`/category/${item.id}?index=${index}`)}
+      onPress={() => router.push(`/category?category=${item.id}&index=${index}`)}
     >
       <AppImg source={{ uri: item.imageUrl }}  style={styles.image} />
       <Text
@@ -57,7 +57,7 @@ const GridScreen = () => {
     <View style={styles.container}>
       <View style={styles.headerContainer}>
         <Text style={styles.header}>Categories</Text>
-        <TouchableOpacity onPress={() => navigation.navigate('Category')}>
+        <TouchableOpacity onPress={() => router.push('category')}>
           <Text style={styles.viewAllText}>View All</Text>
         </TouchableOpacity>
       </View>

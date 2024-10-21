@@ -48,7 +48,7 @@ const HomeScreen = () => {
                 <Text category="h6" appearance="alternative">Get Special Offer</Text>
                 <Text category="h4" appearance="alternative">Up to 40%</Text>
               </Layout>
-              <Button size='small' appearance="filled">Shop Now</Button>
+              <Button onPress={()=>router.push('category')} size='small' appearance="filled">Shop Now</Button>
             </Layout>
           </ImageBackground>
         </View>
