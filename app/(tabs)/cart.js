@@ -79,7 +79,10 @@ const CartScreen = () => {
 
     const renderEmptyCartMessage = () => (
         <View style={styles.emptyCartContainer}>
-            <ShoppingCart size={48} color={theme['color-primary-default']} />
+            <Image
+                source={require('@/assets/images/shopping.png')}
+                style={{ height: 150, width: 150 }}
+            />
             <Text category='s1' style={styles.emptyCartText}>Your cart is empty!</Text>
             <Button mode="contained" onPress={() => router.push('/')}>
                 Shop Now
@@ -95,42 +98,42 @@ const CartScreen = () => {
 
     return (
         <>
-        <StatusBar barStyle={'dark-content'} />
-        <Layout style={styles.container}>
-            <Appbar.Header style={{  paddingRight: 15 }}>
-                <Appbar.BackAction onPress={() => router.back()} />
-                <Appbar.Content title={<Text style={{fontSize:18}}>My Cart</Text>} />
-                <View style={styles.contactContainer}>
-                    <Phone
-                        size={24}
-                        // color={theme.colors.primary}
-                        onPress={() => callSupport()}
-                    />
-                    <Text style={styles.contactText} >0200922167</Text>
-                </View>
-            </Appbar.Header>
+            <StatusBar barStyle={'dark-content'} />
+            <Layout style={styles.container}>
+                <Appbar.Header style={{ paddingRight: 15, elevation: 4 }}>
+                    <Appbar.BackAction onPress={() => router.back()} />
+                    <Appbar.Content title={<Text style={{ fontSize: 18 }}>My Cart</Text>} />
+                    <View style={styles.contactContainer}>
+                        <Phone
+                            size={24}
+                            // color={theme.colors.primary}
+                            onPress={() => callSupport()}
+                        />
+                        <Text style={styles.contactText} >0200922167</Text>
+                    </View>
+                </Appbar.Header>
 
-            {cartItems.length === 0 ? (
-                renderEmptyCartMessage()
-            ) : (
-                <>
-                    <ScrollView style={{ padding: 15 }}>
-                        {cartItems.map(renderCartItem)}
-                    </ScrollView>
-                    <Layout style={styles.footer}>
-                        <View>
-                            <Text category='s1'>Total</Text>
-                            <Text category='h6' style={{ color: theme.colors.primary }}>
-                                UGX {getTotalPrice().toLocaleString()}
-                            </Text>
-                        </View>
-                        <Button mode="contained" style={styles.checkoutButton} onPress={() => router.push(isLoggedIn ? 'checkout' : {pathname:'login',params:{ref:'checkout'}})}>
-                            Checkout
-                        </Button>
-                    </Layout>
-                </>
-            )}
-        </Layout>
+                {cartItems.length === 0 ? (
+                    renderEmptyCartMessage()
+                ) : (
+                    <>
+                        <ScrollView style={{ padding: 15 }}>
+                            {cartItems.map(renderCartItem)}
+                        </ScrollView>
+                        <Layout style={styles.footer}>
+                            <View>
+                                <Text category='s1'>Total</Text>
+                                <Text category='h6' style={{ color: theme.colors.primary }}>
+                                    UGX {getTotalPrice().toLocaleString()}
+                                </Text>
+                            </View>
+                            <Button mode="contained" style={styles.checkoutButton} onPress={() => router.push(isLoggedIn ? 'checkout' : { pathname: 'login', params: { ref: 'checkout' } })}>
+                                Checkout
+                            </Button>
+                        </Layout>
+                    </>
+                )}
+            </Layout>
         </>
     );
 };
@@ -176,8 +179,8 @@ const styles = StyleSheet.create({
     },
     quantityButton: {
         width: 20,
-        borderRadius:3,
-        justifyContent:'center',
+        borderRadius: 3,
+        justifyContent: 'center',
         alignItems: 'center',
         height: 25,
     },

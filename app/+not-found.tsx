@@ -1,20 +1,19 @@
 import { Stack, useRouter } from 'expo-router';
 import React from 'react';
-import { StyleSheet } from 'react-native';
-import { Surface, Text, Button, IconButton } from 'react-native-paper';
-import { Warning } from 'phosphor-react-native'; // Import the warning icon
+import { StyleSheet, Image, View, ScrollView } from 'react-native';
+import { Surface, Text, Button, IconButton, Appbar } from 'react-native-paper';
 
 export default function NotFoundScreen() {
   const router = useRouter()
   return (
-    <>
-      <Stack.Screen options={{ title: 'Oops!' }} />
-      <Surface style={styles.container}>
-        <IconButton
-          icon={() => <Warning size={48} color="#FFB74D" />} // Using Phosphor icon
-          style={styles.icon}
-          size={64}
-        />
+    <View style={{ backgroundColor: 'white', flex:1 }}>
+      <Appbar.Header>
+        <Appbar.BackAction onPress={() => router.back()} />
+        <Appbar.Content title="Opps!!" />
+      </Appbar.Header>
+      <View style={styles.container}>
+        <View style={{marginTop:-150, alignItems:'center'}}>
+        <Image source={require('@/assets/images/space.png')} style={{ height: 150, width: 150 }}/>
         <Text style={styles.title}>This screen doesn't exist.</Text>
         <Button
           mode="contained"
@@ -23,8 +22,9 @@ export default function NotFoundScreen() {
         >
           Go to home screen!
         </Button>
-      </Surface>
-    </>
+        </View>
+      </View>
+    </View>
   );
 }
 
@@ -34,16 +34,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     padding: 20,
-    elevation: 4,
+    backgroundColor: 'white'
   },
   icon: {
     marginBottom: 20,
   },
   title: {
-    fontSize: 20,
-    textAlign: 'center',
-    marginBottom: 20,
-  },
+    marginTop: 16,
+    marginBottom: 10,
+    fontSize: 18,
+    color: '#8F9BB3',
+},
   button: {
     marginTop: 15,
   },

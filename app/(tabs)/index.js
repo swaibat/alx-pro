@@ -1,16 +1,21 @@
 import React from 'react';
-import { Layout, Text, Input, Button, Card, useTheme } from '@ui-kitten/components';
-import { ScrollView, Image, View, ImageBackground } from 'react-native';
-import { MagnifyingGlass, ShoppingCart, Bell, Sliders, Heart, Cupcake, Cookie, Donut, Bread, Globe } from 'phosphor-react-native';
-import CategoryGridView from '../../components/categories/GridView';
-import FlashSale from '../../components/products/FlashSale';
-import TopDeals from '../../components/products/TopDeals';
-import AdsList from '../../components/products/GridView';
+import { Layout, Text, Input, Button, useTheme } from '@ui-kitten/components';
+import { ScrollView, View, ImageBackground } from 'react-native';
+import { MagnifyingGlass, ShoppingCart, Sliders, Globe } from 'phosphor-react-native';
+import CategoryGridView from '@/components/categories/GridView';
+import FlashSale from '@/components/products/FlashSale';
+import AdsList from '@/components/products/AdsList';
 import { useRouter } from 'expo-router';
+import { usePushNotifications } from '@/scripts/NotificationsService';
 
 const HomeScreen = () => {
   const theme = useTheme()
   const router = useRouter()
+  const { expoPushToken } = usePushNotifications();
+  console.log(expoPushToken)
+
+
+
   return (
     <Layout style={{ flex: 1 }}>
       <Layout style={{ backgroundColor: theme['color-primary-default'], height: 180, paddingVertical: 40, paddingHorizontal: 10 }}>
@@ -29,7 +34,7 @@ const HomeScreen = () => {
             placeholder="Search"
             style={{ flex: 1 }}
             // onPressIn={()=>router.push('/search')}
-            onFocus={()=>router.push('/search')}
+            onFocus={() => router.push('/search')}
             accessoryLeft={() => <MagnifyingGlass size={24} />}
             accessoryRight={() => <Sliders size={24} />}
           />
@@ -48,7 +53,7 @@ const HomeScreen = () => {
                 <Text category="h6" appearance="alternative">Get Special Offer</Text>
                 <Text category="h4" appearance="alternative">Up to 40%</Text>
               </Layout>
-              <Button onPress={()=>router.push('category')} size='small' appearance="filled">Shop Now</Button>
+              <Button onPress={() => router.push('category')} size='small' appearance="filled">Shop Now</Button>
             </Layout>
           </ImageBackground>
         </View>

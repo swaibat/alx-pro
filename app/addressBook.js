@@ -156,7 +156,7 @@ const AddressComponent = () => {
   useEffect(() => {
     if (selectedIndex.row === 0) {
       setRegion('');
-      setDistricts([]); // Clear districts if 'None' is selected
+      setDistricts([]);
     } else {
       const regions = ['Central', 'Eastern', 'Northern', 'Western'];
       setRegion(regions[selectedIndex.row - 1]);

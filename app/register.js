@@ -6,12 +6,14 @@ import { useSendOtpMutation, useVerifyOtpMutation, useRegisterMutation } from '@
 import LoginIllustration from '../assets/LoginIllustration';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Eye, EyeClosed, EyeSlash } from 'phosphor-react-native'; // Import Phosphor icons
+import { Eye, EyeClosed } from 'phosphor-react-native'; // Import Phosphor icons
+import { usePushNotifications } from '@/scripts/NotificationsService';
 
 const OtpRegisterScreen = () => {
   const router = useRouter();
   const theme = useTheme();
   const { step: initialStep, phoneNumber: initialPhoneNumber } = useLocalSearchParams();
+  const { expoPushToken } = usePushNotifications();
 
   const [step, setStep] = useState(Number(initialStep) || 1);
   const [phoneNumber, setPhoneNumber] = useState(initialPhoneNumber || '');
@@ -116,7 +118,7 @@ const OtpRegisterScreen = () => {
     }
 
     try {
-      const registrationResponse = await register({ name: fullName, phoneNumber, email, password }).unwrap();
+      const registrationResponse = await register({ name: fullName, phoneNumber, email, password, expoPushToken }).unwrap();
       if (registrationResponse.status === 201) {
         console.log(registrationResponse.user)
 

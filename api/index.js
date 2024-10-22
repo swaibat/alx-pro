@@ -1,6 +1,7 @@
 import { createApi } from '@reduxjs/toolkit/query/react'
 import { fetchBaseQuery } from '@reduxjs/toolkit/query'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { EXPO_PUSH_TOKEN_STORAGE_KEY, getDeviceId } from '@/scripts/NotificationsService';
 
 export const customMiddleware = (api) => (next) => async (action) => {
 
@@ -30,6 +31,12 @@ export const api = createApi({
     prepareHeaders: async (headers, { getState }) => {
       // Retrieve cookies from AsyncStorage
       const storedCookies = await AsyncStorage.getItem('@user')
+      const token = await AsyncStorage.getItem(EXPO_PUSH_TOKEN_STORAGE_KEY);
+      const deviceId = getDeviceId();
+      if (token) {
+        headers.set('device_id', deviceId)
+        headers.set('fcm_token', token)
+      }
       if (storedCookies) {
         headers.set('access_token', JSON.parse(storedCookies).token)
       }

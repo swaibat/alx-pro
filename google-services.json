@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "9888998602",
+    "project_id": "alx-ug",
+    "storage_bucket": "alx-ug.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:9888998602:android:8ce9be714aa71902d90033",
+        "android_client_info": {
+          "package_name": "com.swaibu.alxlite"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCSIUDtEvQIuVjZYDT0rv9j42ZYtpnNJ2U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

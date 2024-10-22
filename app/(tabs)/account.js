@@ -199,7 +199,7 @@ export default function Component() {
             </View>
           </View>
         </View>
-
+<ScrollView>
         <View style={[styles.cardContainer, {
           padding: 15, borderBottomWidth: 10,
           borderBottomColor: theme['color-basic-400']
@@ -247,19 +247,21 @@ export default function Component() {
               <Text style={styles.optionText}>Privacy Policy</Text>
             </View>
           </Link>
-          <Link href={'/help'}>
+          {/* <Link href={'/help'}>
             <View style={styles.optionItem}>
               <Headset size={24} color={theme['text-basic-color']} />
               <Text style={styles.optionText}>Refund Policy</Text>
             </View>
-          </Link>
+          </Link> */}
           
         </View>
         <TouchableOpacity style={[styles.optionItem, { paddingHorizontal: 16, paddingTop:20 }]} onPress={() => setModalVisible(true)}>
           <Power size={24} color={theme['text-basic-color']} />
           <Text style={styles.optionText}>Logout</Text>
         </TouchableOpacity>
+        </ScrollView>
       </Layout>
+      
       {/* Logout Confirmation Modal */}
       <Modal
         visible={modalVisible}
@@ -288,6 +290,7 @@ export default function Component() {
           </View>
         </View>
       </Modal>
+      
     </>
   );
 }

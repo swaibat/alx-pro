@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "alx-lite",
+    "name": "Alx.ug",
     "slug": "alx-lite",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -9,8 +9,8 @@
     "userInterfaceStyle": "automatic",
     "splash": {
       "image": "./assets/images/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "resizeMode": "cover",
+      "backgroundColor": "#004F70"
     },
     "ios": {
       "supportsTablet": true
@@ -18,9 +18,14 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#004F70"
       },
-      "package": "com.swaibu.alxlite"
+      "package": "com.swaibu.alxlite",
+      "googleServicesFile": "./google-services.json",
+      "notification": {
+        "icon": "./assets/icons/notification-icon.png",
+        "color": "#FF0000"
+      }
     },
     "web": {
       "bundler": "metro",

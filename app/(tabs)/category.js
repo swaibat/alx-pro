@@ -1,65 +1,36 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { View, StyleSheet } from 'react-native';
 import { useGetCategoriesQuery } from '@/api';
-import { useFocusEffect, useLocalSearchParams, useRouter } from 'expo-router';
-import { Layout, Menu, MenuGroup, MenuItem, Drawer, DrawerItem, Divider, useTheme } from '@ui-kitten/components';
-import { Appbar, Button } from 'react-native-paper';
-import { MagnifyingGlass, ShoppingCart } from 'phosphor-react-native';
+import { useLocalSearchParams, useRouter } from 'expo-router';
+import { Layout, Menu, MenuItem, Drawer, DrawerItem } from '@ui-kitten/components';
+import AppHeader from '@/components/_global/AppHeader';
+import categoryStateLayout from '../../components/categories/states/handleStates';
 
 
-// Skeleton Loader Component
-const SkeletonLoader = () => {
-    const getRandomWidth = () => `${Math.floor(Math.random() * 71) + 30}%`; // Generate random widths between 20% and 90%
-    const theme = useTheme()
-    return (
-        <View style={styles.skeletonContainer}>
-            {/* Simulate skeleton for the category items */}
-            <View style={styles.sidebar}>
-                {[...Array(15)].map((_, index) => (
-                    <View key={index} style={[styles.skeletonCategory, { backgroundColor: theme['color-basic-400'] }]} />
-                ))}
-            </View>
-            {/* Simulate skeleton for the subcategory items */}
-            <View style={styles.skeletonSubcategories}>
-                {[...Array(10)].map((_, index) => (
-                    <View key={index} style={[styles.skeletonSubcategory, { backgroundColor: theme['color-basic-400'], width: getRandomWidth() }]} />
-                ))}
-            </View>
-        </View>
-    );
-};
-const CategorySreen = () => {
+const CategoryScreen = () => {
     const [expandedCategory, setExpandedCategory] = useState(null);
-    const [expandedSubcategory, setExpandedSubcategory] = useState(null);
     const { data, isLoading, error, refetch } = useGetCategoriesQuery();
-    const params = useLocalSearchParams()
+    const params = useLocalSearchParams();
     const [selectedIndex, setSelectedIndex] = useState({ row: 0 });
     const router = useRouter();
-    const theme = useTheme()
 
-    useEffect(()=>{
+    useEffect(() => {
         if (params?.index) {
-            setSelectedIndex({ row: parseInt(params?.index) })
-            console.log('===',params?.index)
+            setSelectedIndex({ row: parseInt(params.index) });
         }
         if (params?.category) {
             setExpandedCategory(params.category);
-        } else if (data?.data && data.data.length > 0) {
-            // Set the first category as the default expanded category
+        } else if (data?.data?.length > 0) {
             setExpandedCategory(data.data[0].id);
         }
-    },[params?.index])
-
+    }, [params, data]);
 
     const toggleCategory = (categoryId) => {
         setExpandedCategory((prev) => (prev === categoryId ? null : categoryId));
-        setExpandedSubcategory(null); // Reset subcategory state when changing categories
     };
 
     const renderSubcategories = (category) => {
-        if (!category || !category.children) return null;
-
+        if (!category?.children) return null;
         return category.children.map((subcategory) => (
             <MenuItem
                 title={subcategory.name}
@@ -69,32 +40,15 @@ const CategorySreen = () => {
         ));
     };
 
+    const stateLayout = categoryStateLayout({ data, isLoading, error, refetch })
+
     return (
         <>
-            <Appbar.Header  style={{ backgroundColor: "white", borderBottomWidth: 1, borderBottomColor: 'gainsboro' }}>
-                <Appbar.BackAction onPress={() => router.back()} />
-                <Appbar.Content color={theme['color-basic-800']} title={<Text style={{ color: theme['color-basic-800'], fontSize: 18 }}>Categories</Text>} />
-                <Appbar.Action
-                    icon={({ color }) => (
-                        <View style={styles.iconContainer}>
-                            <MagnifyingGlass size={24} color={color} />
-                        </View>
-                    )}
-                    onPress={() => router.push('search')}
-                />
-
-            </Appbar.Header>
-            {error ? (
-                <View style={styles.errorContainer}>
-                    <Text style={styles.errorText}>Error fetching categories. Please try again.</Text>
-                    <Button mode="contained" onPress={refetch} >Retry</Button>
-                </View>
-            ) : isLoading ? (
-                <SkeletonLoader />
-            ) : (
-                <View style={styles.container}>
-                    <Layout style={styles.sidebar}>
-                        {data?.data && (
+            <AppHeader title="Categories" />
+            <View style={styles.container}>
+                {stateLayout ||
+                    <>
+                        <Layout style={styles.sidebar}>
                             <Drawer
                                 selectedIndex={selectedIndex}
                                 onSelect={(index) => setSelectedIndex(index)}
@@ -108,18 +62,18 @@ const CategorySreen = () => {
                                     />
                                 ))}
                             </Drawer>
-                        )}
-                    </Layout>
-                    <Menu style={styles.subcategoryView}>
-                        {expandedCategory && renderSubcategories(data.data.find((category) => category.id === expandedCategory))}
-                    </Menu>
-                </View>
-            )}
+                        </Layout>
+                        <Menu style={styles.subcategoryView}>
+                            {expandedCategory && renderSubcategories(data.data.find((category) => category.id === expandedCategory))}
+                        </Menu>
+                    </>
+                }
+            </View>
         </>
     );
 };
 
-// Styles
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -141,37 +95,10 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         padding: 10,
     },
-    // Skeleton Loader Styles
-    skeletonContainer: {
-        flexDirection: 'row',
+    fullScreen: {
         flex: 1,
-    },
-    skeletonCategory: {
-        width: '100%',
-        height: 40,
-        marginBottom: 10,
-        borderRadius: 5,
-    },
-    skeletonSubcategories: {
-        flex: 1,
-        padding: 10,
-        backgroundColor: '#fff',
-    },
-    skeletonSubcategory: {
-        height: 20,
-        marginBottom: 10,
-        borderRadius: 5,
-    },
-    errorContainer: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    errorText: {
-        fontSize: 16,
-        color: 'red',
-        marginBottom: 10,
+        backgroundColor: 'white',
     },
 });
 
-export default CategorySreen;
+export default CategoryScreen;
