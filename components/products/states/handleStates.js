@@ -6,7 +6,7 @@ import EmptyScreen from '@/components/products/states/Empty';
 const productsStateLayout = ({ isLoading, data, error, refetch }) => {
     if (error) {
         return <ErrorScreen refetch={refetch} />;
-    } else if (!isLoading) {
+    } else if (isLoading) {
         return <SkeletonLoader />;
     } else if (data?.data?.docs?.length === 0) {
         return <EmptyScreen />;
