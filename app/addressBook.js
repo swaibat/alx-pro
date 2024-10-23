@@ -36,7 +36,7 @@ const AddressComponent = () => {
   const [addresses, setAddresses] = useState([]);
   const [selectedMainAddressId, setSelectedMainAddressId] = useState(null);
   const [isModalVisible, setModalVisible] = useState(false);
-  const [selectedAddress, setSelectedAddress] = useState(null); // Determines whether we're in update mode or not
+  const [selectedAddress, setSelectedAddress] = useState(null);
 
   const loadUserData = async () => {
     try {

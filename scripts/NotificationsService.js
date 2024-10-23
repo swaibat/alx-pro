@@ -64,39 +64,35 @@ export async function registerForPushNotificationsAsync() {
   }
 }
 
-// Main hook to initialize notifications and get the push token
 export function usePushNotifications() {
   const [expoPushToken, setExpoPushToken] = useState('');
   const notificationListener = useRef();
   const router = useRouter()
   const route = useRouteInfo()
   const responseListener = useRef();
-  const notificationTriggeredRef = useRef(false);  // Prevent infinite notification triggering
+  const notificationTriggeredRef = useRef(false);
 
   useEffect(() => {
-    // Initialize push notifications and set up listeners
     const initPushNotifications = async () => {
       const storedToken = await getStoredExpoPushToken();
       const newToken = await registerForPushNotificationsAsync();
       if (storedToken) {
-        setExpoPushToken(storedToken);  // Use stored token if available
+        setExpoPushToken(storedToken);
       } else {
-        if (newToken) setExpoPushToken(newToken);  // Register and save new token
+        if (newToken) setExpoPushToken(newToken);
       }
     };
 
     initPushNotifications();
 
-    // Add listeners for notifications
     notificationListener.current = Notifications.addNotificationReceivedListener(async (notification) => {
-      // Prevent re-triggering the same notification multiple times
       if (!notificationTriggeredRef.current) {
-        notificationTriggeredRef.current = true;  // Mark as triggered
+        notificationTriggeredRef.current = true;
         if (route.pathname === '/processing') {
           if (notification.request.content?.data?.type === 'SUCCESS') {
-            router.push('/orderSuccess'); // Navigate to order success page
+            router.push('/orderSuccess');
           } else if (notification.request.content?.data?.type === 'FAILED') {
-            router.push('/paymentFailed'); // Navigate to order failed page
+            router.push('/paymentFailed');
           } else {
             console.log('Unhandled notification type:', data?.type);
           }
@@ -114,8 +110,8 @@ export function usePushNotifications() {
           });
         }
         setTimeout(() => {
-          notificationTriggeredRef.current = false;  // Allow new notifications
-        }, 1000);  // Adjust the timeout as needed
+          notificationTriggeredRef.current = false;
+        }, 1000);
       }
     });
 
@@ -124,7 +120,6 @@ export function usePushNotifications() {
     });
 
     return () => {
-      // Clean up listeners on unmount
       if (notificationListener.current) {
         Notifications.removeNotificationSubscription(notificationListener.current);
       }

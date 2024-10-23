@@ -3,6 +3,7 @@ import { StyleSheet, SafeAreaView } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 import AdsList from '@/components/products/AdsList';
 import AppHeader from '@/components/_global/AppHeader';
+import { Layout } from '@ui-kitten/components';
 
 
 const Ads = () => {
@@ -11,9 +12,9 @@ const Ads = () => {
     return (
         <>
             <AppHeader title={category} />
-            <SafeAreaView style={styles.safeArea}>
+            <Layout style={styles.safeArea}>
                 <AdsList />
-            </SafeAreaView>
+            </Layout>
         </>
     );
 };

@@ -19,7 +19,6 @@ const styles = StyleSheet.create({
   content: {
     justifyContent: 'center',
     alignItems: 'center',
-    flex: 1,
     width: '100%',
     height: '100%',
     marginTop:'auto'

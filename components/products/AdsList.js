@@ -24,11 +24,11 @@ const AdsList = () => {
     return (
         <SafeAreaView style={styles.safeArea}>
             <Layout style={styles.container}>
-                <ScrollView contentContainerStyle={styles.productsContainer}>
-                    {stateLayout || products.map((product) => (
+                {stateLayout || <ScrollView contentContainerStyle={styles.productsContainer}>
+                    { products.map((product) => (
                         <AdCard key={product._id} product={product} />
                     ))}
-                </ScrollView>
+                </ScrollView>}
             </Layout>
         </SafeAreaView>
     );
@@ -41,6 +41,7 @@ const styles = StyleSheet.create({
     },
     container: {
         flex: 1,
+        
         backgroundColor: 'white',
         padding: 10,
     },

@@ -4,32 +4,18 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { EXPO_PUSH_TOKEN_STORAGE_KEY, getDeviceId } from '@/scripts/NotificationsService';
 
 export const customMiddleware = (api) => (next) => async (action) => {
-
-  // console.log('===========', action.type);
-
   if (action.type.endsWith('rejected')) {
     const errorMessage = action.error.message;
     console.log(errorMessage);
   }
-  console.log('===========',action.meta?.baseQueryMeta.response.headers.map, action.meta?.baseQueryMeta.response.headers.map.get('access_token'),);
-  // if (action.type === api.util.actions.requestSuccess.type) {
-  //   // Extract cookies from response headers
-  //   const cookies = action.payload.response.headers.get('access_token')
-  //   if (cookies) {
-  //     // Save cookies to AsyncStorage
-  //     console.log('===========', cookies);
-  //     await AsyncStorage.setItem('access_token', cookies)
-  //   }
-  // }
   return next(action)
 }
 
 export const api = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({
-    baseUrl: 'https://alx-xkrn.onrender.com/api/v1/',
+    baseUrl: 'https://alx.up.railway.app/api/v1/',
     prepareHeaders: async (headers, { getState }) => {
-      // Retrieve cookies from AsyncStorage
       const storedCookies = await AsyncStorage.getItem('@user')
       const token = await AsyncStorage.getItem(EXPO_PUSH_TOKEN_STORAGE_KEY);
       const deviceId = getDeviceId();
@@ -43,7 +29,7 @@ export const api = createApi({
       return headers
     },
   }),
-  // enhanceMiddleware: customMiddleware,
+
   endpoints: (builder) => ({
     getProductFilters: builder.query({
       query: () => 'products/filters/all',
@@ -60,13 +46,11 @@ export const api = createApi({
     getCategories: builder.query({
       query: () => ({
         url: `/category`,
-        // credentials: 'include',
       }),
     }),
     getProduct: builder.query({
       query: (productId) => ({
         url: `/products/${productId}`,
-        // credentials: 'include',
       }),
     }),
     getViewedProducts: builder.query({
@@ -109,7 +93,6 @@ export const api = createApi({
         url: `products/${id}`,
         method: 'PUT',
         body: data,
-        // credentials: 'include',
       }),
     }),
     login: builder.mutation({

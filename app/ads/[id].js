@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import { Image, StyleSheet, View, TouchableOpacity, ScrollView } from 'react-native';
-import { Layout, Text, ViewPager, Button } from '@ui-kitten/components';
-import { useGetProductQuery } from '../../api';
+import { Layout, Text, ViewPager } from '@ui-kitten/components';
+import { useGetProductQuery } from '@/api';
 import { useDispatch, useSelector } from 'react-redux';
-import { addToCart } from '../../store/cartSlice';
+import { addToCart } from '@/store/cartSlice';
 import { ShoppingCart, Star, Check } from 'phosphor-react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { Snackbar, Appbar } from 'react-native-paper'; // Import Appbar from React Native Paper
-import ProductDetailsSkeleton from '../../components/loading/ProductDetailsSkeleton';
+import { Snackbar, Appbar, Button } from 'react-native-paper';
+import ProductDetailsSkeleton from '@/components/loading/ProductDetailsSkeleton';
+import RelatedProducts from '@/components/products/RelatedProducts';
 
 const ProductDetailsScreen = () => {
   const { id } = useLocalSearchParams();
@@ -21,14 +22,14 @@ const ProductDetailsScreen = () => {
   });
 
   const product = data?.data;
-  const images = product?.files.length ? product?.files.map((file) => ({ uri: file.url })) : [require('../../assets/placeholder.png'), require('../../assets/placeholder.png')];
+  const images = product?.files.length ? product?.files.map((file) => ({ uri: file.url })) : [require('@/assets/placeholder.png'), require('../../assets/placeholder.png')];
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [selectedColor, setSelectedColor] = useState({});
   const [selectedSize, setSelectedSize] = useState(null);
-  const [showMore, setShowMore] = useState(false); // State for toggling 'see more' description
-  const [visible, setVisible] = useState(false); // State for managing Snackbar visibility
+  const [showMore, setShowMore] = useState(false);
+  const [visible, setVisible] = useState(false);
 
-  // Function to hide the Snackbar
+
   const onDismissSnackBar = () => setVisible(false);
   const handleAddToCart = () => {
     const cartItem = {
@@ -44,7 +45,7 @@ const ProductDetailsScreen = () => {
     };
 
     dispatch(addToCart(cartItem));
-    setVisible(true); // Show the Snackbar after adding to cart
+    setVisible(true);
   };
 
   const CartIconWithBadge = () => (
@@ -62,7 +63,6 @@ const ProductDetailsScreen = () => {
 
   return (
     <>
-      {/* Paper Appbar for Top Navigation */}
       <Appbar.Header style={{ backgroundColor: 'white' }}>
         <Appbar.BackAction onPress={() => router.back()} />
         <Appbar.Content title="Product Details" />
@@ -73,7 +73,6 @@ const ProductDetailsScreen = () => {
 
         <ScrollView style={{ backgroundColor: 'white' }}>
           <Layout style={styles.content}>
-            {/* Image ViewPager */}
             <ViewPager
               selectedIndex={selectedIndex}
               onSelect={(index) => setSelectedIndex(index)}
@@ -86,7 +85,6 @@ const ProductDetailsScreen = () => {
               ))}
             </ViewPager>
 
-            {/* Dots Indicator */}
             <View style={styles.dotsContainer}>
               {images.map((_, index) => (
                 <View
@@ -100,7 +98,6 @@ const ProductDetailsScreen = () => {
             </View>
 
             <Layout style={{ padding: 17 }}>
-              {/* Product Info */}
               <View style={styles.infoCard}>
                 <View style={{ flexGrow: 1 }}>
                   <Text category="h6" style={styles.productTitle}>
@@ -175,6 +172,7 @@ const ProductDetailsScreen = () => {
               )}
             </Layout>
           </Layout>
+          <RelatedProducts productId={id} />
         </ScrollView>
 
         <Layout style={styles.bottomTabsContainer} level="1">
@@ -186,6 +184,7 @@ const ProductDetailsScreen = () => {
           </View>
           <Button
             style={styles.tabButton}
+            mode="contained"
             onPress={handleAddToCart}
             accessoryLeft={() => <ShoppingCart size={20} weight="bold" color="white" />}
           >
@@ -197,14 +196,14 @@ const ProductDetailsScreen = () => {
       <Snackbar
         visible={visible}
         onDismiss={onDismissSnackBar}
-        duration={3000} // Auto dismiss after 3 seconds
+        duration={3000}
         action={{
-          label: 'View Cart', // Label for the button
+          label: 'View Cart',
           onPress: () => {
-            router.push('/cart'); // Navigate to the cart screen
+            router.push('/cart');
           },
         }}
-        style={styles.snackbar} // Apply custom style here
+        style={styles.snackbar}
       >
         Product added to cart!
       </Snackbar>
@@ -216,8 +215,8 @@ const ProductDetailsScreen = () => {
 const styles = StyleSheet.create({
   viewPager: {
     height: 300,
-    padding: 15,
-    width: '100%'
+    // padding: 15,
+    // width: '80%'
   },
   imageContainer: {
     justifyContent: 'center',
@@ -280,12 +279,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    padding: 16,
+    padding: 15,
     borderTopWidth: 1,
     borderColor: 'gainsboro',
   },
   price: {
-    marginTop: 8,
     color: '#d32f2f',
   },
   tabButton: {
@@ -432,8 +430,6 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    // paddingVertical: 5,
-    // paddingHorizontal: 7,
     borderBottomWidth: 1,
     borderBottomColor: '#eee',
   },
@@ -454,12 +450,39 @@ const styles = StyleSheet.create({
     fontSize: 14,
     textAlign: 'left',
   },
+  suggestionSection: {
+    paddingHorizontal: 16,
+    marginTop: 20,
+  },
+  suggestionTitle: {
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  productCard: {
+    width: 120,
+    marginRight: 10,
+    backgroundColor: 'white',
+    borderRadius: 8,
+    padding: 10,
+    elevation: 2,
+  },
+  relatedProductImage: {
+    width: '100%',
+    height: 100,
+    borderRadius: 8,
+  },
+  productCardTitle: {
+    marginTop: 5,
+  },
+  productCardPrice: {
+    marginTop: 5,
+    fontWeight: 'bold',
+  },
+  viewMoreButton: {
+    marginTop: 10,
+  },
   snackbar: {
-    backgroundColor: 'green',
-    bottom: 75,
-    // margin:'auto'
-    // flex:1,
-    // position: 'absolute' // Change the background color to green
+    backgroundColor: '#3E4685',
   },
 });
 

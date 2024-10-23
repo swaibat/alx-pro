@@ -6,7 +6,7 @@ import Placeholder from '@/assets/Placeholder'
 const CategorySkeletonLoader = () => {
     const theme = useTheme()
     return (
-        <Layout style={styles.safeArea}>
+        <>
             {[...Array(6)].map((_, index) => (
                 <View style={styles.skeletonCard} key={index}>
                     <View style={[styles.skeletonImageContainer, { backgroundColor: theme['color-basic-400'] }]}>
@@ -17,7 +17,7 @@ const CategorySkeletonLoader = () => {
                     <View style={[styles.skeletonPrice, { backgroundColor: theme['color-basic-400'] }]} />
                 </View>
             ))}
-        </Layout>
+        </>
 
     );
 };
@@ -26,9 +26,6 @@ const styles = StyleSheet.create({
     safeArea: {
         flex: 1,
         backgroundColor: 'white',
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        justifyContent: 'space-between',
     },
     container: {
         flex: 1,

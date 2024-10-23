@@ -11,10 +11,6 @@ import { usePushNotifications } from '@/scripts/NotificationsService';
 const HomeScreen = () => {
   const theme = useTheme()
   const router = useRouter()
-  const { expoPushToken } = usePushNotifications();
-  console.log(expoPushToken)
-
-
 
   return (
     <Layout style={{ flex: 1 }}>
@@ -43,7 +39,7 @@ const HomeScreen = () => {
       <Layout style={{ borderBottomWidth: 10, marginTop: -50, backgroundColor: 'transparent', zIndex: 100, padding: 15, borderColor: theme['color-basic-400'] }}>
         <View style={{ marginVertical: 8 }}>
           <ImageBackground
-            source={require('../../assets/images/prom.png')}
+            source={require('@/assets/images/prom.png')}
             style={{ height: 140, justifyContent: 'center' }}
             imageStyle={{ borderRadius: 8 }}
           >
