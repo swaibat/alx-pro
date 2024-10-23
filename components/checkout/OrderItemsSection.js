@@ -45,7 +45,13 @@ const OrderItems = ({ cartItems }) => {
                 {item.description}
               </Text>
               <Text appearance="hint">{`Qty: ${item.quantity}`}</Text>
-              <Text category="s1" style={{ ...styles.productPrice }}>
+              <Text
+                category="s1"
+                style={{
+                  ...styles.productPrice,
+                  color: theme['color-primary-default'],
+                }}
+              >
                 UGX {item.price.toLocaleString()}
               </Text>
             </View>

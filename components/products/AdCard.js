@@ -31,10 +31,13 @@ const AdCard = ({ product }) => {
           style={styles.productImage}
         />
         <TouchableOpacity
-          style={styles.addToCartButton}
+          style={[
+            styles.addToCartButton,
+            { borderColor: theme['color-basic-600'] },
+          ]}
           onPress={handleAddToCart}
         >
-          <ShoppingCart size={20} color="white" weight="bold" />
+          <ShoppingCart size={16} color={theme['color-basic-600']} />
         </TouchableOpacity>
       </View>
       <Text style={styles.productTitle} numberOfLines={1} ellipsizeMode="tail">
@@ -80,9 +83,10 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 10,
     right: 10,
-    backgroundColor: '#FF5656',
-    padding: 8,
-    borderRadius: 50,
+    // backgroundColor: '#FF5656',
+    borderWidth: 1,
+    padding: 5,
+    borderRadius: 10,
   },
   productTitle: {
     fontSize: 15,

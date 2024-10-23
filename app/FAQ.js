@@ -9,6 +9,7 @@ import {
   Text,
 } from '@ui-kitten/components'
 import { CaretDown } from 'phosphor-react-native'
+import AppHeader from '@/components/_global/AppHeader'
 
 const FAQScreen = () => {
   const [selectedTabIndex, setSelectedTabIndex] = React.useState(0)
@@ -39,6 +40,14 @@ const FAQScreen = () => {
           answer:
             'During checkout, enter the discount code in the designated box, and the discount will apply if valid.',
         },
+        {
+          question: 'Do you deliver outside Uganda?',
+          answer: 'No, we only deliver within Uganda.',
+        },
+        {
+          question: 'How can I contact customer support?',
+          answer: 'You can contact customer support at support@alx.ug or call 0200922167.',
+        },
       ],
     },
     {
@@ -53,6 +62,10 @@ const FAQScreen = () => {
           question: 'How do I reset my password?',
           answer:
             "Go to the login screen and tap 'Forgot Password' to receive instructions on resetting your password.",
+        },
+        {
+          question: 'How do I delete my account?',
+          answer: 'Please contact customer support to request account deletion.',
         },
       ],
     },
@@ -82,12 +95,16 @@ const FAQScreen = () => {
         {
           question: 'What payment methods are accepted?',
           answer:
-            'We accept credit/debit cards, PayPal, Apple Pay, Google Pay, and more.',
+            'We accept payments through Mobile Money and Credit Card only.',
         },
         {
           question: 'Is my payment information secure?',
           answer:
             'Yes, we use industry-standard encryption to ensure your payment information is secure.',
+        },
+        {
+          question: 'How long does it take for the payment to process?',
+          answer: 'Payments via Mobile Money are processed instantly, while Credit Card payments may take a few minutes.',
         },
       ],
     },
@@ -107,6 +124,8 @@ const FAQScreen = () => {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
+      <AppHeader title="FAQ" telephone={'0200922167'} />
+
       {/* Tabs */}
       <TabBar
         selectedIndex={selectedTabIndex}

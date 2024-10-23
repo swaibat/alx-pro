@@ -54,7 +54,7 @@ const CategoryScreen = () => {
 
   return (
     <>
-      <AppHeader title="Categories" />
+      <AppHeader title="Categories" headerStyle="light" />
       <View style={styles.container}>
         {stateLayout || (
           <>

@@ -48,7 +48,6 @@ const LoginScreen = () => {
     try {
       const response = await login({ phoneNumber, password }).unwrap()
       if (response.status === 200) {
-        console.log('response.data', response.data)
         await AsyncStorage.setItem('@user', JSON.stringify(response.data))
         router.push(ref || '/')
       } else {

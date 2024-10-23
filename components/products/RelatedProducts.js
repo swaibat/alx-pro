@@ -81,7 +81,7 @@ const RelatedProducts = ({ productId }) => {
   const { data, isLoading } = useGetRelatedProductsQuery(productId)
   const theme = useTheme()
 
-  if (!isLoading) {
+  if (isLoading) {
     return (
       <View style={{ paddingHorizontal: 15 }}>
         <Text style={styles.heading}>You may also like</Text>

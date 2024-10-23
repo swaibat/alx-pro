@@ -16,7 +16,10 @@ const ShippingOptions = ({ theme }) => (
           <Text appearance="hint" category="c2" style={{ marginVertical: 3 }}>
             Estimated arrival: 5 hours
           </Text>
-          <Text category="h6" style={{ color: theme.colors.primary }}>
+          <Text
+            category="s1"
+            style={{ color: theme.colors.primary, fontWeight: 'bold' }}
+          >
             UGX 10,000
           </Text>
         </View>
@@ -33,7 +36,7 @@ const styles = StyleSheet.create({
     borderColor: 'rgb(228, 233, 242)',
     borderRadius: 5,
   },
-  optionDetails: { marginLeft: 10 },
+  optionDetails: { marginLeft: 20 },
 })
 
 export default ShippingOptions

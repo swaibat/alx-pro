@@ -4,8 +4,8 @@ import { Svg, Path } from 'react-native-svg'
 const DeliveryLogo = () => {
   return (
     <Svg
-      width="60"
-      height="60"
+      width="70"
+      height="70"
       viewBox="0 0 530 542"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"

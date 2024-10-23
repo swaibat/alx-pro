@@ -1,12 +1,12 @@
 import React from 'react'
 import { StyleSheet, View, TouchableOpacity, StatusBar } from 'react-native'
 import { Text, Input } from '@ui-kitten/components'
-import { ShoppingCart, MagnifyingGlass, X } from 'phosphor-react-native'
+import { ShoppingCart, MagnifyingGlass, X, Phone } from 'phosphor-react-native'
 import { useRouter } from 'expo-router'
 import { Appbar } from 'react-native-paper'
 import { useSelector } from 'react-redux'
 
-const AppHeader = ({ name, title, headerStyle }) => {
+const AppHeader = ({ name, title, headerStyle, telephone }) => {
   const router = useRouter()
   const cartItems = useSelector(state => state.cart.items)
   const cartCount = cartItems.length
@@ -27,6 +27,9 @@ const AppHeader = ({ name, title, headerStyle }) => {
     </TouchableOpacity>
   )
 
+  const callSupport = () => {
+    // Add logic for calling support
+  }
   return (
     <>
       <StatusBar
@@ -35,14 +38,47 @@ const AppHeader = ({ name, title, headerStyle }) => {
       <Appbar.Header
         style={[
           styles.header,
-          { backgroundColor: headerStyle === 'dark' ? '#003449' : 'white' },
+          {
+            backgroundColor: headerStyle === 'dark' ? '#003449' : 'white',
+            paddingRight: 15,
+            elevation: 4,
+          },
         ]}
       >
         <Appbar.BackAction
           onPress={() => router.back()}
           color={headerStyle === 'dark' ? 'white' : 'black'}
         />
-        {name ? (
+        <Appbar.Content
+          title={
+            <Text
+              style={{
+                color: headerStyle === 'dark' ? 'white' : 'black',
+                fontSize: 18,
+              }}
+            >
+              {title}
+            </Text>
+          }
+        />
+        {telephone && (
+          <View style={styles.contactContainer}>
+            <Phone
+              size={24}
+              color={headerStyle === 'dark' ? 'white' : 'black'}
+              onPress={callSupport}
+            />
+            <Text
+              style={[
+                styles.contactText,
+                { color: headerStyle === 'dark' ? 'white' : 'black' },
+              ]}
+            >
+              {telephone}
+            </Text>
+          </View>
+        )}
+        {!telephone && name ? (
           <Input
             placeholder="Search"
             style={{ flex: 1 }}
@@ -60,33 +96,24 @@ const AppHeader = ({ name, title, headerStyle }) => {
             value={name}
           />
         ) : (
-          <>
-            <Appbar.Content
-              title={
-                <Text
-                  style={{ color: headerStyle === 'dark' ? 'white' : 'black' }}
-                >
-                  {title}
-                </Text>
-              }
-            />
+          !telephone && (
             <Appbar.Action
               icon={({ color }) => (
-                <View style={styles.iconContainer}>
-                  <MagnifyingGlass
-                    size={24}
-                    color={headerStyle === 'dark' ? 'white' : color}
-                  />
-                </View>
+                <MagnifyingGlass
+                  size={24}
+                  color={headerStyle === 'dark' ? 'white' : color}
+                />
               )}
               onPress={() => router.push('search')}
             />
-          </>
+          )
         )}
-        <Appbar.Action
-          icon={() => <CartIconWithBadge />}
-          onPress={() => router.push('cart')}
-        />
+        {!telephone && (
+          <Appbar.Action
+            icon={() => <CartIconWithBadge />}
+            onPress={() => router.push('cart')}
+          />
+        )}
       </Appbar.Header>
     </>
   )
@@ -114,6 +141,15 @@ const styles = StyleSheet.create({
   header: {
     borderBottomWidth: 1,
     borderBottomColor: 'gainsboro',
+  },
+  contactContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginLeft: 15,
+  },
+  contactText: {
+    marginLeft: 8,
+    fontSize: 16,
   },
 })
 

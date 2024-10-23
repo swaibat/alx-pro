@@ -5,16 +5,15 @@ import {
   Image,
   StyleSheet,
   TouchableOpacity,
-  Linking,
-  StatusBar,
 } from 'react-native'
-import { Layout, Text } from '@ui-kitten/components'
-import { Backspace, Phone } from 'phosphor-react-native'
+import { Layout, Text, useTheme } from '@ui-kitten/components'
+import { Backspace, Minus, Plus } from 'phosphor-react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { removeFromCart, updateItemQuantity } from '@/store/cartSlice'
 import useLogin from '@/hooks/useLogin'
 import { useRouter } from 'expo-router'
-import { Appbar, useTheme, Button } from 'react-native-paper'
+import { Button } from 'react-native-paper'
+import AppHeader from '../../components/_global/AppHeader'
 
 const CartScreen = () => {
   const dispatch = useDispatch()
@@ -85,24 +84,36 @@ const CartScreen = () => {
           >
             <Text
               category="s1"
-              style={[styles.price, { color: theme.colors.primary }]}
+              style={[styles.price, { color: theme['color-primary-600'] }]}
             >
               UGX {item.price.toLocaleString()}
             </Text>
-            <View style={styles.quantityContainer}>
-              <Button
-                icon={'minus'}
-                compact={true}
-                mode="outlined"
-                onPress={() => handleQuantityChange(item, item.quantity - 1)} // Decrease quantity
-              />
+            <View style={{ flexDirection: 'row' }}>
+              <TouchableOpacity
+                style={[
+                  styles.quantityButton,
+                  {
+                    backgroundColor: theme['color-basic-400'],
+                    borderColor: theme['color-basic-600'],
+                  },
+                ]}
+                onPress={() => handleQuantityChange(item, item.quantity - 1)}
+              >
+                <Minus size={12} color={theme['color-basic-700']} />
+              </TouchableOpacity>
               <Text style={styles.quantity}>{item.quantity || 1}</Text>
-              <Button
-                mode="outlined"
-                icon={'plus'}
-                compact={true}
-                onPress={() => handleQuantityChange(item, item.quantity + 1)} // Increase quantity
-              />
+              <TouchableOpacity
+                style={[
+                  styles.quantityButton,
+                  {
+                    backgroundColor: theme['color-basic-400'],
+                    borderColor: theme['color-basic-600'],
+                  },
+                ]}
+                onPress={() => handleQuantityChange(item, item.quantity + 1)}
+              >
+                <Plus size={12} color={theme['color-basic-700']} />
+              </TouchableOpacity>
             </View>
           </View>
         </View>
@@ -125,28 +136,14 @@ const CartScreen = () => {
     </View>
   )
 
-  const callSupport = () => {
-    const phoneNumber = 'tel:0200922167'
-    Linking.openURL(phoneNumber).catch(err =>
-      console.error('Error calling support:', err)
-    )
-  }
-
   return (
     <>
-      <StatusBar barStyle={'dark-content'} />
       <Layout style={styles.container}>
-        <Appbar.Header style={{ paddingRight: 15, elevation: 4 }}>
-          <Appbar.BackAction onPress={() => router.back()} />
-          <Appbar.Content
-            title={<Text style={{ fontSize: 18 }}>My Cart</Text>}
-          />
-          <View style={styles.contactContainer}>
-            <Phone size={24} onPress={() => callSupport()} />
-            <Text style={styles.contactText}>0200922167</Text>
-          </View>
-        </Appbar.Header>
-
+        <AppHeader
+          title={'My Cart'}
+          headerStyle="dark"
+          telephone={'0200922167'}
+        />
         {cartItems.length === 0 ? (
           renderEmptyCartMessage()
         ) : (
@@ -157,7 +154,10 @@ const CartScreen = () => {
             <Layout style={styles.footer}>
               <View>
                 <Text category="s1">Total</Text>
-                <Text category="h6" style={{ color: theme.colors.primary }}>
+                <Text
+                  category="h6"
+                  style={{ color: theme['color-primary-600'] }}
+                >
                   UGX {getTotalPrice().toLocaleString()}
                 </Text>
               </View>
@@ -222,8 +222,9 @@ const styles = StyleSheet.create({
     marginTop: 1,
   },
   quantityButton: {
-    width: 20,
+    width: 25,
     borderRadius: 3,
+    borderWidth: 1,
     justifyContent: 'center',
     alignItems: 'center',
     height: 25,

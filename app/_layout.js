@@ -39,7 +39,7 @@ export default function RootLayout() {
     myOwnProperty: true,
     colors: {
       ...DefaultTheme.colors,
-      primary: '#FF3333',
+      primary: '#FF3300',
       background: '#FF3333',
       surface: '#FFFFFF',
     },
@@ -50,7 +50,7 @@ export default function RootLayout() {
     'color-primary-200': '#FFD6D6',
     'color-primary-300': '#FFA3A3',
     'color-primary-400': '#FF6666',
-    'color-primary-500': '#FF3333',
+    'color-primary-500': '#FF3300',
     'color-primary-600': '#DB2727',
     'color-primary-700': '#B81A1A',
     'color-primary-800': '#941010',

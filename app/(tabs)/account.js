@@ -1,19 +1,26 @@
 import React, { useState } from 'react'
 import { Layout, Text, useTheme, Modal } from '@ui-kitten/components'
 import { ScrollView, View, StyleSheet, StatusBar } from 'react-native'
-import { Clock, House, Headset, User, Power } from 'phosphor-react-native'
+import {
+  Clock,
+  House,
+  Headset,
+  Power,
+  SealQuestion,
+  FileText,
+  Package,
+  LockOpen,
+} from 'phosphor-react-native'
 import { Link, useFocusEffect, useRouter } from 'expo-router'
-import Timer from '@/assets/icons/Timer'
-import Transit from '@/assets/icons/Transit'
 import { Appbar, Button } from 'react-native-paper'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import Orders from '@/assets/icons/Orders'
 import { TouchableOpacity } from 'react-native'
 
 export default function Component() {
   const router = useRouter()
   const theme = useTheme()
   const [userName, setUserName] = useState('')
+  const [phoneNumber, setPhoneNumber] = useState('')
   const [modalVisible, setModalVisible] = useState(false)
 
   const fetchUserData = async () => {
@@ -23,6 +30,7 @@ export default function Component() {
         const userData = JSON.parse(storedUser)
         if (userData.user) {
           setUserName(userData.user.name)
+          setPhoneNumber(userData.user.phoneNumber)
         } else {
           router.push('login')
         }
@@ -57,8 +65,8 @@ export default function Component() {
     },
     headerContainer: {
       alignItems: 'center',
-      backgroundColor: '#111b2d',
-      height: 50,
+      backgroundColor: '#003449',
+      height: 20,
       borderBottomColor: theme['color-primary-500'],
     },
     avatar: {
@@ -156,7 +164,7 @@ export default function Component() {
     <>
       <StatusBar barStyle="light-content" />
       <Layout style={styles.container}>
-        <Appbar.Header style={{ paddingRight: 15, backgroundColor: '#111b2d' }}>
+        <Appbar.Header style={{ paddingRight: 15, backgroundColor: '#003449' }}>
           <Appbar.BackAction
             color={theme['color-basic-200']}
             onPress={() => router.back()}
@@ -179,57 +187,12 @@ export default function Component() {
               <Text style={styles.avatarText}>{avatarText}</Text>
             </View>
             <Text style={styles.userNameText}>{userName || 'Guest'}</Text>
+            <Text appearance="hint" style={{ textAlign: 'center' }}>
+              {phoneNumber || 'Guest'}
+            </Text>
           </View>
         </View>
 
-        <View style={styles.cardContainer}>
-          <Layout style={styles.sectionContainer}>
-            <Text category="h6" style={styles.sectionTitle}>
-              My Orders
-            </Text>
-            <Button
-              appearance="ghost"
-              onPress={() => router.push('orders')}
-              style={styles.viewAllButton}
-            >
-              View All
-            </Button>
-          </Layout>
-          <View style={styles.orderStatusContainer}>
-            <View style={styles.orderItem}>
-              <Orders
-                size={35}
-                primaryColor={theme['color-primary-default']}
-                color={theme['text-basic-color']}
-              />
-              <Text style={styles.orderText}>All Orders</Text>
-            </View>
-            <View style={styles.orderItem}>
-              <Timer
-                size={35}
-                primaryColor={theme['color-primary-default']}
-                color={theme['text-basic-color']}
-              />
-              <Text style={styles.orderText}>Awaiting Pay</Text>
-            </View>
-            <View style={styles.orderItem}>
-              <Transit
-                primaryColor={theme['color-primary-default']}
-                size={35}
-                color={theme['text-basic-color']}
-              />
-              <Text style={styles.orderText}>Processing</Text>
-            </View>
-            <View style={styles.orderItem}>
-              <Transit
-                primaryColor={theme['color-primary-default']}
-                size={35}
-                color={theme['text-basic-color']}
-              />
-              <Text style={styles.orderText}>in Transit</Text>
-            </View>
-          </View>
-        </View>
         <ScrollView>
           <View
             style={[
@@ -241,22 +204,28 @@ export default function Component() {
               },
             ]}
           >
-            <Link href={'/settings'}>
+            <Link href={'/orders'}>
               <View style={styles.optionItem}>
-                <User size={24} color={theme['text-basic-color']} />
-                <Text style={styles.optionText}>Profile Settings</Text>
+                <Package size={20} color={theme['text-basic-color']} />
+                <Text style={styles.optionText}>My Orders</Text>
               </View>
             </Link>
             <Link href={'/viewed'}>
               <View style={styles.optionItem}>
-                <Clock size={24} color={theme['text-basic-color']} />
+                <Clock size={20} color={theme['text-basic-color']} />
                 <Text style={styles.optionText}>Recently Viewed</Text>
               </View>
             </Link>
             <Link href={'/addressBook'}>
               <View style={styles.optionItem}>
-                <House size={24} color={theme['text-basic-color']} />
+                <House size={20} color={theme['text-basic-color']} />
                 <Text style={styles.optionText}>My Address</Text>
+              </View>
+            </Link>
+            <Link href={'/orders'}>
+              <View style={styles.optionItem}>
+                <LockOpen size={20} color={theme['text-basic-color']} />
+                <Text style={styles.optionText}>Change Password</Text>
               </View>
             </Link>
           </View>
@@ -273,20 +242,26 @@ export default function Component() {
           >
             <Link href={'/help'}>
               <View style={styles.optionItem}>
-                <Headset size={24} color={theme['text-basic-color']} />
+                <Headset size={20} color={theme['text-basic-color']} />
                 <Text style={styles.optionText}>Service Center</Text>
               </View>
             </Link>
-            <Link href={'/help'}>
+            <Link href={'/terms_of_service'}>
               <View style={styles.optionItem}>
-                <Headset size={24} color={theme['text-basic-color']} />
+                <FileText size={20} color={theme['text-basic-color']} />
                 <Text style={styles.optionText}>Terms of service</Text>
               </View>
             </Link>
-            <Link href={'/help'}>
+            <Link href={'/privacy_policy'}>
               <View style={styles.optionItem}>
-                <Headset size={24} color={theme['text-basic-color']} />
+                <FileText size={20} color={theme['text-basic-color']} />
                 <Text style={styles.optionText}>Privacy Policy</Text>
+              </View>
+            </Link>
+            <Link href={'/FAQ'}>
+              <View style={styles.optionItem}>
+                <SealQuestion size={20} color={theme['text-basic-color']} />
+                <Text style={styles.optionText}>FAQ</Text>
               </View>
             </Link>
           </View>
@@ -297,8 +272,15 @@ export default function Component() {
             ]}
             onPress={() => setModalVisible(true)}
           >
-            <Power size={24} color={theme['text-basic-color']} />
-            <Text style={styles.optionText}>Logout</Text>
+            <Power size={20} color={theme['color-primary-default']} />
+            <Text
+              style={[
+                styles.optionText,
+                { color: theme['color-primary-default'] },
+              ]}
+            >
+              Logout
+            </Text>
           </TouchableOpacity>
         </ScrollView>
       </Layout>
