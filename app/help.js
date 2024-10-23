@@ -8,27 +8,21 @@ import {
   Text,
   Card,
 } from '@ui-kitten/components'
-import {
-  WhatsappLogo,
-  Globe,
-  Phone,
-  MapPin,
-  Envelope,
-} from 'phosphor-react-native' // Import Envelope icon
+import { WhatsappLogo, Globe, Phone, Envelope } from 'phosphor-react-native'
 
 const HelpCenterScreen = () => {
   const data = [
     {
       title: 'WhatsApp',
-      meta: 'Chat with us on WhatsApp', // Meta text for WhatsApp
+      meta: 'Chat with us on WhatsApp',
       icon: () => <WhatsappLogo size={24} color="#25D366" />,
-      onPress: () => Linking.openURL('https://wa.me/256758307272'), // Opens WhatsApp chat
+      onPress: () => Linking.openURL('https://wa.me/256758307272'),
     },
     {
       title: 'Website',
-      meta: 'Visit our official website', // Meta text for Website
+      meta: 'Visit our official website',
       icon: () => <Globe size={24} color="#007bff" />,
-      onPress: () => Linking.openURL('https://alx.ug'), // Opens the website
+      onPress: () => Linking.openURL('https://alx.ug'),
     },
   ]
 
@@ -112,7 +106,6 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    // padding: 16,
   },
   listItem: {
     paddingVertical: 16,
@@ -145,14 +138,10 @@ const styles = StyleSheet.create({
     color: '#333',
   },
   contactItem: {
-    // flexDirection: 'row',
-    // alignItems: 'center',
-    // paddingVertical: 8,
-    justifyContent: 'space-between', // Space between phone and email
+    justifyContent: 'space-between',
   },
   contactInfo: {
     flexDirection: 'column',
-    // alignItems: 'center',
     flex: 1,
     marginVertical: 10,
   },

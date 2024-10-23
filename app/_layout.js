@@ -1,31 +1,27 @@
-import { DarkTheme, ThemeProvider } from '@react-navigation/native'
+import React from 'react'
 import { useFonts } from 'expo-font'
 import { Stack } from 'expo-router'
 import * as SplashScreen from 'expo-splash-screen'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect } from 'react'
 import {
   MD3LightTheme as DefaultTheme,
   PaperProvider,
 } from 'react-native-paper'
 import * as eva from '@eva-design/eva'
 import { Provider } from 'react-redux'
-import { store } from '../store'
-import { ApplicationProvider, TopNavigationAction } from '@ui-kitten/components'
+import { store } from '@/store'
+import { ApplicationProvider } from '@ui-kitten/components'
 import 'react-native-reanimated'
-import {
-  usePushNotifications,
-  sendPushNotification,
-} from '@/scripts/NotificationsService'
+import { usePushNotifications } from '@/scripts/NotificationsService'
 
-// Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync()
 
 export default function RootLayout() {
-  const { expoPushToken, notification } = usePushNotifications()
+  usePushNotifications()
 
   const [loaded] = useFonts({
-    SpaceMono: require('../assets/fonts/FontsFree-Net-SFProDisplay-Bold.ttf'),
-    digital7: require('../assets/fonts/digital_7/digital-7.ttf'),
+    SpaceMono: require('@/assets/fonts/FontsFree-Net-SFProDisplay-Bold.ttf'),
+    digital7: require('@/assets/fonts/digital_7/digital-7.ttf'),
   })
 
   useEffect(() => {
@@ -40,9 +36,7 @@ export default function RootLayout() {
 
   const theme = {
     ...DefaultTheme,
-    // Specify custom property
     myOwnProperty: true,
-    // Specify custom property in nested object
     colors: {
       ...DefaultTheme.colors,
       primary: '#FF3333',
@@ -56,7 +50,7 @@ export default function RootLayout() {
     'color-primary-200': '#FFD6D6',
     'color-primary-300': '#FFA3A3',
     'color-primary-400': '#FF6666',
-    'color-primary-500': '#FF3333', // Primary primary
+    'color-primary-500': '#FF3333',
     'color-primary-600': '#DB2727',
     'color-primary-700': '#B81A1A',
     'color-primary-800': '#941010',
@@ -72,8 +66,6 @@ export default function RootLayout() {
     'text-heading-1-font-family': 'SFPro',
     'text-heading-2-font-family': 'SFPro',
     'text-heading-3-font-family': 'SFPro',
-
-    // Override fonts for buttons or other components if needed
     'button-font-family': 'SFPro',
     'font-family': 'SFPro',
   }

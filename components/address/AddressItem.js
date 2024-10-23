@@ -7,7 +7,6 @@ import {
   Phone,
   Envelope,
   PencilSimple,
-  Trash,
 } from 'phosphor-react-native'
 import { Divider } from 'react-native-paper'
 import DeleteConfirmationModal from './DeleteConfirmationModal'

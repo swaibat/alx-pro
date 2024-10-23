@@ -13,7 +13,7 @@ import {
   useVerifyOtpMutation,
   useRegisterMutation,
 } from '@/api'
-import LoginIllustration from '../assets/LoginIllustration'
+import LoginIllustration from '@/assets/LoginIllustration'
 import { useLocalSearchParams, useRouter } from 'expo-router'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { Eye, EyeClosed } from 'phosphor-react-native' // Import Phosphor icons

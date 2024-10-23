@@ -1,19 +1,8 @@
 import React from 'react'
-import {
-  StyleSheet,
-  View,
-  ScrollView,
-  SafeAreaView,
-  TouchableOpacity,
-  Image,
-} from 'react-native'
-import { Layout, Text, useTheme } from '@ui-kitten/components'
+import { StyleSheet, ScrollView, SafeAreaView } from 'react-native'
+import { Layout } from '@ui-kitten/components'
 import { useGetProductsQuery } from '@/api'
-import { ShoppingCart, Star } from 'phosphor-react-native'
-import { useLocalSearchParams, useRouter } from 'expo-router'
-import { useDispatch } from 'react-redux'
-import { addToCart } from '@/store/cartSlice'
-import Placeholder from '@/assets/Placeholder'
+import { useLocalSearchParams } from 'expo-router'
 import productsStateLayout from './states/handleStates'
 import AdCard from './AdCard'
 
@@ -81,7 +70,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 10,
     right: 10,
-    backgroundColor: '#FF5656', // Adjust color as per your theme
+    backgroundColor: '#FF5656',
     padding: 8,
     borderRadius: 50,
   },
@@ -109,10 +98,7 @@ const styles = StyleSheet.create({
   productPrice: {
     fontSize: 14,
     fontWeight: 'bold',
-    // color: '#FF5656',
-    // marginVertical: 2,
   },
-  // Skeleton Loader Styles
 })
 
 export default AdsList

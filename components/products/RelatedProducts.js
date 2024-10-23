@@ -78,7 +78,7 @@ const LoadingGridCard = ({ theme }) => (
 )
 
 const RelatedProducts = ({ productId }) => {
-  const { data, isLoading, error } = useGetRelatedProductsQuery(productId)
+  const { data, isLoading } = useGetRelatedProductsQuery(productId)
   const theme = useTheme()
 
   if (!isLoading) {

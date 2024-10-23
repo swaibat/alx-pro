@@ -2,26 +2,17 @@ import React from 'react'
 import { SafeAreaView, StyleSheet, ScrollView } from 'react-native'
 import {
   Layout,
-  TopNavigation,
-  TopNavigationAction,
   Divider,
   Input,
   Tab,
   TabBar,
   Text,
 } from '@ui-kitten/components'
-import { ArrowLeft, CaretDown } from 'phosphor-react-native'
+import { CaretDown } from 'phosphor-react-native'
 
-const FAQScreen = ({ navigation }) => {
+const FAQScreen = () => {
   const [selectedTabIndex, setSelectedTabIndex] = React.useState(0)
   const [searchQuery, setSearchQuery] = React.useState('')
-
-  const BackAction = () => (
-    <TopNavigationAction
-      icon={() => <ArrowLeft size={24} />}
-      onPress={() => navigation.goBack()}
-    />
-  )
 
   const FAQItem = ({ question, answer }) => (
     <Layout style={styles.faqItem}>
@@ -34,7 +25,6 @@ const FAQScreen = ({ navigation }) => {
     </Layout>
   )
 
-  // Sample FAQ content based on e-commerce topics
   const faqContent = [
     {
       category: 'General',

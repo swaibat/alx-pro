@@ -22,12 +22,6 @@ export const activityTypeEnum = {
     color: '#FF9800',
     icon: <Clock size={18} color="#FF9800" />,
   },
-  PAYMENT_FAILED: {
-    type: 'PAYMENT_FAILED',
-    description: 'The order has been created.',
-    color: 'red',
-    icon: <WarningCircle size={18} color="red" />,
-  },
   'Payment Failed': {
     type: 'Payment Failed',
     description: 'The order has been created.',

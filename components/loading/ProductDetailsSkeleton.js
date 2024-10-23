@@ -1,21 +1,18 @@
 import React from 'react'
-import { Image, StyleSheet, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import { Layout, useTheme } from '@ui-kitten/components'
 
 const ProductDetailsSkeleton = () => {
-  const theme = useTheme() // Get the theme object from useTheme()
+  const theme = useTheme()
 
   return (
     <Layout style={styles.skeletonContainer}>
-      {/* Image Skeleton */}
       <View
         style={[
           styles.skeletonImage,
           { backgroundColor: theme['color-basic-400'] },
         ]}
       />
-
-      {/* Dots Indicator Skeleton */}
       <View style={styles.skeletonDotsContainer}>
         {[...Array(3)].map((_, index) => (
           <View
@@ -28,7 +25,6 @@ const ProductDetailsSkeleton = () => {
         ))}
       </View>
       <Layout style={{ flex: 1 }}>
-        {/* Info Skeleton */}
         <View style={styles.skeletonInfoContainer}>
           <View
             style={[
@@ -49,8 +45,6 @@ const ProductDetailsSkeleton = () => {
             ]}
           />
         </View>
-
-        {/* Description Skeleton */}
         <View
           style={[
             styles.skeletonDescription,
@@ -64,7 +58,6 @@ const ProductDetailsSkeleton = () => {
           ]}
         />
 
-        {/* Color and Size Skeleton */}
         <View
           style={[
             styles.skeletonColors,
@@ -90,7 +83,6 @@ const ProductDetailsSkeleton = () => {
           ]}
         />
       </Layout>
-      {/* Price and Button Skeleton */}
       <Layout style={[styles.bottomTabsContainer, { paddingHorizontal: 0 }]}>
         <View
           style={[

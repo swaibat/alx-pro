@@ -1,10 +1,8 @@
 import React from 'react'
 import { View, StyleSheet, Image } from 'react-native'
-import { Layout, Text, useTheme } from '@ui-kitten/components'
+import { Layout, Text } from '@ui-kitten/components'
 
 const EmptyCategoryScreen = () => {
-  const theme = useTheme()
-
   return (
     <Layout style={styles.container}>
       <View style={styles.content}>

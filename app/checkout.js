@@ -10,16 +10,16 @@ import { Appbar, Text, Button, useTheme } from 'react-native-paper'
 import { useSelector } from 'react-redux'
 import { router } from 'expo-router'
 import AsyncStorage from '@react-native-async-storage/async-storage' // Import AsyncStorage
-import ShippingAddress from '../components/checkout/AddressSection'
-import ShippingOptions from '../components/checkout/ShippingSection'
-import OrderItems from '../components/checkout/OrderItemsSection'
+import ShippingAddress from '@/components/checkout/AddressSection'
+import ShippingOptions from '@/components/checkout/ShippingSection'
+import OrderItems from '@/components/checkout/OrderItemsSection'
 import { Phone } from 'phosphor-react-native'
 import { useCreateOrderMutation } from '@/api'
 
 const CheckoutScreen = () => {
   const cartItems = useSelector(state => state.cart.items)
   const theme = useTheme()
-  const [createOrder, { isLoading, data }] = useCreateOrderMutation()
+  const [createOrder] = useCreateOrderMutation()
   const [payNowLoading, setPayNowLoading] = React.useState(false)
   const [userId, setUserId] = React.useState('')
   const [selectedAddressId, setSelectedAddressId] = React.useState('')

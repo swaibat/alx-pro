@@ -2,36 +2,17 @@ import React, { useState, useEffect } from 'react'
 import {
   SafeAreaView,
   FlatList,
-  ScrollView,
   TouchableOpacity,
   Image,
   ActivityIndicator,
   View,
   StatusBar,
 } from 'react-native'
-import {
-  Appbar,
-  Searchbar,
-  List,
-  Card,
-  Title,
-  Paragraph,
-  Button,
-  useTheme,
-} from 'react-native-paper'
+import { Appbar, List, Button, useTheme } from 'react-native-paper'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import {
-  Cross,
-  Dot,
-  LineSegment,
-  Link,
-  MagnifyingGlass,
-  Tilde,
-  XCircle,
-} from 'phosphor-react-native'
-import { useGetProductsQuery, useGetViewedProductsQuery } from '@/api' // Import the query hooks
+import { MagnifyingGlass, Tilde, XCircle } from 'phosphor-react-native'
+import { useGetProductsQuery } from '@/api'
 import { Input, Text } from '@ui-kitten/components'
-import { useNavigation } from '@react-navigation/native' // Assuming you're using React Navigation
 import { useRouter } from 'expo-router'
 
 const SearchScreen = () => {
@@ -39,7 +20,6 @@ const SearchScreen = () => {
   const [recentSearches, setRecentSearches] = useState([])
   const [showSuggestions, setShowSuggestions] = useState(false)
   const theme = useTheme()
-  const navigation = useNavigation() // Navigation hook
   const router = useRouter()
 
   const { data: productData, isLoading: productLoading } = useGetProductsQuery(
@@ -48,10 +28,6 @@ const SearchScreen = () => {
   )
 
   const searchSuggestions = productData?.data?.docs || []
-
-  const { data: recentlyViewedData, isLoading: recentlyViewedLoading } =
-    useGetViewedProductsQuery()
-  const recentlyViewedProducts = recentlyViewedData?.data?.docs || []
 
   useEffect(() => {
     const loadRecentSearches = async () => {
@@ -170,7 +146,6 @@ const SearchScreen = () => {
     />
   )
 
-  // Navigate to search results screen when the search button is pressed
   const handleSearchButton = () => {
     if (searchQuery.trim()) {
       router.push({ pathname: `/ads/list`, params: { name: searchQuery } })
@@ -227,7 +202,6 @@ const SearchScreen = () => {
       )}
 
       <View style={{ padding: 16 }}>
-        {/* Recent Searches Section */}
         <Text style={{ marginBottom: 10, fontWeight: 'bold', fontSize: 18 }}>
           Recent Searches
         </Text>

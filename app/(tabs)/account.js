@@ -1,17 +1,7 @@
-import React, { useEffect, useState } from 'react'
-import { Layout, Text, Divider, useTheme, Modal } from '@ui-kitten/components'
-import { ScrollView, View, StyleSheet, Image, StatusBar } from 'react-native'
-import {
-  Heart,
-  Clock,
-  House,
-  Headset,
-  User,
-  FileText,
-  Repeat,
-  Power,
-  Users,
-} from 'phosphor-react-native'
+import React, { useState } from 'react'
+import { Layout, Text, useTheme, Modal } from '@ui-kitten/components'
+import { ScrollView, View, StyleSheet, StatusBar } from 'react-native'
+import { Clock, House, Headset, User, Power } from 'phosphor-react-native'
 import { Link, useFocusEffect, useRouter } from 'expo-router'
 import Timer from '@/assets/icons/Timer'
 import Transit from '@/assets/icons/Transit'
@@ -69,13 +59,12 @@ export default function Component() {
       alignItems: 'center',
       backgroundColor: '#111b2d',
       height: 50,
-      // borderBottomWidth: 2,
       borderBottomColor: theme['color-primary-500'],
     },
     avatar: {
       width: 80,
       height: 80,
-      borderRadius: 40, // Circular avatar
+      borderRadius: 40,
       borderWidth: 2,
       backgroundColor: theme['color-basic-400'],
       borderColor: theme['color-basic-500'],
@@ -99,7 +88,6 @@ export default function Component() {
       backgroundColor: theme['background-basic-color-1'],
       borderRadius: 8,
       marginBottom: 10,
-      // padding: 15,
       shadowColor: theme['color-basic-transparent-300'],
     },
     sectionContainer: {
@@ -139,20 +127,20 @@ export default function Component() {
       color: theme['text-basic-color'],
     },
     modal: {
-      margin: 0, // Remove default margins
-      justifyContent: 'flex-end', // Align modal to the bottom
-      height: '100%', // Ensure the modal takes full height
+      margin: 0,
+      justifyContent: 'flex-end',
+      height: '100%',
       width: '100%',
     },
     backdrop: {
-      backgroundColor: 'rgba(0, 0, 0, 0.5)', // Backdrop color
+      backgroundColor: 'rgba(0, 0, 0, 0.5)',
     },
     modalContainer: {
       padding: 30,
-      borderTopLeftRadius: 16, // Optional: rounded corners for the container
-      borderTopRightRadius: 16, // Optional: rounded corners for the container
-      backgroundColor: 'white', // Background color of the modal content
-      maxHeight: 400, // Set a maximum height
+      borderTopLeftRadius: 16,
+      borderTopRightRadius: 16,
+      backgroundColor: 'white',
+      maxHeight: 400,
       width: '100%',
     },
     modalButton: {
@@ -162,7 +150,7 @@ export default function Component() {
     },
   })
 
-  const avatarText = userName ? userName.charAt(0).toUpperCase() : 'G' // Default to "G" if no username
+  const avatarText = userName ? userName.charAt(0).toUpperCase() : 'G'
 
   return (
     <>
@@ -301,12 +289,6 @@ export default function Component() {
                 <Text style={styles.optionText}>Privacy Policy</Text>
               </View>
             </Link>
-            {/* <Link href={'/help'}>
-            <View style={styles.optionItem}>
-              <Headset size={24} color={theme['text-basic-color']} />
-              <Text style={styles.optionText}>Refund Policy</Text>
-            </View>
-          </Link> */}
           </View>
           <TouchableOpacity
             style={[
@@ -321,11 +303,10 @@ export default function Component() {
         </ScrollView>
       </Layout>
 
-      {/* Logout Confirmation Modal */}
       <Modal
         visible={modalVisible}
-        style={styles.modal} // Use a style object for the modal
-        backdropStyle={styles.backdrop} // Apply styles to the backdrop
+        style={styles.modal}
+        backdropStyle={styles.backdrop}
         onBackdropPress={() => setModalVisible(false)}
       >
         <View style={styles.modalContainer}>

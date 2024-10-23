@@ -22,7 +22,6 @@ const SlideToConfirm = ({
   defaultColor = '#e2e8f0',
   defaultIconSize = 30,
   confirmedPercent = 0.8,
-  ballPadding = 0,
   disableOnConfirmed = false,
   disabled = false,
   sliderStyle = {

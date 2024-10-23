@@ -1,7 +1,7 @@
 import React from 'react'
-import { Svg, Rect, Path } from 'react-native-svg'
+import { Svg, Path } from 'react-native-svg'
 
-function Placeholder({ width, height }) {
+function Placeholder() {
   return (
     <Svg
       width="100%"

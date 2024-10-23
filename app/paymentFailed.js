@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, StyleSheet, StatusBar } from 'react-native'
-import { Text, Button, IconButton } from 'react-native-paper'
+import { Text, Button } from 'react-native-paper'
 import { useRouter } from 'expo-router'
 import { XCircle } from 'phosphor-react-native'
 

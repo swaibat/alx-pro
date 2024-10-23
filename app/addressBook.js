@@ -121,7 +121,7 @@ const AddressComponent = () => {
       setModalVisible(false)
       refetch()
     } catch (error) {
-      console.error('Error creating address:', createError)
+      console.error('Error creating address:', error, createError)
     }
   }
 
@@ -135,7 +135,7 @@ const AddressComponent = () => {
       setModalVisible(false)
       refetch()
     } catch (error) {
-      console.error('Error updating address:', updateError)
+      console.error('Error updating address:', error, updateError)
     }
   }
 

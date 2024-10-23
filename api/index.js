@@ -6,7 +6,7 @@ import {
   getDeviceId,
 } from '@/scripts/NotificationsService'
 
-export const customMiddleware = api => next => async action => {
+export const customMiddleware = () => next => async action => {
   if (action.type.endsWith('rejected')) {
     const errorMessage = action.error.message
     console.log(errorMessage)
@@ -18,7 +18,7 @@ export const api = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({
     baseUrl: 'https://alx.up.railway.app/api/v1/',
-    prepareHeaders: async (headers, { getState }) => {
+    prepareHeaders: async headers => {
       const storedCookies = await AsyncStorage.getItem('@user')
       const token = await AsyncStorage.getItem(EXPO_PUSH_TOKEN_STORAGE_KEY)
       const deviceId = getDeviceId()

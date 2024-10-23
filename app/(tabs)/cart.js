@@ -9,18 +9,12 @@ import {
   StatusBar,
 } from 'react-native'
 import { Layout, Text } from '@ui-kitten/components'
-import {
-  Minus,
-  Plus,
-  Backspace,
-  ShoppingCart,
-  Phone,
-} from 'phosphor-react-native' // Import Phone icon from Phosphor
+import { Backspace, Phone } from 'phosphor-react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { removeFromCart, updateItemQuantity } from '@/store/cartSlice'
 import useLogin from '@/hooks/useLogin'
 import { useRouter } from 'expo-router'
-import { Appbar, useTheme, Button } from 'react-native-paper' // Import Appbar from Native Paper
+import { Appbar, useTheme, Button } from 'react-native-paper'
 
 const CartScreen = () => {
   const dispatch = useDispatch()
@@ -28,10 +22,8 @@ const CartScreen = () => {
   const router = useRouter()
   const isLoggedIn = useLogin()
 
-  // Get cart items from Redux store
   const cartItems = useSelector(state => state.cart.items)
 
-  // Handle quantity changes for items in the cart
   const handleQuantityChange = (item, newQuantity) => {
     if (newQuantity > 0) {
       dispatch(updateItemQuantity({ id: item._id, quantity: newQuantity }))
@@ -40,12 +32,10 @@ const CartScreen = () => {
     }
   }
 
-  // Handle removing an item from the cart
   const handleRemoveItem = item => {
     dispatch(removeFromCart(item._id))
   }
 
-  // Calculate the total price of selected items
   const getTotalPrice = () => {
     return cartItems.reduce((total, item) => {
       return total + item.price * (item.quantity || 1)
@@ -102,7 +92,6 @@ const CartScreen = () => {
             <View style={styles.quantityContainer}>
               <Button
                 icon={'minus'}
-                // style={styles.quantityButton}
                 compact={true}
                 mode="outlined"
                 onPress={() => handleQuantityChange(item, item.quantity - 1)} // Decrease quantity
@@ -136,9 +125,8 @@ const CartScreen = () => {
     </View>
   )
 
-  // Function to call support
   const callSupport = () => {
-    const phoneNumber = 'tel:0200922167' // Replace with the actual support phone number
+    const phoneNumber = 'tel:0200922167'
     Linking.openURL(phoneNumber).catch(err =>
       console.error('Error calling support:', err)
     )
@@ -154,11 +142,7 @@ const CartScreen = () => {
             title={<Text style={{ fontSize: 18 }}>My Cart</Text>}
           />
           <View style={styles.contactContainer}>
-            <Phone
-              size={24}
-              // color={theme.colors.primary}
-              onPress={() => callSupport()}
-            />
+            <Phone size={24} onPress={() => callSupport()} />
             <Text style={styles.contactText}>0200922167</Text>
           </View>
         </Appbar.Header>

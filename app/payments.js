@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import PaymentOption from '../components/PaymentOptions'
+import PaymentOption from '@/components/PaymentOptions'
 import { View, Keyboard, Text, StyleSheet, StatusBar } from 'react-native'
 import { Layout, Input, useTheme } from '@ui-kitten/components'
 import { Phone, CheckCircle, Question } from 'phosphor-react-native' // Import CheckCircle and Question icons
@@ -36,10 +36,6 @@ const PaymentOptions = () => {
   }
 
   const isPhoneNumberValid = validNum(phoneNumber)
-
-  const renderPhoneAccessoryLeft = () => (
-    <Phone size={20} color={theme['color-basic-600']} />
-  )
 
   const renderPhoneAccessoryRight = () =>
     isPhoneNumberValid ? (

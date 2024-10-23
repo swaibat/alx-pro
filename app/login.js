@@ -7,18 +7,11 @@ import {
   StatusBar,
 } from 'react-native'
 import { Layout, Input, Text } from '@ui-kitten/components'
-import {
-  Appbar,
-  Button,
-  Card,
-  Divider,
-  Snackbar,
-  useTheme,
-} from 'react-native-paper' // Snackbar for error messages
-import { useLoginMutation } from '@/api' // Assume you have this mutation for login
-import { Eye, EyeSlash, Phone } from 'phosphor-react-native' // Phosphor icons for password visibility
+import { Appbar, Button, Divider, Snackbar, useTheme } from 'react-native-paper'
+import { useLoginMutation } from '@/api'
+import { Eye, EyeSlash } from 'phosphor-react-native'
 import { useLocalSearchParams, useRouter } from 'expo-router'
-import LoginIllustration from '../assets/LoginIllustration' // Assume you have this illustration
+import LoginIllustration from '@/assets/LoginIllustration'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const LoginScreen = () => {
@@ -27,13 +20,13 @@ const LoginScreen = () => {
 
   const [phoneNumber, setPhoneNumber] = useState('')
   const [password, setPassword] = useState('')
-  const [showPassword, setShowPassword] = useState(false) // Password visibility toggle
+  const [showPassword, setShowPassword] = useState(false)
   const [snackVisible, setSnackVisible] = useState(false)
   const [snackMessage, setSnackMessage] = useState('')
-  const [login, { isLoading }] = useLoginMutation() // Assume this is the login mutation
+  const [login, { isLoading }] = useLoginMutation()
   const { ref } = useLocalSearchParams()
 
-  const phoneValidationRegex = /^(75|74|70|78|77|76|3|2)\d{7}$/ // Phone number validation regex
+  const phoneValidationRegex = /^(75|74|70|78|77|76|3|2)\d{7}$/
 
   const handleSnackOpen = message => {
     setSnackMessage(message)
@@ -112,7 +105,7 @@ const LoginScreen = () => {
               placeholder="Enter password"
               value={password}
               onChangeText={setPassword}
-              secureTextEntry={!showPassword} // Toggle for password visibility
+              secureTextEntry={!showPassword}
               accessoryRight={() => (
                 <TouchableOpacity
                   onPress={() => setShowPassword(prev => !prev)}
@@ -126,17 +119,15 @@ const LoginScreen = () => {
               )}
             />
 
-            {/* Forgot Password Link */}
             <TouchableOpacity onPress={() => router.push('/forgot-password')}>
               <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
             </TouchableOpacity>
 
-            {/* Login Button */}
             <Button
               style={styles.button}
               mode="contained"
               onPress={handleLogin}
-              disabled={isLoading} // Disable the button while logging in
+              disabled={isLoading}
             >
               {isLoading ? 'Logging in...' : 'Login'}
             </Button>

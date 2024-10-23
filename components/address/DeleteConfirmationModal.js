@@ -15,7 +15,7 @@ const DeleteConfirmationModal = ({ address, refetch }) => {
       setDeleteModalVisible(false)
       refetch()
     } catch (error) {
-      console.error('Error deleting address:', deleteError)
+      console.error('Error deleting address:', error, deleteError)
     }
   }
 

@@ -6,12 +6,12 @@ import {
   Image,
   ActivityIndicator,
 } from 'react-native'
-import { Text, Card, Button, useTheme } from '@ui-kitten/components'
+import { Text, Card, useTheme } from '@ui-kitten/components'
 import { useLocalSearchParams, useRouter } from 'expo-router'
 import { Appbar, Divider } from 'react-native-paper'
 import { CheckCircle, XCircle, Clock } from 'phosphor-react-native'
-import { useGetOrderDetailsQuery } from '@/api' // RTK Query hook
-import AddressItem from '../../components/address/AddressItem'
+import { useGetOrderDetailsQuery } from '@/api'
+import AddressItem from '@/components/address/AddressItem'
 
 const activityTypeEnum = {
   ORDER_CREATED: {
@@ -67,10 +67,6 @@ const OrderDetailsScreen = () => {
 
   return (
     <>
-      {/* <Appbar.Header>
-        <Appbar.BackAction onPress={() => router.push('orders')} />
-        <Appbar.Content title="Order Details" />
-      </Appbar.Header> */}
       <Appbar.Header style={{ paddingRight: 15, backgroundColor: '#111b2d' }}>
         <Appbar.BackAction
           color={theme['color-basic-100']}
@@ -123,7 +119,7 @@ const OrderDetailsScreen = () => {
               <Text category="h6" style={{ marginBottom: 5 }}>
                 Items:
               </Text>
-              {order.items.map((item, index) => (
+              {order.items.map(item => (
                 <View key={item.productId} style={styles.itemCard}>
                   <View style={styles.itemContainer}>
                     <Image
@@ -165,7 +161,6 @@ const OrderDetailsScreen = () => {
               ))}
             </View>
 
-            {/* Shipping Address */}
             <View style={styles.card}>
               <Text category="h6" style={{ marginVertical: 10 }}>
                 Shipping Address:
@@ -173,7 +168,6 @@ const OrderDetailsScreen = () => {
               <AddressItem address={order.address} viewOnly={true} />
             </View>
 
-            {/* Payment Method */}
             <Text category="h6" style={{ marginVertical: 10 }}>
               Payment Method:
             </Text>
@@ -183,12 +177,11 @@ const OrderDetailsScreen = () => {
               </Text>
             </Card>
 
-            {/* Order Activity */}
             <Text category="h6" style={{ marginVertical: 10 }}>
               Order Activity:
             </Text>
             <View style={styles.activityCard}>
-              {order.activity.map((activity, index) => (
+              {order.activity.map(activity => (
                 <View key={activity._id} style={styles.activityContainer}>
                   <View style={styles.activityText}>
                     {activityTypeEnum[activity.type]?.icon}

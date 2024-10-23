@@ -1,5 +1,5 @@
 import React from 'react'
-import { Svg, Rect, Path } from 'react-native-svg'
+import { Svg, Path } from 'react-native-svg'
 
 function Timer({ size, primaryColor, color }) {
   return (

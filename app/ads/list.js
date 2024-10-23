@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, SafeAreaView } from 'react-native'
+import { StyleSheet } from 'react-native'
 import { useLocalSearchParams } from 'expo-router'
 import AdsList from '@/components/products/AdsList'
 import AppHeader from '@/components/_global/AppHeader'

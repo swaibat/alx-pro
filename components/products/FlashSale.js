@@ -1,11 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import {
-  ScrollView,
-  Image,
-  View,
-  StyleSheet,
-  ActivityIndicator,
-} from 'react-native'
+import { ScrollView, Image, View, StyleSheet } from 'react-native'
 import { Layout, Text, useTheme } from '@ui-kitten/components'
 import { Lightning } from 'phosphor-react-native'
 import Animated, {
@@ -14,9 +8,8 @@ import Animated, {
   withTiming,
   useAnimatedStyle,
 } from 'react-native-reanimated'
-import { useGetProductsQuery } from '@/api' // Assuming the query is in the 'api' file
+import { useGetProductsQuery } from '@/api'
 
-// Skeleton Loader for Product Cards
 const ProductSkeleton = () => (
   <View style={styles.skeletonProductContainer}>
     <View style={styles.skeletonImage} />
@@ -25,7 +18,6 @@ const ProductSkeleton = () => (
   </View>
 )
 
-// Countdown Timer Logic
 const calculateTimeLeft = expiryDate => {
   const difference = new Date(expiryDate) - new Date()
   let timeLeft = {}
@@ -35,11 +27,11 @@ const calculateTimeLeft = expiryDate => {
       hours: String(Math.floor((difference / (1000 * 60 * 60)) % 24)).padStart(
         2,
         '0'
-      ), // Format hours
+      ),
       minutes: String(Math.floor((difference / 1000 / 60) % 60)).padStart(
         2,
         '0'
-      ), // Format minutes
+      ),
       seconds: String(Math.floor((difference / 1000) % 60)).padStart(2, '0'), // Format seconds
     }
   } else {
@@ -53,7 +45,6 @@ const calculateTimeLeft = expiryDate => {
   return timeLeft
 }
 
-// Digital Clock Style Component
 const FlipClockDigit = ({ digit }) => {
   const rotation = useSharedValue(0)
 
@@ -151,7 +142,6 @@ const FlashSale = () => {
         </View>
       </View>
 
-      {/* Horizontal Scrollable Products or Skeleton */}
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
         {isLoading
           ? renderSkeleton()

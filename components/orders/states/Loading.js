@@ -1,14 +1,12 @@
 import React from 'react'
 import { View, StyleSheet } from 'react-native'
-import { useTheme, Layout, Card, Text, Divider } from '@ui-kitten/components'
+import { Layout, Card, Text, Divider } from '@ui-kitten/components'
 
 const getRandomWidth = () => {
   return Math.random() * (90 - 50) + 10 + '%'
 }
 
 const SkeletonLoader = () => {
-  const theme = useTheme()
-
   return (
     <Layout style={{ flex: 1 }}>
       {Array.from({ length: 4 }).map((_, index) => (

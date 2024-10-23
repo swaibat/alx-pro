@@ -67,7 +67,6 @@ const HomeScreen = () => {
           <Input
             placeholder="Search"
             style={{ flex: 1 }}
-            // onPressIn={()=>router.push('/search')}
             onFocus={() => router.push('/search')}
             accessoryLeft={() => <MagnifyingGlass size={24} />}
             accessoryRight={() => <Sliders size={24} />}
@@ -125,9 +124,6 @@ const HomeScreen = () => {
       </Layout>
 
       <ScrollView>
-        {/* Special Offers Section */}
-
-        {/* Categories Section */}
         <Layout
           style={{
             borderBottomWidth: 10,
@@ -149,7 +145,6 @@ const HomeScreen = () => {
           <FlashSale />
         </Layout>
 
-        {/* Featured Products Section */}
         <Layout style={{ padding: 15 }}>
           <Text
             style={{

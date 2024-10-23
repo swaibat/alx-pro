@@ -1,4 +1,4 @@
-import { useTheme, Layout } from '@ui-kitten/components'
+import { useTheme } from '@ui-kitten/components'
 import { View, StyleSheet } from 'react-native'
 import Placeholder from '@/assets/Placeholder'
 

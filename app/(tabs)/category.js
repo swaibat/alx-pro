@@ -10,7 +10,7 @@ import {
   DrawerItem,
 } from '@ui-kitten/components'
 import AppHeader from '@/components/_global/AppHeader'
-import categoryStateLayout from '../../components/categories/states/handleStates'
+import categoryStateLayout from '@/components/categories/states/handleStates'
 
 const CategoryScreen = () => {
   const [expandedCategory, setExpandedCategory] = useState(null)

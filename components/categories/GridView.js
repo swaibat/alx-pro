@@ -1,7 +1,6 @@
 import React from 'react'
 import { View, TouchableOpacity, StyleSheet } from 'react-native'
-import { useGetCategoriesQuery } from '../../api'
-import { useNavigation } from '@react-navigation/native'
+import { useGetCategoriesQuery } from '@/api'
 import { Text } from '@ui-kitten/components'
 import { useRouter } from 'expo-router'
 import AppImg from '../AppImg'
@@ -16,7 +15,6 @@ const PlaceholderItem = () => {
 }
 
 const GridScreen = () => {
-  const navigation = useNavigation()
   const { data, isLoading } = useGetCategoriesQuery()
   const router = useRouter()
 

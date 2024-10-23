@@ -44,7 +44,7 @@ export async function registerForPushNotificationsAsync() {
   }
 
   if (finalStatus !== 'granted') {
-    alert('Failed to get push token for push notifications')
+    // alert('Failed to get push token for push notifications')
     return
   }
 
@@ -53,7 +53,7 @@ export async function registerForPushNotificationsAsync() {
       Constants?.expoConfig?.extra?.eas?.projectId ??
       Constants?.easConfig?.projectId
     if (!projectId) {
-      alert('Project ID not found.')
+      // alert('Project ID not found.')
       throw new Error('Project ID not found.')
     }
     const token = (await Notifications.getExpoPushTokenAsync({ projectId }))
@@ -98,7 +98,7 @@ export function usePushNotifications() {
             } else if (notification.request.content?.data?.type === 'FAILED') {
               router.push('/paymentFailed')
             } else {
-              console.log('Unhandled notification type:', data?.type)
+              console.log('Unhandled notification type:')
             }
           } else {
             await Notifications.scheduleNotificationAsync({

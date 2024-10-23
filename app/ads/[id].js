@@ -30,10 +30,7 @@ const ProductDetailsScreen = () => {
   const product = data?.data
   const images = product?.files.length
     ? product?.files.map(file => ({ uri: file.url }))
-    : [
-        require('@/assets/placeholder.png'),
-        require('../../assets/placeholder.png'),
-      ]
+    : [require('@/assets/placeholder.png'), require('@/assets/placeholder.png')]
   const [selectedIndex, setSelectedIndex] = useState(0)
   const [selectedColor, setSelectedColor] = useState({})
   const [selectedSize, setSelectedSize] = useState(null)
@@ -213,7 +210,7 @@ const ProductDetailsScreen = () => {
                 Total Price
               </Text>
               <Text category="h6" style={styles.price}>
-                {`UGX ${(product?.price).toLocaleString()}`}
+                {`UGX ${product.price.toLocaleString()}`}
               </Text>
             </View>
             <Button
@@ -251,8 +248,6 @@ const ProductDetailsScreen = () => {
 const styles = StyleSheet.create({
   viewPager: {
     height: 300,
-    // padding: 15,
-    // width: '80%'
   },
   imageContainer: {
     justifyContent: 'center',
@@ -272,7 +267,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    // marginTop: -30,
     backgroundColor: 'transparent',
   },
   dot: {
@@ -287,9 +281,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#000',
     width: 20,
   },
-  content: {
-    // padding: 16,
-  },
+  content: {},
   infoCard: {
     marginBottom: 16,
     flexDirection: 'row',

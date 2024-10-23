@@ -4,7 +4,7 @@ import SpinSVG from '@/components/Spinner'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Layout, useTheme } from '@ui-kitten/components'
 import { useLocalSearchParams, useRouter } from 'expo-router'
-import { useMakePaymentMutation } from '../api'
+import { useMakePaymentMutation } from '@/api'
 import { Appbar } from 'react-native-paper'
 import { Lock } from 'phosphor-react-native'
 

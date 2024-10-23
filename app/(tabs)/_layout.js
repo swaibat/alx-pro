@@ -1,12 +1,10 @@
+import React from 'react'
 import { Tabs } from 'expo-router'
-import React, { useEffect } from 'react'
 import {
   House,
-  ListMagnifyingGlass,
   ShoppingCart,
   User,
   ArrowLeft,
-  Circle,
   CirclesFour,
 } from 'phosphor-react-native'
 import { Colors } from '@/constants/Colors'
@@ -15,7 +13,6 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import { useSelector } from 'react-redux'
 import { useRouter } from 'expo-router'
 import { useTheme } from '@ui-kitten/components'
-import AsyncStorage from '@react-native-async-storage/async-storage'
 import useLogin from '@/hooks/useLogin'
 
 export default function TabLayout() {
@@ -23,23 +20,10 @@ export default function TabLayout() {
   const theme = useTheme()
   const activeTintColor = Colors[colorScheme ?? 'light'].tint
   const router = useRouter()
-  const [isUserExist, setIsUserExist] = React.useState(false)
   const isLoggedIn = useLogin()
 
-  // Get cart item count from Redux store
   const cartItems = useSelector(state => state.cart.items)
   const cartCount = cartItems.length
-
-  useEffect(() => {
-    const checkUser = async () => {
-      const user = await AsyncStorage.getItem('@user')
-      if (user) {
-        setIsUserExist(true)
-      }
-    }
-
-    checkUser()
-  }, [])
 
   return (
     <Tabs
@@ -136,8 +120,8 @@ export default function TabLayout() {
 
 const styles = StyleSheet.create({
   tabBarStyle: {
-    backgroundColor: '#fff', // Change this to your desired background color
-    borderTopWidth: 1, // Remove default border
+    backgroundColor: '#fff',
+    borderTopWidth: 1,
     padding: 15,
     height: 70,
   },
@@ -146,7 +130,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   icon: {
-    marginBottom: 5, // Space between icon and label
+    marginBottom: 5,
   },
   badge: {
     position: 'absolute',
