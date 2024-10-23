@@ -1,19 +1,20 @@
-import React from 'react';
-import { View,  StyleSheet, Image } from 'react-native';
-import { Layout, Text, useTheme } from '@ui-kitten/components';
+import React from 'react'
+import { View, StyleSheet, Image } from 'react-native'
+import { Text } from '@ui-kitten/components'
 
 const EmptyCategoryScreen = () => {
-  const theme = useTheme();
-
   return (
-      <View style={styles.content}>
-      <Image source={require('@/assets/images/error.png')} style={{ width: 160, height: 160, marginBottom: 10 }} />
-        <Text category='s1' appearance='hint'>
-          No Products Found
-        </Text>
-      </View>
-  );
-};
+    <View style={styles.content}>
+      <Image
+        source={require('@/assets/images/error.png')}
+        style={{ width: 160, height: 160, marginBottom: 10 }}
+      />
+      <Text category="s1" appearance="hint">
+        No Products Found
+      </Text>
+    </View>
+  )
+}
 
 const styles = StyleSheet.create({
   content: {
@@ -22,12 +23,8 @@ const styles = StyleSheet.create({
     flex: 1,
     width: '100%',
     height: '100%',
-    marginTop:'auto'
+    marginTop: 'auto',
   },
-  text: {
-    // fontSize: 18,
-    // fontWeight: 'bold',
-  },
-});
+})
 
-export default EmptyCategoryScreen;
+export default EmptyCategoryScreen

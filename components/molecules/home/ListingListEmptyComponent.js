@@ -3,7 +3,7 @@ const ListingListEmptyComponent = () => (
     {/* No Listing Found */}
     {!listingsData?.length && !timedOut && !networkError && (
       <View style={styles.noListingsWrap}>
-        <Fontisto name='frowning' size={100} color={COLORS.primary_soft} />
+        <Fontisto name="frowning" size={100} color={COLORS.primary_soft} />
         <Text style={styles.noListingsMessage}>
           {__('homeScreenTexts.noListingsMessage', appSettings.lng)}
         </Text>
@@ -18,7 +18,7 @@ const ListingListEmptyComponent = () => (
     {/* Timeout & Network Error notice */}
     {!listingsData?.length && (!!timedOut || !!networkError) && (
       <View style={styles.noListingsWrap}>
-        <Fontisto name='frowning' size={100} color={COLORS.primary_soft} />
+        <Fontisto name="frowning" size={100} color={COLORS.primary_soft} />
         {!!timedOut && (
           <Text style={styles.noListingsMessage}>
             {__('homeScreenTexts.requestTimedOut', appSettings.lng)}

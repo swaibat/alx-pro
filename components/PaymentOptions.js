@@ -1,31 +1,31 @@
-import React from 'react';
-import { View } from 'react-native';
-import AirtelMoney from '@/assets/AirtelMoney';
-import MOMO from '@/assets/MOMO';
-import { CheckCircle } from 'phosphor-react-native'; // Import the check icon
+import React from 'react'
+import { View } from 'react-native'
+import AirtelMoney from '@/assets/AirtelMoney'
+import MOMO from '@/assets/MOMO'
+import { CheckCircle } from 'phosphor-react-native' // Import the check icon
 
 const PaymentOption = ({ selected, type }) => {
   const getBorderColor = () => {
     switch (type) {
       case 'MTN':
-        return selected ? 'orange' : '#dee4ec'; // Yellow border for MTN
+        return selected ? 'orange' : '#dee4ec' // Yellow border for MTN
       case 'AIRTEL':
-        return selected ? '#ED1C24' : '#dee4ec'; // Red border for Airtel
+        return selected ? '#ED1C24' : '#dee4ec' // Red border for Airtel
       default:
-        return '#dee4ec'; // Default border color
+        return '#dee4ec' // Default border color
     }
-  };
+  }
 
   const getCheckIconColor = () => {
     switch (type) {
       case 'MTN':
-        return 'orange'; // Yellow check for MTN
+        return 'orange' // Yellow check for MTN
       case 'AIRTEL':
-        return '#ED1C24'; // Red check for Airtel
+        return '#ED1C24' // Red check for Airtel
       default:
-        return '#4CAF50'; // Default green check (or any color you prefer)
+        return '#4CAF50' // Default green check (or any color you prefer)
     }
-  };
+  }
 
   return (
     <View
@@ -50,12 +50,17 @@ const PaymentOption = ({ selected, type }) => {
             {type === 'MTN' ? <MOMO /> : <AirtelMoney />}
           </View>
           {selected && (
-            <CheckCircle style={{position:'absolute',right:0,top:0}} size={20} color={getCheckIconColor()} weight="fill" /> // Render check icon with dynamic color
+            <CheckCircle
+              style={{ position: 'absolute', right: 0, top: 0 }}
+              size={20}
+              color={getCheckIconColor()}
+              weight="fill"
+            /> // Render check icon with dynamic color
           )}
         </View>
       </View>
     </View>
-  );
-};
+  )
+}
 
-export default PaymentOption;
+export default PaymentOption

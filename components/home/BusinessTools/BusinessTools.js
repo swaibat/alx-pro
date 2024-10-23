@@ -22,7 +22,7 @@ const BusinessTools = () => {
     setIsVisible(!isVisible)
   }
 
-  const handleSelect = (value) => {
+  const handleSelect = value => {
     setSelectedValue(value)
     toggleModal()
   }
@@ -54,19 +54,19 @@ const BusinessTools = () => {
     <View style={styles.container}>
       <TouchableOpacity onPress={toggleModal} style={{ marginLeft: 'auto' }}>
         <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-          <Icon source='store' color={colors.blackText} size={20} />
+          <Icon source="store" color={colors.blackText} size={20} />
           <Text style={{ color: colors.blackText }}>Tools</Text>
         </View>
       </TouchableOpacity>
       <Modal
-        animationType='slide'
+        animationType="slide"
         transparent={true}
         visible={isVisible}
         onRequestClose={toggleModal}
       >
         <View style={styles.modalContainer}>
           <TouchableOpacity onPress={toggleModal} style={styles.closeButton}>
-            <AntDesign name='close' size={24} color={colors.blackText} />
+            <AntDesign name="close" size={24} color={colors.blackText} />
           </TouchableOpacity>
           <View style={styles.modalContent}>
             {menuItems.map((menuItem, index) => (

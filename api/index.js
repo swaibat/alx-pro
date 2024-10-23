@@ -1,12 +1,15 @@
 import { createApi } from '@reduxjs/toolkit/query/react'
 import { fetchBaseQuery } from '@reduxjs/toolkit/query'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { EXPO_PUSH_TOKEN_STORAGE_KEY, getDeviceId } from '@/scripts/NotificationsService';
+import {
+  EXPO_PUSH_TOKEN_STORAGE_KEY,
+  getDeviceId,
+} from '@/scripts/NotificationsService'
 
-export const customMiddleware = (api) => (next) => async (action) => {
+export const customMiddleware = api => next => async action => {
   if (action.type.endsWith('rejected')) {
-    const errorMessage = action.error.message;
-    console.log(errorMessage);
+    const errorMessage = action.error.message
+    console.log(errorMessage)
   }
   return next(action)
 }
@@ -17,8 +20,8 @@ export const api = createApi({
     baseUrl: 'https://alx.up.railway.app/api/v1/',
     prepareHeaders: async (headers, { getState }) => {
       const storedCookies = await AsyncStorage.getItem('@user')
-      const token = await AsyncStorage.getItem(EXPO_PUSH_TOKEN_STORAGE_KEY);
-      const deviceId = getDeviceId();
+      const token = await AsyncStorage.getItem(EXPO_PUSH_TOKEN_STORAGE_KEY)
+      const deviceId = getDeviceId()
       if (token) {
         headers.set('device_id', deviceId)
         headers.set('fcm_token', token)
@@ -30,7 +33,7 @@ export const api = createApi({
     },
   }),
 
-  endpoints: (builder) => ({
+  endpoints: builder => ({
     getProductFilters: builder.query({
       query: () => 'products/filters/all',
     }),
@@ -38,10 +41,10 @@ export const api = createApi({
       query: () => 'products/features/cars',
     }),
     getStoreDetails: builder.query({
-      query: (params) => `shops/domain/${params}`,
+      query: params => `shops/domain/${params}`,
     }),
     getProducts: builder.query({
-      query: (params) => `products?${new URLSearchParams(params)}`,
+      query: params => `products?${new URLSearchParams(params)}`,
     }),
     getCategories: builder.query({
       query: () => ({
@@ -49,15 +52,15 @@ export const api = createApi({
       }),
     }),
     getProduct: builder.query({
-      query: (productId) => ({
+      query: productId => ({
         url: `/products/${productId}`,
       }),
     }),
     getViewedProducts: builder.query({
-      query: () => ({ url: `/recently-viewed`, }),
+      query: () => ({ url: `/recently-viewed` }),
     }),
     getRelatedProducts: builder.query({
-      query: (productId) => `products/related/${productId}`,
+      query: productId => `products/related/${productId}`,
     }),
     getDraftProduct: builder.query({
       query: () => `draft-ad`,
@@ -66,7 +69,7 @@ export const api = createApi({
       query: () => `flash-Sales`,
     }),
     uploadFile: builder.mutation({
-      query: (formData) => ({
+      query: formData => ({
         url: 'files',
         method: 'POST',
         body: formData,
@@ -76,13 +79,13 @@ export const api = createApi({
       }),
     }),
     deleteFile: builder.mutation({
-      query: (fileId) => ({
+      query: fileId => ({
         url: `files/${fileId}`,
         method: 'DELETE',
       }),
     }),
     createProduct: builder.mutation({
-      query: (productData) => ({
+      query: productData => ({
         url: 'products',
         method: 'POST',
         body: productData,
@@ -106,14 +109,14 @@ export const api = createApi({
       query: () => 'address',
     }),
     createAddress: builder.mutation({
-      query: (addressData) => ({
+      query: addressData => ({
         url: 'address',
         method: 'POST',
         body: addressData,
       }),
     }),
     deleteAddress: builder.mutation({
-      query: (addressId) => ({
+      query: addressId => ({
         url: `address/${addressId}`,
         method: 'DELETE',
       }),
@@ -126,43 +129,43 @@ export const api = createApi({
       }),
     }),
     makePayment: builder.mutation({
-      query: (data) => ({
+      query: data => ({
         url: '/payments/momo',
         method: 'POST',
         body: data,
       }),
     }),
     validatePhoneNumber: builder.query({
-      query: (msisdn) => `/payments/validate/${msisdn}`,
+      query: msisdn => `/payments/validate/${msisdn}`,
     }),
     sendOtp: builder.mutation({
-      query: (msisdn) => ({
+      query: msisdn => ({
         url: `/sms/otp/send/${msisdn}`,
         method: 'POST',
       }),
     }),
     verifyOtp: builder.mutation({
-      query: (data) => ({
+      query: data => ({
         url: '/sms/otp/verify',
         method: 'POST',
         body: data,
       }),
     }),
     register: builder.mutation({
-      query: (data) => ({
+      query: data => ({
         url: '/auth/register',
         method: 'POST',
         body: data,
       }),
     }),
     getOrders: builder.query({
-      query:() => `/orders/me`,
+      query: () => `/orders/me`,
     }),
     getOrderDetails: builder.query({
-      query: (orderId) => `/orders/${orderId}`,
+      query: orderId => `/orders/${orderId}`,
     }),
     createOrder: builder.mutation({
-      query: (data) => ({
+      query: data => ({
         url: '/orders',
         method: 'POST',
         body: data,

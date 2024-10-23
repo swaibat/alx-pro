@@ -1,36 +1,46 @@
-import React, { useState } from 'react';
-import { Image, StyleSheet, View, TouchableOpacity, ScrollView } from 'react-native';
-import { Layout, Text, ViewPager } from '@ui-kitten/components';
-import { useGetProductQuery } from '@/api';
-import { useDispatch, useSelector } from 'react-redux';
-import { addToCart } from '@/store/cartSlice';
-import { ShoppingCart, Star, Check } from 'phosphor-react-native';
-import { useLocalSearchParams, useRouter } from 'expo-router';
-import { Snackbar, Appbar, Button } from 'react-native-paper';
-import ProductDetailsSkeleton from '@/components/loading/ProductDetailsSkeleton';
-import RelatedProducts from '@/components/products/RelatedProducts';
+import React, { useState } from 'react'
+import {
+  Image,
+  StyleSheet,
+  View,
+  TouchableOpacity,
+  ScrollView,
+} from 'react-native'
+import { Layout, Text, ViewPager } from '@ui-kitten/components'
+import { useGetProductQuery } from '@/api'
+import { useDispatch, useSelector } from 'react-redux'
+import { addToCart } from '@/store/cartSlice'
+import { ShoppingCart, Star, Check } from 'phosphor-react-native'
+import { useLocalSearchParams, useRouter } from 'expo-router'
+import { Snackbar, Appbar, Button } from 'react-native-paper'
+import ProductDetailsSkeleton from '@/components/loading/ProductDetailsSkeleton'
+import RelatedProducts from '@/components/products/RelatedProducts'
 
 const ProductDetailsScreen = () => {
-  const { id } = useLocalSearchParams();
-  const router = useRouter();
-  const dispatch = useDispatch();
-  const cartItems = useSelector((state) => state.cart.items);
-  const cartCount = cartItems.length;
+  const { id } = useLocalSearchParams()
+  const router = useRouter()
+  const dispatch = useDispatch()
+  const cartItems = useSelector(state => state.cart.items)
+  const cartCount = cartItems.length
 
   const { data, isLoading, isUninitialized } = useGetProductQuery(id, {
     skip: !id,
-  });
+  })
 
-  const product = data?.data;
-  const images = product?.files.length ? product?.files.map((file) => ({ uri: file.url })) : [require('@/assets/placeholder.png'), require('../../assets/placeholder.png')];
-  const [selectedIndex, setSelectedIndex] = useState(0);
-  const [selectedColor, setSelectedColor] = useState({});
-  const [selectedSize, setSelectedSize] = useState(null);
-  const [showMore, setShowMore] = useState(false);
-  const [visible, setVisible] = useState(false);
+  const product = data?.data
+  const images = product?.files.length
+    ? product?.files.map(file => ({ uri: file.url }))
+    : [
+        require('@/assets/placeholder.png'),
+        require('../../assets/placeholder.png'),
+      ]
+  const [selectedIndex, setSelectedIndex] = useState(0)
+  const [selectedColor, setSelectedColor] = useState({})
+  const [selectedSize, setSelectedSize] = useState(null)
+  const [showMore, setShowMore] = useState(false)
+  const [visible, setVisible] = useState(false)
 
-
-  const onDismissSnackBar = () => setVisible(false);
+  const onDismissSnackBar = () => setVisible(false)
   const handleAddToCart = () => {
     const cartItem = {
       _id: product._id,
@@ -41,12 +51,12 @@ const ProductDetailsScreen = () => {
       quantity: product.quantity,
       file: product.files.length ? product.files[0]?.url : '',
       selectedColor,
-      selectedSize
-    };
+      selectedSize,
+    }
 
-    dispatch(addToCart(cartItem));
-    setVisible(true);
-  };
+    dispatch(addToCart(cartItem))
+    setVisible(true)
+  }
 
   const CartIconWithBadge = () => (
     <TouchableOpacity onPress={() => router.push('/cart')}>
@@ -59,139 +69,166 @@ const ProductDetailsScreen = () => {
         )}
       </View>
     </TouchableOpacity>
-  );
+  )
 
   return (
     <>
       <Appbar.Header style={{ backgroundColor: 'white' }}>
         <Appbar.BackAction onPress={() => router.back()} />
         <Appbar.Content title="Product Details" />
-        <Appbar.Action style={{ borderRadius: 0 }} icon={() => <CartIconWithBadge />} onPress={() => router.push('/cart')} />
+        <Appbar.Action
+          style={{ borderRadius: 0 }}
+          icon={() => <CartIconWithBadge />}
+          onPress={() => router.push('/cart')}
+        />
       </Appbar.Header>
 
-      {isLoading || isUninitialized ? <ProductDetailsSkeleton /> : <>
+      {isLoading || isUninitialized ? (
+        <ProductDetailsSkeleton />
+      ) : (
+        <>
+          <ScrollView style={{ backgroundColor: 'white' }}>
+            <Layout style={styles.content}>
+              <ViewPager
+                selectedIndex={selectedIndex}
+                onSelect={index => setSelectedIndex(index)}
+                style={styles.viewPager}
+              >
+                {images.map((image, index) => (
+                  <Layout key={index} style={styles.imageContainer}>
+                    <Image source={image} style={styles.image} />
+                  </Layout>
+                ))}
+              </ViewPager>
 
-        <ScrollView style={{ backgroundColor: 'white' }}>
-          <Layout style={styles.content}>
-            <ViewPager
-              selectedIndex={selectedIndex}
-              onSelect={(index) => setSelectedIndex(index)}
-              style={styles.viewPager}
-            >
-              {images.map((image, index) => (
-                <Layout key={index} style={styles.imageContainer}>
-                  <Image source={image} style={styles.image} />
-                </Layout>
-              ))}
-            </ViewPager>
-
-            <View style={styles.dotsContainer}>
-              {images.map((_, index) => (
-                <View
-                  key={index}
-                  style={[
-                    styles.dot,
-                    selectedIndex === index && styles.activeDot,
-                  ]}
-                />
-              ))}
-            </View>
-
-            <Layout style={{ padding: 17 }}>
-              <View style={styles.infoCard}>
-                <View style={{ flexGrow: 1 }}>
-                  <Text category="h6" style={styles.productTitle}>
-                    {product?.title}
-                  </Text>
-                  <View style={styles.ratingContainer}>
-                    <Text style={styles.soldText}>{product?.sold} sold</Text>
-                    <Star size={16} color="#FFD700" weight="fill" />
-                    <Text>4.9</Text>
-                  </View>
-                </View>
+              <View style={styles.dotsContainer}>
+                {images.map((_, index) => (
+                  <View
+                    key={index}
+                    style={[
+                      styles.dot,
+                      selectedIndex === index && styles.activeDot,
+                    ]}
+                  />
+                ))}
               </View>
 
-              <View style={{ marginBottom: 15 }}>
-                <Text category="s2" style={{ fontWeight: 'bold', marginBottom: 3 }}>
-                  Description
-                </Text>
-                {/* Collapsible text */}
-                <Text
-                  style={{ marginVertical: 3 }}
-                  numberOfLines={showMore ? undefined : 3}
-                >
-                  {product?.description}
-                </Text>
-                <TouchableOpacity onPress={() => setShowMore(!showMore)}>
-                  <Text style={{ color: '#3E4685' }}>
-                    {showMore ? 'See less' : 'See more'}
-                  </Text>
-                </TouchableOpacity>
-              </View>
-
-              {/* Colors and Sizes */}
-              {product?.variants?.colors?.length > 0 && (
-                <View style={{ marginBottom: 5 }}>
-                  <Text category="s2" style={{ fontWeight: 'bold' }}>Colors</Text>
-                  <View style={styles.colorContainer}>
-                    {product.variants.colors.map((colorItem, index) => (
-                      <TouchableOpacity
-                        key={index}
-                        style={[
-                          styles.colorBox,
-                          { backgroundColor: colorItem.colorCode },
-                          selectedColor?.colorCode === colorItem.colorCode && styles.selectedColorBox,
-                        ]}
-                        onPress={() => setSelectedColor(colorItem)}
-                      >
-                        {selectedColor.colorCode === colorItem.colorCode && <Check size={16} color="#FFF" weight="bold" />}
-                      </TouchableOpacity>
-                    ))}
+              <Layout style={{ padding: 17 }}>
+                <View style={styles.infoCard}>
+                  <View style={{ flexGrow: 1 }}>
+                    <Text category="h6" style={styles.productTitle}>
+                      {product?.title}
+                    </Text>
+                    <View style={styles.ratingContainer}>
+                      <Text style={styles.soldText}>{product?.sold} sold</Text>
+                      <Star size={16} color="#FFD700" weight="fill" />
+                      <Text>4.9</Text>
+                    </View>
                   </View>
                 </View>
-              )}
 
-              {product?.variants?.sizes?.length > 0 && (
-                <>
-                  <Text category="s2" style={{ fontWeight: 'bold' }}>Sizes</Text>
-                  <View style={styles.sizeContainer}>
-                    {product.variants.sizes.map((size, index) => (
-                      <TouchableOpacity
-                        key={index}
-                        style={[
-                          styles.sizeBox,
-                          selectedSize === size && { borderColor: '#3E4685' },
-                        ]}
-                        onPress={() => setSelectedSize(size)}
-                      >
-                        <Text style={selectedSize === size && { color: '#3E4685' }}>{size}</Text>
-                      </TouchableOpacity>
-                    ))}
+                <View style={{ marginBottom: 15 }}>
+                  <Text
+                    category="s2"
+                    style={{ fontWeight: 'bold', marginBottom: 3 }}
+                  >
+                    Description
+                  </Text>
+                  {/* Collapsible text */}
+                  <Text
+                    style={{ marginVertical: 3 }}
+                    numberOfLines={showMore ? undefined : 3}
+                  >
+                    {product?.description}
+                  </Text>
+                  <TouchableOpacity onPress={() => setShowMore(!showMore)}>
+                    <Text style={{ color: '#3E4685' }}>
+                      {showMore ? 'See less' : 'See more'}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+
+                {/* Colors and Sizes */}
+                {product?.variants?.colors?.length > 0 && (
+                  <View style={{ marginBottom: 5 }}>
+                    <Text category="s2" style={{ fontWeight: 'bold' }}>
+                      Colors
+                    </Text>
+                    <View style={styles.colorContainer}>
+                      {product.variants.colors.map((colorItem, index) => (
+                        <TouchableOpacity
+                          key={index}
+                          style={[
+                            styles.colorBox,
+                            { backgroundColor: colorItem.colorCode },
+                            selectedColor?.colorCode === colorItem.colorCode &&
+                              styles.selectedColorBox,
+                          ]}
+                          onPress={() => setSelectedColor(colorItem)}
+                        >
+                          {selectedColor.colorCode === colorItem.colorCode && (
+                            <Check size={16} color="#FFF" weight="bold" />
+                          )}
+                        </TouchableOpacity>
+                      ))}
+                    </View>
                   </View>
-                </>
-              )}
+                )}
+
+                {product?.variants?.sizes?.length > 0 && (
+                  <>
+                    <Text category="s2" style={{ fontWeight: 'bold' }}>
+                      Sizes
+                    </Text>
+                    <View style={styles.sizeContainer}>
+                      {product.variants.sizes.map((size, index) => (
+                        <TouchableOpacity
+                          key={index}
+                          style={[
+                            styles.sizeBox,
+                            selectedSize === size && { borderColor: '#3E4685' },
+                          ]}
+                          onPress={() => setSelectedSize(size)}
+                        >
+                          <Text
+                            style={
+                              selectedSize === size && { color: '#3E4685' }
+                            }
+                          >
+                            {size}
+                          </Text>
+                        </TouchableOpacity>
+                      ))}
+                    </View>
+                  </>
+                )}
+              </Layout>
             </Layout>
-          </Layout>
-          <RelatedProducts productId={id} />
-        </ScrollView>
+            <RelatedProducts productId={id} />
+          </ScrollView>
 
-        <Layout style={styles.bottomTabsContainer} level="1">
-          <View style={{ flex: 1 }}>
-            <Text category="s2" style={{ fontWeight: 'bold' }}>Total Price</Text>
-            <Text category="h6" style={styles.price}>
-              {`UGX ${(product?.price).toLocaleString()}`}
-            </Text>
-          </View>
-          <Button
-            style={styles.tabButton}
-            mode="contained"
-            onPress={handleAddToCart}
-            accessoryLeft={() => <ShoppingCart size={20} weight="bold" color="white" />}
-          >
-            Add to Cart
-          </Button>
-        </Layout>
-      </>}
+          <Layout style={styles.bottomTabsContainer} level="1">
+            <View style={{ flex: 1 }}>
+              <Text category="s2" style={{ fontWeight: 'bold' }}>
+                Total Price
+              </Text>
+              <Text category="h6" style={styles.price}>
+                {`UGX ${(product?.price).toLocaleString()}`}
+              </Text>
+            </View>
+            <Button
+              style={styles.tabButton}
+              mode="contained"
+              onPress={handleAddToCart}
+              accessoryLeft={() => (
+                <ShoppingCart size={20} weight="bold" color="white" />
+              )}
+            >
+              Add to Cart
+            </Button>
+          </Layout>
+        </>
+      )}
 
       <Snackbar
         visible={visible}
@@ -200,7 +237,7 @@ const ProductDetailsScreen = () => {
         action={{
           label: 'View Cart',
           onPress: () => {
-            router.push('/cart');
+            router.push('/cart')
           },
         }}
         style={styles.snackbar}
@@ -208,9 +245,8 @@ const ProductDetailsScreen = () => {
         Product added to cart!
       </Snackbar>
     </>
-  );
-};
-
+  )
+}
 
 const styles = StyleSheet.create({
   viewPager: {
@@ -230,14 +266,14 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 10,
     resizeMode: 'cover',
-    borderColor: 'gainsboro'
+    borderColor: 'gainsboro',
   },
   dotsContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     // marginTop: -30,
-    backgroundColor: 'transparent'
+    backgroundColor: 'transparent',
   },
   dot: {
     width: 8,
@@ -342,7 +378,7 @@ const styles = StyleSheet.create({
   // Skeleton Styles
   skeletonContainer: {
     padding: 16,
-    height: '100%'
+    height: '100%',
   },
   skeletonImage: {
     height: 300,
@@ -442,7 +478,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'gainsboro',
     marginRight: 10,
-    padding: 5
+    padding: 5,
   },
   value: {
     flex: 1,
@@ -484,6 +520,6 @@ const styles = StyleSheet.create({
   snackbar: {
     backgroundColor: '#3E4685',
   },
-});
+})
 
-export default ProductDetailsScreen;
+export default ProductDetailsScreen

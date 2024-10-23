@@ -7,7 +7,7 @@ const SwitchLayout = ({ onChangeLayout }) => {
   const [isGrid, setIsGrid] = useState(true)
 
   const handleToggleLayout = () => {
-    setIsGrid((prevState) => !prevState)
+    setIsGrid(prevState => !prevState)
     onChangeLayout(!isGrid) // Pass the new layout type to the parent component
   }
 
@@ -18,7 +18,7 @@ const SwitchLayout = ({ onChangeLayout }) => {
         style={[styles.button, isGrid && styles.activeButton]}
       >
         <Icon
-          name='grid'
+          name="grid"
           size={16}
           color={isGrid ? 'gainsboro' : colors.primaryBase}
         />
@@ -28,7 +28,7 @@ const SwitchLayout = ({ onChangeLayout }) => {
         style={[styles.button, !isGrid && styles.activeButton]}
       >
         <Icon
-          name='list'
+          name="list"
           size={16}
           color={isGrid ? colors.primaryBase : 'gainsboro'}
         />

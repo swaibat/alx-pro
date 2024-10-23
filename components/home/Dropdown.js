@@ -23,7 +23,7 @@ const Dropdown = () => {
     setIsVisible(!isVisible)
   }
 
-  const handleSelect = (value) => {
+  const handleSelect = value => {
     setSelectedValue(value)
     toggleModal()
   }
@@ -46,20 +46,20 @@ const Dropdown = () => {
       <TouchableOpacity onPress={toggleModal} style={styles.button}>
         <SimpleLineIcons
           style={{ paddingHorizontal: 15 }}
-          name='menu'
+          name="menu"
           size={24}
-          color='gainsboro'
+          color="gainsboro"
         />
       </TouchableOpacity>
       <Modal
-        animationType='slide'
+        animationType="slide"
         transparent={true}
         visible={isVisible}
         onRequestClose={toggleModal}
       >
         <View style={styles.modalContainer}>
           <TouchableOpacity onPress={toggleModal} style={styles.closeButton}>
-            <AntDesign name='close' size={24} color={colors.blackText} />
+            <AntDesign name="close" size={24} color={colors.blackText} />
           </TouchableOpacity>
           <View style={styles.modalContent}>
             {menuItems.map((menuItem, index) => (
@@ -67,7 +67,9 @@ const Dropdown = () => {
                 key={index}
                 iconName={menuItem.iconName}
                 text={menuItem.text}
-                onPress={() => navigate.to(menuItem.text, { secure: !!menuItem.secure })}
+                onPress={() =>
+                  navigate.to(menuItem.text, { secure: !!menuItem.secure })
+                }
               />
             ))}
           </View>

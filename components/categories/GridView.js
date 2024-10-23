@@ -1,14 +1,10 @@
-import React from 'react';
-import {
-  View,
-  TouchableOpacity,
-  StyleSheet,
-} from 'react-native';
-import { useGetCategoriesQuery } from '../../api';
-import { useNavigation } from '@react-navigation/native';
-import { Text } from '@ui-kitten/components';
-import { useRouter } from 'expo-router';
-import AppImg from '../AppImg';
+import React from 'react'
+import { View, TouchableOpacity, StyleSheet } from 'react-native'
+import { useGetCategoriesQuery } from '../../api'
+import { useNavigation } from '@react-navigation/native'
+import { Text } from '@ui-kitten/components'
+import { useRouter } from 'expo-router'
+import AppImg from '../AppImg'
 
 const PlaceholderItem = () => {
   return (
@@ -16,42 +12,40 @@ const PlaceholderItem = () => {
       <View style={styles.placeholderImage} />
       <View style={styles.placeholderText} />
     </View>
-  );
-};
+  )
+}
 
 const GridScreen = () => {
-  const navigation = useNavigation();
-  const { data, isLoading } = useGetCategoriesQuery();
-  const router = useRouter();
+  const navigation = useNavigation()
+  const { data, isLoading } = useGetCategoriesQuery()
+  const router = useRouter()
 
   const renderItem = (item, index) => (
     <TouchableOpacity
       key={item.id}
       style={styles.item}
-      onPress={() => router.push(`/category?category=${item.id}&index=${index}`)}
+      onPress={() =>
+        router.push(`/category?category=${item.id}&index=${index}`)
+      }
     >
-      <AppImg source={{ uri: item.imageUrl }}  style={styles.image} />
-      <Text
-        style={styles.itemText}
-        numberOfLines={1}
-        ellipsizeMode="tail"
-      >
+      <AppImg source={{ uri: item.imageUrl }} style={styles.image} />
+      <Text style={styles.itemText} numberOfLines={1} ellipsizeMode="tail">
         {item.name}
       </Text>
     </TouchableOpacity>
-  );
+  )
 
   const renderPlaceholderItems = () => {
-    return [...Array(8)].map((_, index) => <PlaceholderItem key={index} />);
-  };
+    return [...Array(8)].map((_, index) => <PlaceholderItem key={index} />)
+  }
 
   const renderGrid = () => {
     return (
       <View style={styles.gridContainer}>
         {(data?.data.slice(0, 8) || []).map(renderItem)}
       </View>
-    );
-  };
+    )
+  }
 
   return (
     <View style={styles.container}>
@@ -68,8 +62,8 @@ const GridScreen = () => {
         renderGrid()
       )}
     </View>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -121,6 +115,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#E1E9EE',
     borderRadius: 4,
   },
-});
+})
 
-export default GridScreen;
+export default GridScreen

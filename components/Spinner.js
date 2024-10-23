@@ -15,7 +15,7 @@ const SpinningView = () => {
         duration: 700,
         easing: Easing.linear,
         useNativeDriver: true,
-      }),
+      })
     ).start()
   }
 
@@ -26,7 +26,9 @@ const SpinningView = () => {
 
   return (
     <View style={styles.container}>
-      <Animated.View style={[styles.spinner, { transform: [{ rotate: spin }] }]} />
+      <Animated.View
+        style={[styles.spinner, { transform: [{ rotate: spin }] }]}
+      />
     </View>
   )
 }

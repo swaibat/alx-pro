@@ -1,18 +1,32 @@
-import React, { useState } from 'react';
-import { View, StyleSheet } from 'react-native';
-import { Layout, Text, Radio, useTheme, Button } from '@ui-kitten/components';
-import { MapPin, User, Phone, Envelope, PencilSimple, Trash } from 'phosphor-react-native';
-import { Divider } from 'react-native-paper';
-import DeleteConfirmationModal from './DeleteConfirmationModal';
+import React, { useState } from 'react'
+import { View, StyleSheet } from 'react-native'
+import { Layout, Text, Radio, useTheme, Button } from '@ui-kitten/components'
+import {
+  MapPin,
+  User,
+  Phone,
+  Envelope,
+  PencilSimple,
+  Trash,
+} from 'phosphor-react-native'
+import { Divider } from 'react-native-paper'
+import DeleteConfirmationModal from './DeleteConfirmationModal'
 
-const AddressItem = ({ address, handleEditAddress, refetch, isMainAddress, onMainSelect, viewOnly }) => {
-  const theme = useTheme();
-  const [isDeleteModalVisible, setDeleteModalVisible] = useState(false);
+const AddressItem = ({
+  address,
+  handleEditAddress,
+  refetch,
+  isMainAddress,
+  onMainSelect,
+  viewOnly,
+}) => {
+  const theme = useTheme()
+  const [isDeleteModalVisible, setDeleteModalVisible] = useState(false)
 
   const handleDeleteAddress = () => {
-    setDeleteModalVisible(false);
-    refetch();
-  };
+    setDeleteModalVisible(false)
+    refetch()
+  }
 
   return (
     <Layout style={styles.card(theme)}>
@@ -24,11 +38,13 @@ const AddressItem = ({ address, handleEditAddress, refetch, isMainAddress, onMai
         <Text style={styles.addressLabel} category="c2">
           {address.addressLabel || 'Home'}
         </Text>
-        {!viewOnly && <Radio
-          style={styles.radio}
-          checked={isMainAddress}
-          onChange={onMainSelect}
-        />}
+        {!viewOnly && (
+          <Radio
+            style={styles.radio}
+            checked={isMainAddress}
+            onChange={onMainSelect}
+          />
+        )}
       </View>
       <Divider style={{ marginVertical: 10 }} />
       <Layout style={styles.actionRow}>
@@ -52,27 +68,28 @@ const AddressItem = ({ address, handleEditAddress, refetch, isMainAddress, onMai
             </Text>
           </View>
         </View>
-        {!viewOnly && <View style={styles.actionButtons}>
-          <Button
-            appearance="ghost"
-            accessoryLeft={() => <PencilSimple size={20} color="#8F9BB3" />}
-            onPress={() => handleEditAddress(address)} // Trigger edit address handler
-          />
-          <DeleteConfirmationModal
-            isVisible={isDeleteModalVisible}
-            onClose={() => setDeleteModalVisible(false)}
-            onDelete={handleDeleteAddress}
-            address={address}
-          />
-        </View>}
+        {!viewOnly && (
+          <View style={styles.actionButtons}>
+            <Button
+              appearance="ghost"
+              accessoryLeft={() => <PencilSimple size={20} color="#8F9BB3" />}
+              onPress={() => handleEditAddress(address)} // Trigger edit address handler
+            />
+            <DeleteConfirmationModal
+              isVisible={isDeleteModalVisible}
+              onClose={() => setDeleteModalVisible(false)}
+              onDelete={handleDeleteAddress}
+              address={address}
+            />
+          </View>
+        )}
       </Layout>
-
     </Layout>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
-  card: (theme) => ({
+  card: theme => ({
     padding: 10,
     borderRadius: 5,
     marginVertical: 10,
@@ -110,8 +127,8 @@ const styles = StyleSheet.create({
   },
   actionButtons: {
     flexDirection: 'row',
-    alignItems: 'flex-end'
+    alignItems: 'flex-end',
   },
-});
+})
 
-export default AddressItem;
+export default AddressItem

@@ -1,30 +1,36 @@
-import React, { useRef, useState, useEffect } from 'react';
-import { View, Text, Image, Animated, StyleSheet, Dimensions, FlatList } from 'react-native';
+import React, { useRef, useState, useEffect } from 'react'
+import {
+  View,
+  Text,
+  Image,
+  Animated,
+  StyleSheet,
+  Dimensions,
+  FlatList,
+} from 'react-native'
 
-const { width: viewportWidth } = Dimensions.get('window');
+const { width: viewportWidth } = Dimensions.get('window')
 
 const carouselItems = [
   { id: '1', title: 'Item 1', image: '../assets/banner.png' },
-];
+]
 
 const CarouselComponent = () => {
-
-
   // const renderItem = ({ item }) => (
 
   // );
 
   return (
     <View style={styles.container}>
-      <View style={{ flex: 1, height: '100%', backgroundColor: '#082136' }}>
-
-      </View>
-      <View style={{ width: 100, height: '100%', backgroundColor: 'gray' }}>
-
-      </View>
+      <View
+        style={{ flex: 1, height: '100%', backgroundColor: '#082136' }}
+      ></View>
+      <View
+        style={{ width: 100, height: '100%', backgroundColor: 'gray' }}
+      ></View>
     </View>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -34,7 +40,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'transparent'
+    backgroundColor: 'transparent',
   },
   item: {
     width: viewportWidth,
@@ -55,6 +61,6 @@ const styles = StyleSheet.create({
     marginTop: 10,
     textAlign: 'center',
   },
-});
+})
 
-export default CarouselComponent;
+export default CarouselComponent

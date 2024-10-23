@@ -1,37 +1,45 @@
-import { Tabs } from 'expo-router';
-import React, { useEffect } from 'react';
-import { House, ListMagnifyingGlass, ShoppingCart, User, ArrowLeft, Circle, CirclesFour } from 'phosphor-react-native';
-import { Colors } from '@/constants/Colors';
-import { useColorScheme } from '@/hooks/useColorScheme';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { useSelector } from 'react-redux';
-import { useRouter } from 'expo-router';
-import { useTheme } from '@ui-kitten/components';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import useLogin from '@/hooks/useLogin';
+import { Tabs } from 'expo-router'
+import React, { useEffect } from 'react'
+import {
+  House,
+  ListMagnifyingGlass,
+  ShoppingCart,
+  User,
+  ArrowLeft,
+  Circle,
+  CirclesFour,
+} from 'phosphor-react-native'
+import { Colors } from '@/constants/Colors'
+import { useColorScheme } from '@/hooks/useColorScheme'
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
+import { useSelector } from 'react-redux'
+import { useRouter } from 'expo-router'
+import { useTheme } from '@ui-kitten/components'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import useLogin from '@/hooks/useLogin'
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
-  const theme = useTheme();
-  const activeTintColor = Colors[colorScheme ?? 'light'].tint;
-  const router = useRouter();
-  const [isUserExist, setIsUserExist] = React.useState(false);
-  const isLoggedIn = useLogin();
+  const colorScheme = useColorScheme()
+  const theme = useTheme()
+  const activeTintColor = Colors[colorScheme ?? 'light'].tint
+  const router = useRouter()
+  const [isUserExist, setIsUserExist] = React.useState(false)
+  const isLoggedIn = useLogin()
 
   // Get cart item count from Redux store
-  const cartItems = useSelector((state) => state.cart.items);
-  const cartCount = cartItems.length;
+  const cartItems = useSelector(state => state.cart.items)
+  const cartCount = cartItems.length
 
   useEffect(() => {
     const checkUser = async () => {
-      const user = await AsyncStorage.getItem('@user');
+      const user = await AsyncStorage.getItem('@user')
       if (user) {
-        setIsUserExist(true);
+        setIsUserExist(true)
       }
-    };
+    }
 
-    checkUser();
-  }, []);
+    checkUser()
+  }, [])
 
   return (
     <Tabs
@@ -48,7 +56,12 @@ export default function TabLayout() {
           title: 'Home',
           headerShown: false,
           tabBarIcon: ({ color, focused }) => (
-            <House size={24} color={color} weight={focused ? 'fill' : 'regular'} style={styles.icon} />
+            <House
+              size={24}
+              color={color}
+              weight={focused ? 'fill' : 'regular'}
+              style={styles.icon}
+            />
           ),
         }}
       />
@@ -58,7 +71,12 @@ export default function TabLayout() {
           title: 'Categories',
           headerShown: false,
           tabBarIcon: ({ color, focused }) => (
-            <CirclesFour size={24} color={color} weight={focused ? 'fill' : 'regular'} style={styles.icon} />
+            <CirclesFour
+              size={24}
+              color={color}
+              weight={focused ? 'fill' : 'regular'}
+              style={styles.icon}
+            />
           ),
         }}
       />
@@ -69,7 +87,12 @@ export default function TabLayout() {
           headerShown: false,
           tabBarIcon: ({ color, focused }) => (
             <View style={styles.iconWithBadge}>
-              <ShoppingCart size={24} color={color} weight={focused ? 'fill' : 'regular'} style={styles.icon} />
+              <ShoppingCart
+                size={24}
+                color={color}
+                weight={focused ? 'fill' : 'regular'}
+                style={styles.icon}
+              />
               {cartCount > 0 && (
                 <View style={styles.badge}>
                   <Text style={styles.badgeText}>{cartCount}</Text>
@@ -82,21 +105,33 @@ export default function TabLayout() {
       <Tabs.Screen
         name="account"
         options={{
-          title: "account",
+          title: 'account',
           headerShown: false,
-          href: { pathname: isLoggedIn ? "/account" : '/login', params: { ref: 'account' } },
+          href: {
+            pathname: isLoggedIn ? '/account' : '/login',
+            params: { ref: 'account' },
+          },
           headerLeft: () => (
             <TouchableOpacity onPress={() => router.back()}>
-              <ArrowLeft size={24} color={activeTintColor} style={styles.backIcon} />
+              <ArrowLeft
+                size={24}
+                color={activeTintColor}
+                style={styles.backIcon}
+              />
             </TouchableOpacity>
           ),
           tabBarIcon: ({ color, focused }) => (
-            <User size={24} color={color} weight={focused ? 'fill' : 'regular'} style={styles.icon} />
+            <User
+              size={24}
+              color={color}
+              weight={focused ? 'fill' : 'regular'}
+              style={styles.icon}
+            />
           ),
         }}
       />
     </Tabs>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -132,4 +167,4 @@ const styles = StyleSheet.create({
   backIcon: {
     marginLeft: 10,
   },
-});
+})

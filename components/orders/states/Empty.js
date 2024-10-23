@@ -1,29 +1,32 @@
-import React from 'react';
-import { View, StyleSheet, Image, Dimensions } from 'react-native';
-import { Text } from '@ui-kitten/components';
-import { Button } from 'react-native-paper';
+import React from 'react'
+import { View, StyleSheet, Image, Dimensions } from 'react-native'
+import { Text } from '@ui-kitten/components'
+import { Button } from 'react-native-paper'
 
-const { height: deviceHeight } = Dimensions.get('window');
+const { height: deviceHeight } = Dimensions.get('window')
 
 const EmptyOrderScreen = () => {
-
   return (
     <View style={[styles.container, { height: deviceHeight - 150 }]}>
       <View style={styles.content}>
-        <Image 
-          source={require('@/assets/images/error.png')} 
-          style={{ width: 160, height: 160, marginBottom: 10 }} 
+        <Image
+          source={require('@/assets/images/error.png')}
+          style={{ width: 160, height: 160, marginBottom: 10 }}
         />
-        <Text category='s1' appearance='hint'>
+        <Text category="s1" appearance="hint">
           No Orders Found
         </Text>
-        <Button mode="contained" onPress={() => console.log('Shop Now pressed!')} style={styles.shopButton}>
+        <Button
+          mode="contained"
+          onPress={() => console.log('Shop Now pressed!')}
+          style={styles.shopButton}
+        >
           Shop Now
         </Button>
       </View>
     </View>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -37,7 +40,7 @@ const styles = StyleSheet.create({
   },
   shopButton: {
     marginTop: 20,
-  }
-});
+  },
+})
 
-export default EmptyOrderScreen;
+export default EmptyOrderScreen

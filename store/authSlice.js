@@ -9,10 +9,10 @@ const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    login: (state) => {
+    login: state => {
       state.isAuthenticated = true
     },
-    logout: (state) => {
+    logout: state => {
       state.isAuthenticated = false
     },
     setModalVisible: (state, action) => {

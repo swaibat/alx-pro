@@ -22,9 +22,7 @@ const ProductCard = ({ imageUrl, id, name, price, location }) => {
       >
         <Image
           source={
-            imageUrl
-              ? { uri: imageUrl }
-              : require('@/assets/placeholder.png')
+            imageUrl ? { uri: imageUrl } : require('@/assets/placeholder.png')
           }
           style={styles.image}
         />
@@ -42,23 +40,46 @@ const ProductCard = ({ imageUrl, id, name, price, location }) => {
   )
 }
 
-const LoadingGridCard = ({theme}) => (
-  <View style={[styles.card, { flexDirection: "row", width: 300 }]}>
-
-    <View style={[styles.imagePlaceholder, { backgroundColor: theme['color-basic-300'] }]} >
+const LoadingGridCard = ({ theme }) => (
+  <View style={[styles.card, { flexDirection: 'row', width: 300 }]}>
+    <View
+      style={[
+        styles.imagePlaceholder,
+        { backgroundColor: theme['color-basic-300'] },
+      ]}
+    >
       <Placeholder />
     </View>
-    <View style={{ flex: 1, padding: 10 }} >
-      <View style={[styles.textPlaceholder, { width:'95%', height: 30, backgroundColor: theme['color-basic-300'] }]} />
-      <View style={[styles.textPlaceholder, { width:'50%', backgroundColor: theme['color-basic-300'] }]}  />
-      <View style={[styles.textPlaceholder, { width:'30%', backgroundColor: theme['color-basic-300'] }]}  />
+    <View style={{ flex: 1, padding: 10 }}>
+      <View
+        style={[
+          styles.textPlaceholder,
+          {
+            width: '95%',
+            height: 30,
+            backgroundColor: theme['color-basic-300'],
+          },
+        ]}
+      />
+      <View
+        style={[
+          styles.textPlaceholder,
+          { width: '50%', backgroundColor: theme['color-basic-300'] },
+        ]}
+      />
+      <View
+        style={[
+          styles.textPlaceholder,
+          { width: '30%', backgroundColor: theme['color-basic-300'] },
+        ]}
+      />
     </View>
   </View>
 )
 
 const RelatedProducts = ({ productId }) => {
   const { data, isLoading, error } = useGetRelatedProductsQuery(productId)
-  const theme = useTheme();
+  const theme = useTheme()
 
   if (!isLoading) {
     return (
@@ -80,7 +101,7 @@ const RelatedProducts = ({ productId }) => {
       <Text style={styles.heading}>You may also like</Text>
       <FlatList
         data={data?.data}
-        keyExtractor={(item) => item._id}
+        keyExtractor={item => item._id}
         renderItem={({ item }) => (
           <ProductCard
             imageUrl={item.imageUrl}
@@ -113,7 +134,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderRadius: 8,
     overflow: 'hidden',
-    padding: 10
+    padding: 10,
   },
   image: {
     height: 120,

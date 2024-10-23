@@ -1,26 +1,33 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react'
+import { StyleSheet, FlatList, StatusBar } from 'react-native'
+import { Layout, Text, IndexPath } from '@ui-kitten/components'
 import {
-  StyleSheet,
-  FlatList,
-  StatusBar,
-} from 'react-native';
-import { Layout, Text, IndexPath } from '@ui-kitten/components';
-import { useCreateAddressMutation, useGetAddressQuery, useUpdateAddressMutation } from '@/api';
-import { useLocalSearchParams, useRouter } from 'expo-router';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { getCountryByShort } from 'countrycitystatejson';
-import AddressItem from '@/components/address/AddressItem';
-import AddressModal from '@/components/address/AddressModal';
-import SkeletonLoader from '@/components/address/SkeletonLoader';
-import { Appbar, useTheme, Button } from 'react-native-paper';
+  useCreateAddressMutation,
+  useGetAddressQuery,
+  useUpdateAddressMutation,
+} from '@/api'
+import { useLocalSearchParams, useRouter } from 'expo-router'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { getCountryByShort } from 'countrycitystatejson'
+import AddressItem from '@/components/address/AddressItem'
+import AddressModal from '@/components/address/AddressModal'
+import SkeletonLoader from '@/components/address/SkeletonLoader'
+import { Appbar, useTheme, Button } from 'react-native-paper'
 
 const AddressComponent = () => {
-  const { data: fetchedAddresses, error: fetchError, isLoading: isFetching, refetch } = useGetAddressQuery();
-  const [createAddress, { error: createError, isLoading: isCreating }] = useCreateAddressMutation();
-  const [updateAddress, { error: updateError, isLoading: isUpdating }] = useUpdateAddressMutation();
-  const { edit } = useLocalSearchParams();
-  const router = useRouter();
-  const theme = useTheme();
+  const {
+    data: fetchedAddresses,
+    error: fetchError,
+    isLoading: isFetching,
+    refetch,
+  } = useGetAddressQuery()
+  const [createAddress, { error: createError, isLoading: isCreating }] =
+    useCreateAddressMutation()
+  const [updateAddress, { error: updateError, isLoading: isUpdating }] =
+    useUpdateAddressMutation()
+  const { edit } = useLocalSearchParams()
+  const router = useRouter()
+  const theme = useTheme()
 
   const [form, setForm] = useState({
     phoneNumber: '',
@@ -31,103 +38,106 @@ const AddressComponent = () => {
     region: '',
     addressLabel: 'Home',
     mainAddress: false,
-  });
+  })
 
-  const [addresses, setAddresses] = useState([]);
-  const [selectedMainAddressId, setSelectedMainAddressId] = useState(null);
-  const [isModalVisible, setModalVisible] = useState(false);
-  const [selectedAddress, setSelectedAddress] = useState(null);
+  const [addresses, setAddresses] = useState([])
+  const [selectedMainAddressId, setSelectedMainAddressId] = useState(null)
+  const [isModalVisible, setModalVisible] = useState(false)
+  const [selectedAddress, setSelectedAddress] = useState(null)
 
   const loadUserData = async () => {
     try {
-      const userData = await AsyncStorage.getItem('@user');
+      const userData = await AsyncStorage.getItem('@user')
       if (userData) {
-        const parsedData = JSON.parse(userData);
-        setForm((prevForm) => ({
+        const parsedData = JSON.parse(userData)
+        setForm(prevForm => ({
           ...prevForm,
           phoneNumber: parsedData.user.phoneNumber || '',
           email: parsedData.user.email || '',
           name: parsedData.user.name || '',
-        }));
+        }))
       }
     } catch (error) {
-      console.error('Error loading user data from local storage:', error);
+      console.error('Error loading user data from local storage:', error)
     }
-  };
+  }
 
   useEffect(() => {
-    loadUserData();
+    loadUserData()
     const loadMainAddress = async () => {
-      const savedAddress = await AsyncStorage.getItem('selectedAddress');
+      const savedAddress = await AsyncStorage.getItem('selectedAddress')
       if (savedAddress) {
-        const parsedAddress = JSON.parse(savedAddress);
-        setSelectedMainAddressId(parsedAddress._id);
+        const parsedAddress = JSON.parse(savedAddress)
+        setSelectedMainAddressId(parsedAddress._id)
       }
-    };
-    loadMainAddress();
-  }, []);
+    }
+    loadMainAddress()
+  }, [])
 
   useEffect(() => {
     if (fetchError) {
-      console.error("Error fetching addresses:", fetchError);
+      console.error('Error fetching addresses:', fetchError)
     }
-  }, [fetchError]);
+  }, [fetchError])
 
   useEffect(() => {
     if (fetchedAddresses) {
-      setAddresses(fetchedAddresses.data.docs);
+      setAddresses(fetchedAddresses.data.docs)
     }
-  }, [fetchedAddresses]);
+  }, [fetchedAddresses])
 
-  const handleMainAddressSelect = async (selectedAddress) => {
+  const handleMainAddressSelect = async selectedAddress => {
     const updatedAddresses = addresses.map(addr => ({
       ...addr,
       mainAddress: addr._id === selectedAddress._id,
-    }));
-    setAddresses(updatedAddresses);
-    setSelectedMainAddressId(selectedAddress._id);
+    }))
+    setAddresses(updatedAddresses)
+    setSelectedMainAddressId(selectedAddress._id)
 
-    await AsyncStorage.setItem('selectedAddress', JSON.stringify(selectedAddress));
-  };
+    await AsyncStorage.setItem(
+      'selectedAddress',
+      JSON.stringify(selectedAddress)
+    )
+  }
 
   const handleInputChange = (key, value) => {
-    setForm({ ...form, [key]: value });
-  };
+    setForm({ ...form, [key]: value })
+  }
 
   const handleSubmit = async () => {
     if (selectedAddress) {
-      await handleUpdateAddress();
+      await handleUpdateAddress()
     } else {
-      await handleCreateAddress();
+      await handleCreateAddress()
     }
-  };
+  }
 
   const handleCreateAddress = async () => {
     try {
-      await createAddress(form).unwrap();
-      resetForm();
-      setRegion('');
-      setDistricts([]);
-      setModalVisible(false);
-      refetch();
+      await createAddress(form).unwrap()
+      resetForm()
+      setRegion('')
+      setDistricts([])
+      setModalVisible(false)
+      refetch()
     } catch (error) {
-      console.error("Error creating address:", createError);
+      console.error('Error creating address:', createError)
     }
-  };
+  }
 
   const handleUpdateAddress = async () => {
     try {
-      await updateAddress({ id: selectedAddress._id, data: form }).unwrap();
-      resetForm();
-      setRegion('');
-      setDistricts([]);
-      setSelectedAddress(null);
-      setModalVisible(false);
-      refetch();
+      await updateAddress({ id: selectedAddress._id, data: form }).unwrap()
+      resetForm()
+      setRegion('')
+      setDistricts([])
+      setSelectedAddress(null)
+      setModalVisible(false)
+      refetch()
     } catch (error) {
-      console.error("Error updating address:", updateError);
+      console.error('Error updating address:', updateError)
     }
-  };
+  }
 
   const resetForm = () => {
     setForm({
@@ -139,56 +149,76 @@ const AddressComponent = () => {
       region: '',
       addressLabel: 'Home',
       mainAddress: false,
-    });
-  };
+    })
+  }
 
-  const handleEditAddress = (address) => {
-    setSelectedAddress(address);
-    setForm(address);
-    setModalVisible(true);
-  };
+  const handleEditAddress = address => {
+    setSelectedAddress(address)
+    setForm(address)
+    setModalVisible(true)
+  }
 
-  const [selectedIndex, setSelectedIndex] = useState(new IndexPath(0));
-  const [region, setRegion] = useState('');
-  const [city, setCity] = useState('');
-  const [districts, setDistricts] = useState([]);
+  const [selectedIndex, setSelectedIndex] = useState(new IndexPath(0))
+  const [region, setRegion] = useState('')
+  const [city, setCity] = useState('')
+  const [districts, setDistricts] = useState([])
 
   useEffect(() => {
     if (selectedIndex.row === 0) {
-      setRegion('');
-      setDistricts([]);
+      setRegion('')
+      setDistricts([])
     } else {
-      const regions = ['Central', 'Eastern', 'Northern', 'Western'];
-      setRegion(regions[selectedIndex.row - 1]);
-      handleInputChange('region', regions[selectedIndex.row - 1]);
-      setDistricts(getCountryByShort('UG')?.states[regions[selectedIndex.row - 1]].map(({ name }) => ({ title: name })));
+      const regions = ['Central', 'Eastern', 'Northern', 'Western']
+      setRegion(regions[selectedIndex.row - 1])
+      handleInputChange('region', regions[selectedIndex.row - 1])
+      setDistricts(
+        getCountryByShort('UG')?.states[regions[selectedIndex.row - 1]].map(
+          ({ name }) => ({ title: name })
+        )
+      )
     }
-  }, [selectedIndex]);
+  }, [selectedIndex])
 
-  const [selectedCityIndex, setSelectedCityIndex] = useState(new IndexPath(0));
+  const [selectedCityIndex, setSelectedCityIndex] = useState(new IndexPath(0))
 
   useEffect(() => {
     if (selectedIndex.row === 0) {
-      setCity('');
+      setCity('')
     } else if (districts.length > 0) {
-      const selectedCity = districts[selectedCityIndex.row - 1];
-      handleInputChange('city', selectedCity.title);
-      setCity(selectedCity.title);
+      const selectedCity = districts[selectedCityIndex.row - 1]
+      handleInputChange('city', selectedCity.title)
+      setCity(selectedCity.title)
     }
-  }, [selectedCityIndex]);
+  }, [selectedCityIndex])
 
   return (
     <>
       <StatusBar barStyle="light-content" />
-      <Appbar.Header style={{ paddingRight: 15, backgroundColor: '#111b2d', }}>
-        <Appbar.BackAction color={theme.colors.outlineVariant} onPress={() => router.back()} />
-        <Appbar.Content color={theme.colors.outlineVariant} title={<Text style={{ color: theme.colors.outlineVariant, fontSize: 18 }}>Address Book</Text>} />
+      <Appbar.Header style={{ paddingRight: 15, backgroundColor: '#111b2d' }}>
+        <Appbar.BackAction
+          color={theme.colors.outlineVariant}
+          onPress={() => router.back()}
+        />
+        <Appbar.Content
+          color={theme.colors.outlineVariant}
+          title={
+            <Text style={{ color: theme.colors.outlineVariant, fontSize: 18 }}>
+              Address Book
+            </Text>
+          }
+        />
       </Appbar.Header>
       <Layout style={styles.container}>
-        <Button onPress={() => {
-          setSelectedAddress(null); // Ensure we're in "create" mode
-          setModalVisible(true);
-        }} style={{ marginBottom: 10 }} mode="contained">Create New Address</Button>
+        <Button
+          onPress={() => {
+            setSelectedAddress(null) // Ensure we're in "create" mode
+            setModalVisible(true)
+          }}
+          style={{ marginBottom: 10 }}
+          mode="contained"
+        >
+          Create New Address
+        </Button>
         {isFetching ? (
           <FlatList
             data={Array.from({ length: 5 })}
@@ -197,7 +227,9 @@ const AddressComponent = () => {
             contentContainerStyle={styles.listContainer}
           />
         ) : fetchError ? (
-          <Text status='danger'>Error fetching addresses: {fetchError.message}</Text>
+          <Text status="danger">
+            Error fetching addresses: {fetchError.message}
+          </Text>
         ) : (
           <FlatList
             data={addresses}
@@ -210,11 +242,15 @@ const AddressComponent = () => {
                 onMainSelect={() => handleMainAddressSelect(item)}
               />
             )}
-            keyExtractor={(item) => item._id}
+            keyExtractor={item => item._id}
             contentContainerStyle={styles.listContainer}
           />
         )}
-        {edit && <Button mode="outlined" onPress={() => router.push('/checkout')}>Select and Confirm</Button>}
+        {edit && (
+          <Button mode="outlined" onPress={() => router.push('/checkout')}>
+            Select and Confirm
+          </Button>
+        )}
       </Layout>
       <AddressModal
         isVisible={isModalVisible}
@@ -232,8 +268,8 @@ const AddressComponent = () => {
         isCreating={isCreating || isUpdating}
       />
     </>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -243,6 +279,6 @@ const styles = StyleSheet.create({
   listContainer: {
     paddingBottom: 16,
   },
-});
+})
 
-export default AddressComponent;
+export default AddressComponent

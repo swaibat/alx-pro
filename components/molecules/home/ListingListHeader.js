@@ -114,7 +114,7 @@ const ListingListHeader = () => (
             }}
           >
             <Ionicons
-              name='grid'
+              name="grid"
               size={15}
               color={appSettings?.listView ? COLORS.gray : COLORS.white}
             />
@@ -135,7 +135,7 @@ const ListingListHeader = () => (
             }}
           >
             <Ionicons
-              name='list-sharp'
+              name="list-sharp"
               size={15}
               color={appSettings?.listView ? COLORS.white : COLORS.gray}
             />
@@ -217,7 +217,7 @@ const ListingListHeader = () => (
             }}
           >
             <Ionicons
-              name='grid'
+              name="grid"
               size={15}
               color={appSettings?.listView ? COLORS.gray : COLORS.white}
             />
@@ -238,7 +238,7 @@ const ListingListHeader = () => (
             }}
           >
             <Ionicons
-              name='list-sharp'
+              name="list-sharp"
               size={15}
               color={appSettings?.listView ? COLORS.white : COLORS.gray}
             />

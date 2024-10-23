@@ -1,34 +1,24 @@
-import React from 'react';
-import { StyleSheet, View } from 'react-native';
-import {
-  Button,
-  Layout,
-  Modal,
-  Text,
-  Input,
-} from '@ui-kitten/components';
+import React from 'react'
+import { StyleSheet, View } from 'react-native'
+import { Button, Layout, Modal, Text, Input } from '@ui-kitten/components'
 
 const PhoneNumberModal = ({ visible, onClose }) => {
-  const [phoneNumber, setPhoneNumber] = React.useState('');
+  const [phoneNumber, setPhoneNumber] = React.useState('')
 
   return (
-    <Modal
-      visible={visible}
-      onBackdropPress={onClose}
-      style={styles.modal}
-    >
+    <Modal visible={visible} onBackdropPress={onClose} style={styles.modal}>
       <Layout style={styles.container}>
-        <Text category='h5' style={styles.title}>OTP Register</Text>
+        <Text category="h5" style={styles.title}>
+          OTP Register
+        </Text>
         <Text style={styles.description}>
           We will send you a one-time password to your registered mobile number.
         </Text>
         <Input
-          placeholder='Enter your phone number'
+          placeholder="Enter your phone number"
           value={phoneNumber}
           onChangeText={setPhoneNumber}
-          accessoryRight={() => (
-            <Text style={styles.countryCode}>+256</Text>
-          )}
+          accessoryRight={() => <Text style={styles.countryCode}>+256</Text>}
           style={styles.input}
         />
         <Button onPress={onClose} style={styles.button}>
@@ -36,8 +26,8 @@ const PhoneNumberModal = ({ visible, onClose }) => {
         </Button>
       </Layout>
     </Modal>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   modal: {
@@ -66,6 +56,6 @@ const styles = StyleSheet.create({
   button: {
     marginTop: 20,
   },
-});
+})
 
-export default PhoneNumberModal;
+export default PhoneNumberModal

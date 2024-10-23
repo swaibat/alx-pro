@@ -1,64 +1,96 @@
-import React, { useState } from 'react';
-import { StyleSheet, TouchableWithoutFeedback, Keyboard, TouchableOpacity, StatusBar } from 'react-native';
-import { Layout, Input, Text } from '@ui-kitten/components';
-import { Appbar, Button, Card, Divider, Snackbar, useTheme } from 'react-native-paper'; // Snackbar for error messages
-import { useLoginMutation } from '@/api'; // Assume you have this mutation for login
-import { Eye, EyeSlash, Phone } from 'phosphor-react-native'; // Phosphor icons for password visibility
-import { useLocalSearchParams, useRouter } from 'expo-router';
-import LoginIllustration from '../assets/LoginIllustration'; // Assume you have this illustration
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, { useState } from 'react'
+import {
+  StyleSheet,
+  TouchableWithoutFeedback,
+  Keyboard,
+  TouchableOpacity,
+  StatusBar,
+} from 'react-native'
+import { Layout, Input, Text } from '@ui-kitten/components'
+import {
+  Appbar,
+  Button,
+  Card,
+  Divider,
+  Snackbar,
+  useTheme,
+} from 'react-native-paper' // Snackbar for error messages
+import { useLoginMutation } from '@/api' // Assume you have this mutation for login
+import { Eye, EyeSlash, Phone } from 'phosphor-react-native' // Phosphor icons for password visibility
+import { useLocalSearchParams, useRouter } from 'expo-router'
+import LoginIllustration from '../assets/LoginIllustration' // Assume you have this illustration
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const LoginScreen = () => {
-  const router = useRouter();
-  const theme = useTheme();
+  const router = useRouter()
+  const theme = useTheme()
 
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [password, setPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false); // Password visibility toggle
-  const [snackVisible, setSnackVisible] = useState(false);
-  const [snackMessage, setSnackMessage] = useState('');
-  const [login, { isLoading }] = useLoginMutation(); // Assume this is the login mutation
+  const [phoneNumber, setPhoneNumber] = useState('')
+  const [password, setPassword] = useState('')
+  const [showPassword, setShowPassword] = useState(false) // Password visibility toggle
+  const [snackVisible, setSnackVisible] = useState(false)
+  const [snackMessage, setSnackMessage] = useState('')
+  const [login, { isLoading }] = useLoginMutation() // Assume this is the login mutation
   const { ref } = useLocalSearchParams()
 
-  const phoneValidationRegex = /^(75|74|70|78|77|76|3|2)\d{7}$/; // Phone number validation regex
+  const phoneValidationRegex = /^(75|74|70|78|77|76|3|2)\d{7}$/ // Phone number validation regex
 
-  const handleSnackOpen = (message) => {
-    setSnackMessage(message);
-    setSnackVisible(true);
-  };
+  const handleSnackOpen = message => {
+    setSnackMessage(message)
+    setSnackVisible(true)
+  }
 
   const handleLogin = async () => {
     if (!phoneNumber || !phoneValidationRegex.test(phoneNumber)) {
-      handleSnackOpen('Please enter a valid phone number (format: 75XXXXXXX, 74XXXXXXX, etc.)');
-      return;
+      handleSnackOpen(
+        'Please enter a valid phone number (format: 75XXXXXXX, 74XXXXXXX, etc.)'
+      )
+      return
     }
     if (!password) {
-      handleSnackOpen('Please enter your password');
-      return;
+      handleSnackOpen('Please enter your password')
+      return
     }
 
     try {
-      const response = await login({ phoneNumber, password }).unwrap();
+      const response = await login({ phoneNumber, password }).unwrap()
       if (response.status === 200) {
         console.log('response.data', response.data)
-        await AsyncStorage.setItem('@user', JSON.stringify(response.data));
-        router.push(ref || '/');
+        await AsyncStorage.setItem('@user', JSON.stringify(response.data))
+        router.push(ref || '/')
       } else {
-        handleSnackOpen(response.message || 'Login failed. Please try again.');
+        handleSnackOpen(response.message || 'Login failed. Please try again.')
       }
     } catch (error) {
-      handleSnackOpen(error?.data?.message || 'Login failed. Please try again.');
-      console.error('Login Error:', error);
+      handleSnackOpen(error?.data?.message || 'Login failed. Please try again.')
+      console.error('Login Error:', error)
     }
-  };
+  }
 
   return (
     <>
       <StatusBar barStyle="light-content" />
-      <Appbar.Header style={{ paddingRight: 25, backgroundColor: '#111b2d', borderBottomColor: 'red', borderBottomWidth: 2 }}>
-          <Appbar.BackAction color={theme.colors.outlineVariant} onPress={() => router.push('/')} />
-          <Appbar.Content color={theme.colors.outlineVariant} title={<Text style={{ color: theme.colors.outlineVariant, fontSize: 18 }}>Login</Text>} />
-        </Appbar.Header>
+      <Appbar.Header
+        style={{
+          paddingRight: 25,
+          backgroundColor: '#111b2d',
+          borderBottomColor: 'red',
+          borderBottomWidth: 2,
+        }}
+      >
+        <Appbar.BackAction
+          color={theme.colors.outlineVariant}
+          onPress={() => router.push('/')}
+        />
+        <Appbar.Content
+          color={theme.colors.outlineVariant}
+          title={
+            <Text style={{ color: theme.colors.outlineVariant, fontSize: 18 }}>
+              Login
+            </Text>
+          }
+        />
+      </Appbar.Header>
       <Layout style={{ flex: 1 }}>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <Layout style={styles.container}>
@@ -67,22 +99,24 @@ const LoginScreen = () => {
 
             <Input
               style={styles.input}
-              label='Phone Number'
-              placeholder='Enter phone number'
-              onChangeText={(text) => setPhoneNumber(text)}
+              label="Phone Number"
+              placeholder="Enter phone number"
+              onChangeText={text => setPhoneNumber(text)}
               accessoryLeft={() => <Text style={styles.countryCode}>+256</Text>}
-              keyboardType='numeric'
+              keyboardType="numeric"
             />
 
             <Input
               style={styles.input}
-              label='Password'
-              placeholder='Enter password'
+              label="Password"
+              placeholder="Enter password"
               value={password}
               onChangeText={setPassword}
               secureTextEntry={!showPassword} // Toggle for password visibility
               accessoryRight={() => (
-                <TouchableOpacity onPress={() => setShowPassword((prev) => !prev)}>
+                <TouchableOpacity
+                  onPress={() => setShowPassword(prev => !prev)}
+                >
                   {showPassword ? (
                     <Eye size={24} weight="bold" />
                   ) : (
@@ -108,13 +142,23 @@ const LoginScreen = () => {
             </Button>
 
             <Text style={styles.registerText}>
-              By continuing, you agree to our  <Text style={styles.linkText}>Terms of use</Text> and <Text style={styles.linkText}>Privacy Policy</Text>
+              By continuing, you agree to our{' '}
+              <Text style={styles.linkText}>Terms of use</Text> and{' '}
+              <Text style={styles.linkText}>Privacy Policy</Text>
             </Text>
             <Divider style={{ marginVertical: 15 }} />
-            <Text style={[styles.registerText, { marginBottom: 15, marginTop: 0 }]}>
+            <Text
+              style={[styles.registerText, { marginBottom: 15, marginTop: 0 }]}
+            >
               Don’t have an account?
             </Text>
-            <Button mode="contained-tonal" onPress={() => router.push('/register')}> Register</Button>
+            <Button
+              mode="contained-tonal"
+              onPress={() => router.push('/register')}
+            >
+              {' '}
+              Register
+            </Button>
           </Layout>
         </TouchableWithoutFeedback>
 
@@ -132,8 +176,8 @@ const LoginScreen = () => {
         </Snackbar>
       </Layout>
     </>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -175,6 +219,6 @@ const styles = StyleSheet.create({
     color: '#007BFF',
     textDecorationLine: 'underline',
   },
-});
+})
 
-export default LoginScreen;
+export default LoginScreen

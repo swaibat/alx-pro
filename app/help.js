@@ -1,7 +1,20 @@
-import React from 'react';
-import { SafeAreaView, StyleSheet, Linking, View } from 'react-native';
-import { Layout, List, ListItem, Divider, Text, Card } from '@ui-kitten/components';
-import { WhatsappLogo, Globe, Phone, MapPin, Envelope } from "phosphor-react-native"; // Import Envelope icon
+import React from 'react'
+import { SafeAreaView, StyleSheet, Linking, View } from 'react-native'
+import {
+  Layout,
+  List,
+  ListItem,
+  Divider,
+  Text,
+  Card,
+} from '@ui-kitten/components'
+import {
+  WhatsappLogo,
+  Globe,
+  Phone,
+  MapPin,
+  Envelope,
+} from 'phosphor-react-native' // Import Envelope icon
 
 const HelpCenterScreen = () => {
   const data = [
@@ -9,20 +22,28 @@ const HelpCenterScreen = () => {
       title: 'WhatsApp',
       meta: 'Chat with us on WhatsApp', // Meta text for WhatsApp
       icon: () => <WhatsappLogo size={24} color="#25D366" />,
-      onPress: () => Linking.openURL('https://wa.me/256758307272') // Opens WhatsApp chat
+      onPress: () => Linking.openURL('https://wa.me/256758307272'), // Opens WhatsApp chat
     },
     {
       title: 'Website',
       meta: 'Visit our official website', // Meta text for Website
       icon: () => <Globe size={24} color="#007bff" />,
-      onPress: () => Linking.openURL('https://alx.ug') // Opens the website
-    }
-  ];
+      onPress: () => Linking.openURL('https://alx.ug'), // Opens the website
+    },
+  ]
 
   const contactDetails = [
-    { label: 'Customer Support', number: '+256 123 456 789', email: 'support@alx.ug' },
-    { label: 'Technical Support', number: '+256 987 654 321', email: 'tech@alx.ug' },
-  ];
+    {
+      label: 'Customer Support',
+      number: '+256 123 456 789',
+      email: 'support@alx.ug',
+    },
+    {
+      label: 'Technical Support',
+      number: '+256 987 654 321',
+      email: 'tech@alx.ug',
+    },
+  ]
 
   const renderItem = ({ item }) => (
     <Layout style={styles.listItem}>
@@ -36,35 +57,43 @@ const HelpCenterScreen = () => {
         <Text style={styles.metaText}>{item.meta}</Text>
       </View>
     </Layout>
-  );
+  )
 
   const renderContactItem = ({ label, number, email }) => (
     <View style={styles.contactItem}>
       <View style={styles.contactInfo}>
-        <View style={{flexDirection:'row'}}>
+        <View style={{ flexDirection: 'row' }}>
           <Phone size={20} color="#007bff" />
           <Text style={styles.contactText}>{label}: </Text>
         </View>
-        <Text style={styles.contactNumber} appearance='hint'>{number}</Text>
+        <Text style={styles.contactNumber} appearance="hint">
+          {number}
+        </Text>
       </View>
       <View style={styles.contactInfo}>
-        <View style={{flexDirection:'row'}}>
+        <View style={{ flexDirection: 'row' }}>
           <Envelope size={20} color="#007bff" />
           <Text style={styles.contactText}> Email: </Text>
         </View>
-        <Text style={styles.contactNumber} appearance='hint' onPress={() => Linking.openURL(`mailto:${email}`)}>
+        <Text
+          style={styles.contactNumber}
+          appearance="hint"
+          onPress={() => Linking.openURL(`mailto:${email}`)}
+        >
           {email}
         </Text>
       </View>
     </View>
-  );
+  )
 
   return (
     <SafeAreaView style={styles.safeArea}>
       <Divider />
       <Layout style={styles.container}>
         <Card style={styles.contactCard}>
-          <Text category="h6" style={styles.contactCardTitle}>Contact Center</Text>
+          <Text category="h6" style={styles.contactCardTitle}>
+            Contact Center
+          </Text>
           {contactDetails.map(contact => renderContactItem(contact))}
         </Card>
         <List
@@ -74,8 +103,8 @@ const HelpCenterScreen = () => {
         />
       </Layout>
     </SafeAreaView>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   safeArea: {
@@ -125,7 +154,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     // alignItems: 'center',
     flex: 1,
-    marginVertical:10,
+    marginVertical: 10,
   },
   contactText: {
     fontWeight: '500',
@@ -143,6 +172,6 @@ const styles = StyleSheet.create({
     marginLeft: 4,
     color: '#333',
   },
-});
+})
 
-export default HelpCenterScreen;
+export default HelpCenterScreen

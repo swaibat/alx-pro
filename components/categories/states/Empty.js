@@ -1,21 +1,24 @@
-import React from 'react';
-import { View,  StyleSheet, Image } from 'react-native';
-import { Layout, Text, useTheme } from '@ui-kitten/components';
+import React from 'react'
+import { View, StyleSheet, Image } from 'react-native'
+import { Layout, Text, useTheme } from '@ui-kitten/components'
 
 const EmptyCategoryScreen = () => {
-  const theme = useTheme();
+  const theme = useTheme()
 
   return (
     <Layout style={styles.container}>
       <View style={styles.content}>
-      <Image source={require('@/assets/images/error.png')} style={{ width: 160, height: 160, marginBottom: 10 }} />
-        <Text category='s1' appearance='hint'>
+        <Image
+          source={require('@/assets/images/error.png')}
+          style={{ width: 160, height: 160, marginBottom: 10 }}
+        />
+        <Text category="s1" appearance="hint">
           No categories Found
         </Text>
       </View>
     </Layout>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -33,6 +36,6 @@ const styles = StyleSheet.create({
     // fontSize: 18,
     fontWeight: 'bold',
   },
-});
+})
 
-export default EmptyCategoryScreen;
+export default EmptyCategoryScreen

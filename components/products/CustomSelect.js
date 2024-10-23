@@ -7,7 +7,7 @@ const MyModal = ({ visible, onClose, inputData }) => {
   const [modalVisible, setModalVisible] = useState(false)
 
   // Function to handle quantity selection
-  const handleSelectQuantity = (id) => {
+  const handleSelectQuantity = id => {
     setQuantity(id)
   }
 
@@ -22,19 +22,19 @@ const MyModal = ({ visible, onClose, inputData }) => {
 
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Button title='Open Modal' onPress={() => setModalVisible(true)} />
-      <Modal visible={visible} animationType='slide' transparent>
+      <Button title="Open Modal" onPress={() => setModalVisible(true)} />
+      <Modal visible={visible} animationType="slide" transparent>
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
             <Text style={styles.label}>{inputData.label}</Text>
             {/* Render fields dynamically */}
-            {inputData.fields.map((field) => (
+            {inputData.fields.map(field => (
               <View key={field.name}>
                 <Text style={styles.label}>{field.label}</Text>
                 {/* Render single select input */}
                 {field.input_type === 'single_select' && (
                   <View style={styles.possibleValuesContainer}>
-                    {field.possible_values.map((value) => (
+                    {field.possible_values.map(value => (
                       <TouchableOpacity
                         key={value.id}
                         style={[

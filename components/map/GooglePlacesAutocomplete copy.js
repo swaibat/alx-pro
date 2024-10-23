@@ -77,18 +77,18 @@ export const GooglePlacesAutocomplete = forwardRef((props, ref) => {
       return true
     } else {
       console.warn(
-        'If you are using React Native v0.60.0+ you must follow these instructions to enable currentLocation: https://git.io/Jf4AR',
+        'If you are using React Native v0.60.0+ you must follow these instructions to enable currentLocation: https://git.io/Jf4AR'
       )
       return false
     }
   }
 
-  const buildRowsFromResults = (results) => {
+  const buildRowsFromResults = results => {
     let res = []
 
     if (results.length === 0 || props.predefinedPlacesAlwaysVisible === true) {
       res = [
-        ...props.predefinedPlaces.filter((place) => place?.description.length),
+        ...props.predefinedPlaces.filter(place => place?.description.length),
       ]
 
       if (props.currentLocation === true && hasNavigator()) {
@@ -99,7 +99,7 @@ export const GooglePlacesAutocomplete = forwardRef((props, ref) => {
       }
     }
 
-    res = res.map((place) => ({
+    res = res.map(place => ({
       ...place,
       isPredefinedPlace: true,
     }))
@@ -107,7 +107,7 @@ export const GooglePlacesAutocomplete = forwardRef((props, ref) => {
     return [...res, ...results]
   }
 
-  const getRequestUrl = (requestUrl) => {
+  const getRequestUrl = requestUrl => {
     if (requestUrl) {
       if (requestUrl.useOnPlatform === 'all') {
         return requestUrl.url
@@ -126,7 +126,7 @@ export const GooglePlacesAutocomplete = forwardRef((props, ref) => {
   const [stateText, setStateText] = useState('')
   const [dataSource, setDataSource] = useState(buildRowsFromResults([]))
   const [listViewDisplayed, setListViewDisplayed] = useState(
-    props.listViewDisplayed === 'auto' ? false : props.listViewDisplayed,
+    props.listViewDisplayed === 'auto' ? false : props.listViewDisplayed
   )
   const [url] = useState(getRequestUrl(props.requestUrl))
 
@@ -143,7 +143,7 @@ export const GooglePlacesAutocomplete = forwardRef((props, ref) => {
   }, [])
 
   useImperativeHandle(ref, () => ({
-    setAddressText: (address) => {
+    setAddressText: address => {
       setStateText(address)
     },
     getAddressText: () => stateText,
@@ -157,14 +157,14 @@ export const GooglePlacesAutocomplete = forwardRef((props, ref) => {
     url === 'https://maps.googleapis.com/maps/api'
 
   const _abortRequests = () => {
-    _requests.map((i) => i.abort())
+    _requests.map(i => i.abort())
     _requests = []
   }
 
   const supportedPlatform = () => {
     if (Platform.OS === 'web' && !props.requestUrl) {
       console.warn(
-        'This library cannot be used for the web unless you specify the requestUrl prop. See https://git.io/JflFv for more for details.',
+        'This library cannot be used for the web unless you specify the requestUrl prop. See https://git.io/JflFv for more for details.'
       )
       return false
     } else {
@@ -191,7 +191,7 @@ export const GooglePlacesAutocomplete = forwardRef((props, ref) => {
 
     getCurrentPosition &&
       getCurrentPosition(
-        (position) => {
+        position => {
           if (props.nearbyPlacesAPI === 'None') {
             let currentLocation = {
               description: props.currentLocationLabel,
@@ -209,15 +209,15 @@ export const GooglePlacesAutocomplete = forwardRef((props, ref) => {
             _requestNearby(position.coords.latitude, position.coords.longitude)
           }
         },
-        (error) => {
+        error => {
           _disableRowLoaders()
           console.error(error.message)
         },
-        options,
+        options
       )
   }
 
-  const _onPress = (rowData) => {
+  const _onPress = rowData => {
     if (rowData.isPredefinedPlace !== true && props.fetchDetails === true) {
       if (rowData.isLoading === true) {
         // already requesting
@@ -272,7 +272,7 @@ export const GooglePlacesAutocomplete = forwardRef((props, ref) => {
 
           if (!props.onFail) {
             console.warn(
-              'google places autocomplete: request could not be completed or has been aborted',
+              'google places autocomplete: request could not be completed or has been aborted'
             )
           } else {
             props.onFail('request could not be completed or has been aborted')
@@ -288,7 +288,7 @@ export const GooglePlacesAutocomplete = forwardRef((props, ref) => {
             placeid: rowData.place_id,
             language: props.query.language,
             ...props.GooglePlacesDetailsQuery,
-          }),
+          })
       )
 
       request.withCredentials = requestShouldUseWithCredentials()
@@ -314,7 +314,7 @@ export const GooglePlacesAutocomplete = forwardRef((props, ref) => {
     }
   }
 
-  const _enableRowLoader = (rowData) => {
+  const _enableRowLoader = rowData => {
     let rows = buildRowsFromResults(_results)
     for (let i = 0; i < rows.length; i++) {
       if (
@@ -341,7 +341,7 @@ export const GooglePlacesAutocomplete = forwardRef((props, ref) => {
     // }
   }
 
-  const _getPredefinedPlace = (rowData) => {
+  const _getPredefinedPlace = rowData => {
     if (rowData.isPredefinedPlace !== true) {
       return rowData
     }
@@ -405,7 +405,7 @@ export const GooglePlacesAutocomplete = forwardRef((props, ref) => {
             if (props.nearbyPlacesAPI === 'GoogleReverseGeocoding') {
               results = _filterResultsByTypes(
                 responseJSON.results,
-                props.filterReverseGeocodingByTypes,
+                props.filterReverseGeocodingByTypes
               )
             } else {
               results = responseJSON.results
@@ -417,7 +417,7 @@ export const GooglePlacesAutocomplete = forwardRef((props, ref) => {
           if (typeof responseJSON.error_message !== 'undefined') {
             if (!props.onFail)
               console.warn(
-                'google places autocomplete: ' + responseJSON.error_message,
+                'google places autocomplete: ' + responseJSON.error_message
               )
             else {
               props.onFail(responseJSON.error_message)
@@ -459,7 +459,7 @@ export const GooglePlacesAutocomplete = forwardRef((props, ref) => {
     }
   }
 
-  const _request = (text) => {
+  const _request = text => {
     _abortRequests()
     if (supportedPlatform() && text && text.length >= props.minLength) {
       const request = new XMLHttpRequest()
@@ -479,7 +479,7 @@ export const GooglePlacesAutocomplete = forwardRef((props, ref) => {
               props.nearbyPlacesAPI === 'GoogleReverseGeocoding'
                 ? _filterResultsByTypes(
                     responseJSON.predictions,
-                    props.filterReverseGeocodingByTypes,
+                    props.filterReverseGeocodingByTypes
                   )
                 : responseJSON.predictions
 
@@ -490,7 +490,7 @@ export const GooglePlacesAutocomplete = forwardRef((props, ref) => {
           if (typeof responseJSON.error_message !== 'undefined') {
             if (!props.onFail)
               console.warn(
-                'google places autocomplete: ' + responseJSON.error_message,
+                'google places autocomplete: ' + responseJSON.error_message
               )
             else {
               props.onFail(responseJSON.error_message)
@@ -510,7 +510,7 @@ export const GooglePlacesAutocomplete = forwardRef((props, ref) => {
         `${url}/place/autocomplete/json?&input=` +
           encodeURIComponent(text) +
           '&' +
-          Qs.stringify(props.query),
+          Qs.stringify(props.query)
       )
 
       request.withCredentials = requestShouldUseWithCredentials()
@@ -525,12 +525,12 @@ export const GooglePlacesAutocomplete = forwardRef((props, ref) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const debounceData = useMemo(() => debounce(_request, props.debounce), [])
 
-  const _onChangeText = (text) => {
+  const _onChangeText = text => {
     setStateText(text)
     debounceData(text)
   }
 
-  const _handleChangeText = (text) => {
+  const _handleChangeText = text => {
     _onChangeText(text)
 
     const onChangeText = props?.textInputProps?.onChangeText
@@ -541,7 +541,7 @@ export const GooglePlacesAutocomplete = forwardRef((props, ref) => {
   }
 
   const _getRowLoader = () => {
-    return <ActivityIndicator animating={true} size='small' />
+    return <ActivityIndicator animating={true} size="small" />
   }
 
   const _renderRowData = (rowData, index) => {
@@ -565,7 +565,7 @@ export const GooglePlacesAutocomplete = forwardRef((props, ref) => {
     )
   }
 
-  const _renderDescription = (rowData) => {
+  const _renderDescription = rowData => {
     if (props.renderDescription) {
       return props.renderDescription(rowData)
     }
@@ -573,7 +573,7 @@ export const GooglePlacesAutocomplete = forwardRef((props, ref) => {
     return rowData.description || rowData.formatted_address || rowData.name
   }
 
-  const _renderLoader = (rowData) => {
+  const _renderLoader = rowData => {
     if (rowData.isLoading === true) {
       return (
         <View
@@ -659,7 +659,7 @@ export const GooglePlacesAutocomplete = forwardRef((props, ref) => {
     return false
   }
 
-  const _onBlur = (e) => {
+  const _onBlur = e => {
     if (e && isNewFocusInAutocompleteResultList(e)) return
 
     setListViewDisplayed(false)

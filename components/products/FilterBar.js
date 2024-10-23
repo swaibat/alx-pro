@@ -12,19 +12,19 @@ const FilterBar = () => {
     >
       <View style={styles.filterItem}>
         <Text style={styles.filterText}>Budget</Text>
-        <AntDesign name='down' size={16} color='black' />
+        <AntDesign name="down" size={16} color="black" />
       </View>
       <View style={styles.filterItem}>
         <Text style={styles.filterText}>Brand and Model</Text>
-        <AntDesign name='down' size={16} color='black' />
+        <AntDesign name="down" size={16} color="black" />
       </View>
       <View style={styles.filterItem}>
         <Text style={styles.filterText}>Year</Text>
-        <AntDesign name='down' size={16} color='black' />
+        <AntDesign name="down" size={16} color="black" />
       </View>
       <View style={styles.filterItem}>
         <Text style={styles.filterText}>Fuel</Text>
-        <AntDesign name='down' size={16} color='black' />
+        <AntDesign name="down" size={16} color="black" />
       </View>
     </ScrollView>
   )

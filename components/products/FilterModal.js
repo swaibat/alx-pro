@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react'
 import {
   Modal,
   StyleSheet,
   TouchableOpacity,
   View,
   StatusBar,
-} from 'react-native';
+} from 'react-native'
 import {
   Button,
   Input,
@@ -13,10 +13,10 @@ import {
   Layout,
   Radio,
   RadioGroup,
-} from '@ui-kitten/components';
-import { useGetProductFiltersQuery } from '../../../api';
-import { X } from 'phosphor-react-native'; // Phosphor Icons
-import colors from '../../../theme/colors';
+} from '@ui-kitten/components'
+import { useGetProductFiltersQuery } from '../../../api'
+import { X } from 'phosphor-react-native' // Phosphor Icons
+import colors from '../../../theme/colors'
 
 export default function FilterModal({
   meta,
@@ -24,28 +24,28 @@ export default function FilterModal({
   setFilterModalOpen,
   button,
 }) {
-  const [inputValue, setInputValue] = useState([0, 0]);
-  const { data } = useGetProductFiltersQuery({});
+  const [inputValue, setInputValue] = useState([0, 0])
+  const { data } = useGetProductFiltersQuery({})
 
   const toggleModal = () => {
-    setFilterModalOpen(!open);
-  };
+    setFilterModalOpen(!open)
+  }
 
   useEffect(() => {
     if (meta) {
-      setInputValue([meta.minPrice, meta.maxPrice]);
+      setInputValue([meta.minPrice, meta.maxPrice])
     }
-  }, [meta]);
+  }, [meta])
 
   const applyFilters = () => {
     // Implement filter application logic here
-    setFilterModalOpen(false);
-  };
+    setFilterModalOpen(false)
+  }
 
   const clearFilters = () => {
     // Implement filter clearing logic here
-    setFilterModalOpen(false);
-  };
+    setFilterModalOpen(false)
+  }
 
   return (
     <Layout style={styles.container}>
@@ -65,14 +65,14 @@ export default function FilterModal({
               Filter Products
             </Text>
             {data &&
-              data.data.map((filter) => (
+              data.data.map(filter => (
                 <View key={filter._id} style={styles.filterSection}>
                   <Text category="s1" style={styles.filterTitle}>
                     {filter.label}
                   </Text>
                   {filter.name !== 'price' ? (
                     <RadioGroup>
-                      {filter.values.map((option) => (
+                      {filter.values.map(option => (
                         <Radio key={option.value} style={styles.radioButton}>
                           {option.name}
                         </Radio>
@@ -86,7 +86,11 @@ export default function FilterModal({
                 </View>
               ))}
             <View style={styles.buttonGroup}>
-              <Button style={styles.button} appearance="outline" onPress={clearFilters}>
+              <Button
+                style={styles.button}
+                appearance="outline"
+                onPress={clearFilters}
+              >
                 Clear Filters
               </Button>
               <Button style={styles.button} onPress={applyFilters}>
@@ -97,7 +101,7 @@ export default function FilterModal({
         </View>
       </Modal>
     </Layout>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -141,4 +145,4 @@ const styles = StyleSheet.create({
     flex: 1,
     marginHorizontal: 5,
   },
-});
+})

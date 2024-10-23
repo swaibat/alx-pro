@@ -1,7 +1,7 @@
 // SkeletonLoader.js
-import React from 'react';
-import { View, StyleSheet } from 'react-native';
-import { Card } from '@ui-kitten/components';
+import React from 'react'
+import { View, StyleSheet } from 'react-native'
+import { Card } from '@ui-kitten/components'
 
 const SkeletonLoader = () => (
   <Card style={[styles.addressItem, { opacity: 0.5 }]}>
@@ -9,7 +9,7 @@ const SkeletonLoader = () => (
     <View style={styles.skeletonLine} />
     <View style={styles.skeletonLine} />
   </Card>
-);
+)
 
 const styles = StyleSheet.create({
   skeletonLine: {
@@ -18,6 +18,6 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     marginBottom: 10,
   },
-});
+})
 
-export default SkeletonLoader;
+export default SkeletonLoader

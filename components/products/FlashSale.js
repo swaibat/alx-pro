@@ -1,9 +1,20 @@
-import React, { useState, useEffect } from 'react';
-import { ScrollView, Image, View, StyleSheet, ActivityIndicator } from 'react-native';
-import { Layout, Text, useTheme } from '@ui-kitten/components';
-import { Lightning } from 'phosphor-react-native';
-import Animated, { Easing, useSharedValue, withTiming, useAnimatedStyle } from 'react-native-reanimated';
-import { useGetProductsQuery } from '@/api'; // Assuming the query is in the 'api' file
+import React, { useState, useEffect } from 'react'
+import {
+  ScrollView,
+  Image,
+  View,
+  StyleSheet,
+  ActivityIndicator,
+} from 'react-native'
+import { Layout, Text, useTheme } from '@ui-kitten/components'
+import { Lightning } from 'phosphor-react-native'
+import Animated, {
+  Easing,
+  useSharedValue,
+  withTiming,
+  useAnimatedStyle,
+} from 'react-native-reanimated'
+import { useGetProductsQuery } from '@/api' // Assuming the query is in the 'api' file
 
 // Skeleton Loader for Product Cards
 const ProductSkeleton = () => (
@@ -12,80 +23,95 @@ const ProductSkeleton = () => (
     <View style={styles.skeletonText} />
     <View style={styles.skeletonText} />
   </View>
-);
+)
 
 // Countdown Timer Logic
-const calculateTimeLeft = (expiryDate) => {
-  const difference = new Date(expiryDate) - new Date();
-  let timeLeft = {};
+const calculateTimeLeft = expiryDate => {
+  const difference = new Date(expiryDate) - new Date()
+  let timeLeft = {}
 
   if (difference > 0) {
     timeLeft = {
-      hours: String(Math.floor((difference / (1000 * 60 * 60)) % 24)).padStart(2, '0'), // Format hours
-      minutes: String(Math.floor((difference / 1000 / 60) % 60)).padStart(2, '0'), // Format minutes
+      hours: String(Math.floor((difference / (1000 * 60 * 60)) % 24)).padStart(
+        2,
+        '0'
+      ), // Format hours
+      minutes: String(Math.floor((difference / 1000 / 60) % 60)).padStart(
+        2,
+        '0'
+      ), // Format minutes
       seconds: String(Math.floor((difference / 1000) % 60)).padStart(2, '0'), // Format seconds
-    };
+    }
   } else {
     timeLeft = {
       hours: '00',
       minutes: '00',
       seconds: '00',
-    };
+    }
   }
 
-  return timeLeft;
-};
+  return timeLeft
+}
 
 // Digital Clock Style Component
 const FlipClockDigit = ({ digit }) => {
-  const rotation = useSharedValue(0);
+  const rotation = useSharedValue(0)
 
   useEffect(() => {
     rotation.value = withTiming(360, {
       duration: 500,
       easing: Easing.linear,
-    });
-  }, [digit]);
+    })
+  }, [digit])
 
   const animatedStyle = useAnimatedStyle(() => {
     return {
       transform: [{ rotateX: `${rotation.value}deg` }],
-    };
-  });
+    }
+  })
 
   return (
     <Animated.View style={[styles.flipDigit, animatedStyle]}>
       <Text style={styles.digitText}>{digit}</Text>
     </Animated.View>
-  );
-};
+  )
+}
 
 const FlashSale = () => {
-  const theme = useTheme();
-  const expiryDate = '2024-11-01T23:59:59'; // Replace with actual expiry date
-  const [timeLeft, setTimeLeft] = useState(calculateTimeLeft(expiryDate));
+  const theme = useTheme()
+  const expiryDate = '2024-11-01T23:59:59' // Replace with actual expiry date
+  const [timeLeft, setTimeLeft] = useState(calculateTimeLeft(expiryDate))
 
   // Fetch flash sale products using the getProducts query with search params
-  const { data: flashSaleProducts, isLoading } = useGetProductsQuery({ flashsale: true });
+  const { data: flashSaleProducts, isLoading } = useGetProductsQuery({
+    flashsale: true,
+  })
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setTimeLeft(calculateTimeLeft(expiryDate));
-    }, 1000);
+      setTimeLeft(calculateTimeLeft(expiryDate))
+    }, 1000)
 
-    return () => clearInterval(timer);
-  }, []);
+    return () => clearInterval(timer)
+  }, [])
 
   // Render a product card for each product in the flash sale
-  const renderProduct = (product) => (
+  const renderProduct = product => (
     <View key={product._id} style={styles.productContainer}>
-      <Image source={product?.files.length ? { uri: product.files[0].url } : require('@/assets/placeholder.png')} style={styles.productImage} />
+      <Image
+        source={
+          product?.files.length
+            ? { uri: product.files[0].url }
+            : require('@/assets/placeholder.png')
+        }
+        style={styles.productImage}
+      />
       <View style={styles.productDetails}>
         <Text style={styles.productPrice}>UGX {product?.price}</Text>
         <Text style={styles.productSold}>{product?.sold} sold</Text>
       </View>
     </View>
-  );
+  )
 
   // Render skeleton loader while loading
   const renderSkeleton = () => (
@@ -96,14 +122,19 @@ const FlashSale = () => {
       <ProductSkeleton />
       <ProductSkeleton />
     </View>
-  );
+  )
 
   return (
     <Layout style={styles.layout}>
       {/* Flash Sale Header with Countdown */}
       <View style={styles.header}>
         <View style={styles.headerLeft}>
-          <View style={[styles.iconWrapper, { backgroundColor: theme['color-primary-default'] }]}>
+          <View
+            style={[
+              styles.iconWrapper,
+              { backgroundColor: theme['color-primary-default'] },
+            ]}
+          >
             <Lightning color="white" weight="fill" size={25} />
           </View>
           <View>
@@ -122,11 +153,13 @@ const FlashSale = () => {
 
       {/* Horizontal Scrollable Products or Skeleton */}
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-        {isLoading ? renderSkeleton() : flashSaleProducts?.data?.docs?.map(renderProduct)}
+        {isLoading
+          ? renderSkeleton()
+          : flashSaleProducts?.data?.docs?.map(renderProduct)}
       </ScrollView>
     </Layout>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   layout: {
@@ -224,6 +257,6 @@ const styles = StyleSheet.create({
     marginTop: 5,
     borderRadius: 3,
   },
-});
+})
 
-export default FlashSale;
+export default FlashSale

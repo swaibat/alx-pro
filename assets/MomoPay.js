@@ -4,7 +4,13 @@ import { coolGray300 } from '@theme'
 
 function MomoPay() {
   return (
-    <Svg width="123" height="45" viewBox="0 0 123 45" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <Svg
+      width="123"
+      height="45"
+      viewBox="0 0 123 45"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
       <Path d="M0 0H47.3753V19.4495V38.899H0V0Z" fill="#0A4D6E" />
       <Path
         fillRule="evenodd"
