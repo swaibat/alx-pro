@@ -171,6 +171,13 @@ export const api = createApi({
         body: data,
       }),
     }),
+    resetPassword: builder.mutation({
+      query: ({ phoneNumber, newPassword }) => ({
+        url: `auth/password-reset`,
+        method: 'POST',
+        body: { phoneNumber, newPassword },
+      }),
+    }),
   }),
 })
 
@@ -201,4 +208,5 @@ export const {
   useCreateOrderMutation,
   useGetOrdersQuery,
   useGetOrderDetailsQuery,
+  useResetPasswordMutation,
 } = api

@@ -5,43 +5,36 @@ import {
   Keyboard,
   TouchableOpacity,
   StatusBar,
+  View,
 } from 'react-native'
 import { Layout, Input, Text } from '@ui-kitten/components'
-import { Appbar, Button, Divider, Snackbar, useTheme } from 'react-native-paper'
+import { Appbar, Button, Divider, useTheme } from 'react-native-paper'
 import { useLoginMutation } from '@/api'
-import { Eye, EyeSlash } from 'phosphor-react-native'
+import { Eye, EyeClosed } from 'phosphor-react-native'
 import { useLocalSearchParams, useRouter } from 'expo-router'
 import LoginIllustration from '@/assets/LoginIllustration'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { useSnackbar } from '@/hooks/useSnackbar'
 
 const LoginScreen = () => {
   const router = useRouter()
   const theme = useTheme()
-
+  const { triggerSnackbar } = useSnackbar()
   const [phoneNumber, setPhoneNumber] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
-  const [snackVisible, setSnackVisible] = useState(false)
-  const [snackMessage, setSnackMessage] = useState('')
   const [login, { isLoading }] = useLoginMutation()
   const { ref } = useLocalSearchParams()
 
   const phoneValidationRegex = /^(75|74|70|78|77|76|3|2)\d{7}$/
 
-  const handleSnackOpen = message => {
-    setSnackMessage(message)
-    setSnackVisible(true)
-  }
-
   const handleLogin = async () => {
     if (!phoneNumber || !phoneValidationRegex.test(phoneNumber)) {
-      handleSnackOpen(
-        'Please enter a valid phone number (format: 75XXXXXXX, 74XXXXXXX, etc.)'
-      )
+      triggerSnackbar('Please enter a valid phone number', 'error')
       return
     }
     if (!password) {
-      handleSnackOpen('Please enter your password')
+      triggerSnackbar('Please enter your password', 'error')
       return
     }
 
@@ -51,11 +44,16 @@ const LoginScreen = () => {
         await AsyncStorage.setItem('@user', JSON.stringify(response.data))
         router.push(ref || '/')
       } else {
-        handleSnackOpen(response.message || 'Login failed. Please try again.')
+        triggerSnackbar(
+          response.message || 'Login failed. Please try again.',
+          'error'
+        )
       }
     } catch (error) {
-      handleSnackOpen(error?.data?.message || 'Login failed. Please try again.')
-      console.error('Login Error:', error)
+      triggerSnackbar(
+        error?.data?.message || 'Login failed. Please try again.',
+        'error'
+      )
     }
   }
 
@@ -112,13 +110,13 @@ const LoginScreen = () => {
                   {showPassword ? (
                     <Eye size={24} weight="bold" />
                   ) : (
-                    <EyeSlash size={24} weight="bold" />
+                    <EyeClosed size={24} weight="bold" />
                   )}
                 </TouchableOpacity>
               )}
             />
 
-            <TouchableOpacity onPress={() => router.push('/forgot-password')}>
+            <TouchableOpacity onPress={() => router.push('/forgot_password')}>
               <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
             </TouchableOpacity>
 
@@ -131,11 +129,25 @@ const LoginScreen = () => {
               {isLoading ? 'Logging in...' : 'Login'}
             </Button>
 
-            <Text style={styles.registerText}>
-              By continuing, you agree to our{' '}
-              <Text style={styles.linkText}>Terms of use</Text> and{' '}
-              <Text style={styles.linkText}>Privacy Policy</Text>
-            </Text>
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                flexWrap: 'wrap',
+                justifyContent: 'center',
+              }}
+            >
+              <Text style={styles.registerText}>
+                By continuing, you agree to our
+              </Text>
+              <TouchableOpacity onPress={() => router.push('terms_of_service')}>
+                <Text style={styles.linkText}>Terms of use</Text>
+              </TouchableOpacity>
+              <Text style={styles.registerText}>and</Text>
+              <TouchableOpacity onPress={() => router.push('privacy_policy')}>
+                <Text style={styles.linkText}>Privacy Policy</Text>
+              </TouchableOpacity>
+            </View>
             <Divider style={{ marginVertical: 15 }} />
             <Text
               style={[styles.registerText, { marginBottom: 15, marginTop: 0 }]}
@@ -146,24 +158,10 @@ const LoginScreen = () => {
               mode="contained-tonal"
               onPress={() => router.push('/register')}
             >
-              {' '}
               Register
             </Button>
           </Layout>
         </TouchableWithoutFeedback>
-
-        {/* Snackbar for Error Messages */}
-        <Snackbar
-          visible={snackVisible}
-          onDismiss={() => setSnackVisible(false)}
-          duration={3000}
-          action={{
-            label: 'Dismiss',
-            onPress: () => setSnackVisible(false),
-          }}
-        >
-          {snackMessage}
-        </Snackbar>
       </Layout>
     </>
   )
@@ -202,8 +200,8 @@ const styles = StyleSheet.create({
   },
   registerText: {
     textAlign: 'center',
-    marginTop: 20,
     fontSize: 14,
+    marginHorizontal: 5,
   },
   linkText: {
     color: '#007BFF',

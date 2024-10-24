@@ -13,6 +13,7 @@ import { store } from '@/store'
 import { ApplicationProvider } from '@ui-kitten/components'
 import 'react-native-reanimated'
 import { usePushNotifications } from '@/scripts/NotificationsService'
+import AppSnackbar from '@/components/_global/AppSnackbar'
 
 SplashScreen.preventAutoHideAsync()
 
@@ -83,6 +84,7 @@ export default function RootLayout() {
             />
             <Stack.Screen name="+not-found" />
           </Stack>
+          <AppSnackbar />
         </PaperProvider>
       </ApplicationProvider>
     </Provider>

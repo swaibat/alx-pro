@@ -12,7 +12,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { addToCart } from '@/store/cartSlice'
 import { ShoppingCart, Star, Check } from 'phosphor-react-native'
 import { useLocalSearchParams, useRouter } from 'expo-router'
-import { Snackbar, Appbar, Button } from 'react-native-paper'
+import { Appbar, Button } from 'react-native-paper'
 import ProductDetailsSkeleton from '@/components/loading/ProductDetailsSkeleton'
 import RelatedProducts from '@/components/products/RelatedProducts'
 
@@ -34,10 +34,8 @@ const ProductDetailsScreen = () => {
   const [selectedIndex, setSelectedIndex] = useState(0)
   const [selectedColor, setSelectedColor] = useState({})
   const [selectedSize, setSelectedSize] = useState(null)
-  const [showMore, setShowMore] = useState(false)
-  const [visible, setVisible] = useState(false)
+  const [activeTab, setActiveTab] = useState('overview') // Added state for active tab
 
-  const onDismissSnackBar = () => setVisible(false)
   const handleAddToCart = () => {
     const cartItem = {
       _id: product._id,
@@ -52,7 +50,6 @@ const ProductDetailsScreen = () => {
     }
 
     dispatch(addToCart(cartItem))
-    setVisible(true)
   }
 
   const CartIconWithBadge = () => (
@@ -124,26 +121,53 @@ const ProductDetailsScreen = () => {
                   </View>
                 </View>
 
-                <View style={{ marginBottom: 15 }}>
-                  <Text
-                    category="s2"
-                    style={{ fontWeight: 'bold', marginBottom: 3 }}
+                {/* Custom Tab Implementation */}
+                <View style={styles.tabsContainer}>
+                  <TouchableOpacity
+                    style={[
+                      styles.tab,
+                      activeTab === 'overview' && styles.activeTab,
+                    ]}
+                    onPress={() => setActiveTab('overview')}
                   >
-                    Description
-                  </Text>
-                  {/* Collapsible text */}
-                  <Text
-                    style={{ marginVertical: 3 }}
-                    numberOfLines={showMore ? undefined : 3}
+                    <Text style={styles.tabText}>Overview</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={[
+                      styles.tab,
+                      activeTab === 'specifications' && styles.activeTab,
+                    ]}
+                    onPress={() => setActiveTab('specifications')}
                   >
-                    {product?.description}
-                  </Text>
-                  <TouchableOpacity onPress={() => setShowMore(!showMore)}>
-                    <Text style={{ color: '#3E4685' }}>
-                      {showMore ? 'See less' : 'See more'}
-                    </Text>
+                    <Text style={styles.tabText}>Specifications</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={[
+                      styles.tab,
+                      activeTab === 'reviews' && styles.activeTab,
+                    ]}
+                    onPress={() => setActiveTab('reviews')}
+                  >
+                    <Text style={styles.tabText}>Reviews</Text>
                   </TouchableOpacity>
                 </View>
+
+                {/* Tab Content */}
+                {activeTab === 'overview' && (
+                  <View style={styles.tabContent}>
+                    <Text>{product?.description}</Text>
+                  </View>
+                )}
+                {activeTab === 'specifications' && (
+                  <View style={styles.tabContent}>
+                    <Text>Specifications go here...</Text>
+                  </View>
+                )}
+                {activeTab === 'reviews' && (
+                  <View style={styles.tabContent}>
+                    <Text>Reviews go here...</Text>
+                  </View>
+                )}
 
                 {/* Colors and Sizes */}
                 {product?.variants?.colors?.length > 0 && (
@@ -226,21 +250,6 @@ const ProductDetailsScreen = () => {
           </Layout>
         </>
       )}
-
-      <Snackbar
-        visible={visible}
-        onDismiss={onDismissSnackBar}
-        duration={3000}
-        action={{
-          label: 'View Cart',
-          onPress: () => {
-            router.push('/cart')
-          },
-        }}
-        style={styles.snackbar}
-      >
-        Product added to cart!
-      </Snackbar>
     </>
   )
 }
@@ -261,7 +270,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 10,
     resizeMode: 'cover',
-    borderColor: 'gainsboro',
+    borderColor: 'lightgray',
   },
   dotsContainer: {
     flexDirection: 'row',
@@ -278,63 +287,49 @@ const styles = StyleSheet.create({
     marginTop: -50,
   },
   activeDot: {
-    backgroundColor: '#000',
+    backgroundColor: '#3E4685',
     width: 20,
   },
-  content: {},
+  content: {
+    flex: 1,
+  },
   infoCard: {
-    marginBottom: 16,
-    flexDirection: 'row',
-    alignItems: 'center',
+    borderRadius: 10,
+    padding: 10,
+    backgroundColor: '#f8f8f8',
+    marginBottom: 10,
   },
   productTitle: {
-    marginBottom: 8,
+    fontWeight: 'bold',
   },
   ratingContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 8,
   },
   soldText: {
-    fontSize: 11,
-    backgroundColor: 'gainsboro',
-    paddingVertical: 3,
-    paddingHorizontal: 7,
-    borderRadius: 5,
-    marginRight: 15,
+    marginRight: 5,
   },
-  bottomTabsContainer: {
+  tabsContainer: {
     flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    padding: 15,
-    borderTopWidth: 1,
-    borderColor: 'gainsboro',
+    justifyContent: 'space-around',
+    borderBottomWidth: 1,
+    borderBottomColor: '#E0E0E0',
+    // marginVertical: 10,
   },
-  price: {
-    color: '#d32f2f',
-  },
-  tabButton: {
+  tab: {
     flex: 1,
-    marginHorizontal: 4,
-  },
-  cartIconContainer: {
-    position: 'relative',
-  },
-  cartCount: {
-    position: 'absolute',
-    top: -6,
-    right: -6,
-    backgroundColor: '#d32f2f',
-    width: 20,
-    height: 20,
-    borderRadius: 10,
-    justifyContent: 'center',
+    paddingVertical: 10,
     alignItems: 'center',
   },
-  cartCountText: {
-    color: 'white',
-    fontSize: 12,
+  activeTab: {
+    borderBottomWidth: 2,
+    borderBottomColor: '#3E4685',
+  },
+  tabText: {
+    fontWeight: 'bold',
+  },
+  tabContent: {
+    paddingVertical: 10,
   },
   colorContainer: {
     flexDirection: 'row',
@@ -344,173 +339,58 @@ const styles = StyleSheet.create({
     width: 30,
     height: 30,
     borderRadius: 15,
-    marginHorizontal: 5,
+    marginRight: 10,
     borderWidth: 1,
-    borderColor: '#ddd',
-    justifyContent: 'center',
-    alignItems: 'center',
+    borderColor: 'lightgray',
   },
   selectedColorBox: {
-    borderColor: '#000',
+    borderColor: '#3E4685',
   },
   sizeContainer: {
     flexDirection: 'row',
     marginVertical: 10,
   },
   sizeBox: {
-    width: 70,
-    padding: 5,
-    marginHorizontal: 5,
     borderWidth: 1,
-    borderRadius: 4,
-    borderColor: '#ddd',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  // Skeleton Styles
-  skeletonContainer: {
-    padding: 16,
-    height: '100%',
-  },
-  skeletonImage: {
-    height: 300,
-    width: '100%',
-    backgroundColor: '#e0e0e0',
-    borderRadius: 10,
-    marginBottom: 20,
-  },
-  skeletonDotsContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    marginBottom: 20,
-  },
-  skeletonDot: {
-    width: 8,
-    height: 8,
-    backgroundColor: '#e0e0e0',
-    borderRadius: 4,
-    marginHorizontal: 4,
-  },
-  skeletonInfoContainer: {
-    marginBottom: 20,
-  },
-  skeletonTitle: {
-    height: 25,
-    width: '80%',
-    backgroundColor: '#e0e0e0',
-    marginBottom: 10,
+    borderColor: 'lightgray',
     borderRadius: 5,
-  },
-  skeletonRating: {
-    height: 15,
-    width: '50%',
-    backgroundColor: '#e0e0e0',
-    marginBottom: 5,
-    borderRadius: 5,
-  },
-  skeletonDescription: {
-    height: 15,
-    width: '90%',
-    backgroundColor: '#e0e0e0',
-    marginBottom: 10,
-    borderRadius: 5,
-  },
-  skeletonColors: {
-    height: 30,
-    width: '60%',
-    backgroundColor: '#e0e0e0',
-    marginBottom: 10,
-    borderRadius: 5,
-  },
-  skeletonSizes: {
-    height: 30,
-    width: '60%',
-    backgroundColor: '#e0e0e0',
-    marginBottom: 20,
-    borderRadius: 5,
-  },
-  skeletonBottom: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginTop: 20,
-  },
-  skeletonPrice: {
-    height: 25,
-    width: '40%',
-    backgroundColor: '#e0e0e0',
-    borderRadius: 5,
-  },
-  skeletonButton: {
-    height: 40,
-    width: '40%',
-    backgroundColor: '#e0e0e0',
-    borderRadius: 5,
-  },
-  table: {
-    marginVertical: 10,
-    // padding: 10,
-    borderWidth: 1,
-    borderBottomWidth: 0,
-    borderColor: '#ddd',
-    borderRadius: 4,
-  },
-  row: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    borderBottomWidth: 1,
-    borderBottomColor: '#eee',
-  },
-  altRow: {
-    backgroundColor: '#f9f9f9',
-  },
-  key: {
-    fontWeight: 'bold',
-    fontSize: 14,
-    flex: 1,
-    backgroundColor: 'gainsboro',
-    marginRight: 10,
-    padding: 5,
-  },
-  value: {
-    flex: 1,
-    padding: 5,
-    fontSize: 14,
-    textAlign: 'left',
-  },
-  suggestionSection: {
-    paddingHorizontal: 16,
-    marginTop: 20,
-  },
-  suggestionTitle: {
-    fontWeight: 'bold',
-    marginBottom: 10,
-  },
-  productCard: {
-    width: 120,
-    marginRight: 10,
-    backgroundColor: 'white',
-    borderRadius: 8,
     padding: 10,
-    elevation: 2,
+    marginRight: 10,
   },
-  relatedProductImage: {
-    width: '100%',
-    height: 100,
-    borderRadius: 8,
+  bottomTabsContainer: {
+    flexDirection: 'row',
+    padding: 10,
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    borderTopWidth: 1,
+    borderTopColor: '#E0E0E0',
   },
-  productCardTitle: {
-    marginTop: 5,
-  },
-  productCardPrice: {
-    marginTop: 5,
+  price: {
     fontWeight: 'bold',
+    fontSize: 16,
   },
-  viewMoreButton: {
-    marginTop: 10,
+  tabButton: {
+    borderRadius: 5,
   },
   snackbar: {
     backgroundColor: '#3E4685',
+  },
+  cartIconContainer: {
+    position: 'relative',
+    padding: 10,
+  },
+  cartCount: {
+    position: 'absolute',
+    right: 0,
+    top: 0,
+    backgroundColor: 'red',
+    borderRadius: 10,
+    paddingHorizontal: 5,
+    paddingVertical: 2,
+  },
+  cartCountText: {
+    color: 'white',
+    fontWeight: 'bold',
   },
 })
 

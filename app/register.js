@@ -5,9 +5,10 @@ import {
   Keyboard,
   TouchableOpacity,
   StatusBar,
+  View,
 } from 'react-native'
 import { Layout, Input, Text } from '@ui-kitten/components'
-import { Appbar, Snackbar, useTheme, Button, Divider } from 'react-native-paper' // Import Snackbar
+import { Appbar, Snackbar, useTheme, Button, Divider } from 'react-native-paper'
 import {
   useSendOtpMutation,
   useVerifyOtpMutation,
@@ -16,7 +17,7 @@ import {
 import LoginIllustration from '@/assets/LoginIllustration'
 import { useLocalSearchParams, useRouter } from 'expo-router'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { Eye, EyeClosed } from 'phosphor-react-native' // Import Phosphor icons
+import { Eye, EyeClosed } from 'phosphor-react-native'
 import { usePushNotifications } from '@/scripts/NotificationsService'
 
 const OtpRegisterScreen = () => {
@@ -37,7 +38,7 @@ const OtpRegisterScreen = () => {
 
   const [snackVisible, setSnackVisible] = useState(false)
   const [snackMessage, setSnackMessage] = useState('')
-  const [showPassword, setShowPassword] = useState(false) // State for password visibility
+  const [showPassword, setShowPassword] = useState(false)
 
   const phoneValidationRegex = /^(75|74|70|78|77|76|3|2)\d{7}$/
   const [sendOtp, { isLoading: isSendingOtp }] = useSendOtpMutation()
@@ -386,14 +387,29 @@ const OtpRegisterScreen = () => {
                   )}
                 />
 
-                <TouchableOpacity
-                  onPress={() => router.push('/terms-of-service')}
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    flexWrap: 'wrap',
+                    justifyContent: 'center',
+                  }}
                 >
-                  <Text style={styles.termsText}>
-                    By signing up, you accept the{' '}
-                    <Text style={styles.termsLink}>Terms of Service</Text>.
+                  <Text style={styles.registerText}>
+                    By continuing, you agree to our
                   </Text>
-                </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() => router.push('terms_of_service')}
+                  >
+                    <Text style={styles.linkText}>Terms of use</Text>
+                  </TouchableOpacity>
+                  <Text style={styles.registerText}>and</Text>
+                  <TouchableOpacity
+                    onPress={() => router.push('privacy_policy')}
+                  >
+                    <Text style={styles.linkText}>Privacy Policy</Text>
+                  </TouchableOpacity>
+                </View>
 
                 <Button
                   style={styles.button}
@@ -496,9 +512,14 @@ const styles = StyleSheet.create({
     marginTop: 20,
     textAlign: 'center',
   },
+  registerText: {
+    textAlign: 'center',
+    fontSize: 14,
+    marginHorizontal: 5,
+  },
   linkText: {
-    color: '#007BFF', // Optional: Customize the color of the link
-    textDecorationLine: 'underline', // Underline only 'Go to login'
+    color: '#007BFF',
+    textDecorationLine: 'underline',
   },
 })
 
