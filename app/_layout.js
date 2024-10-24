@@ -1,23 +1,23 @@
-import React from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
 import { useFonts } from 'expo-font'
 import { Stack } from 'expo-router'
 import * as SplashScreen from 'expo-splash-screen'
-import { useEffect } from 'react'
 import {
   MD3LightTheme as DefaultTheme,
   PaperProvider,
 } from 'react-native-paper'
 import * as eva from '@eva-design/eva'
 import { Provider } from 'react-redux'
-import { store } from '@/store'
 import { ApplicationProvider } from '@ui-kitten/components'
-import 'react-native-reanimated'
-import { usePushNotifications } from '@/scripts/NotificationsService'
+import { store } from '@/store'
+import { getAuthState } from '@/scripts/asyncStorage'
+import { setAuthState } from '@/store/authSlice'
 import AppSnackbar from '@/components/_global/AppSnackbar'
+import { usePushNotifications } from '@/scripts/NotificationsService'
 
 SplashScreen.preventAutoHideAsync()
 
-export default function RootLayout() {
+const RootLayout = () => {
   usePushNotifications()
 
   const [loaded] = useFonts({
@@ -25,13 +25,26 @@ export default function RootLayout() {
     digital7: require('@/assets/fonts/digital_7/digital-7.ttf'),
   })
 
+  const [authLoaded, setAuthLoaded] = useState(false)
+
+  // Memoized function to load auth state
+  const loadAuthState = useCallback(async () => {
+    const { user } = await getAuthState()
+    store.dispatch(setAuthState({ user }))
+    setAuthLoaded(true)
+  }, [])
+
   useEffect(() => {
-    if (loaded) {
+    loadAuthState()
+  }, [loadAuthState])
+
+  useEffect(() => {
+    if (loaded && authLoaded) {
       SplashScreen.hideAsync()
     }
-  }, [loaded])
+  }, [loaded, authLoaded])
 
-  if (!loaded) {
+  if (!loaded || !authLoaded) {
     return null
   }
 
@@ -40,35 +53,14 @@ export default function RootLayout() {
     myOwnProperty: true,
     colors: {
       ...DefaultTheme.colors,
-      primary: '#FF3300',
+      primary: '#004F70',
       background: '#FF3333',
       surface: '#FFFFFF',
     },
   }
 
   const cThemeRed = {
-    'color-primary-100': '#FFF2F2',
-    'color-primary-200': '#FFD6D6',
-    'color-primary-300': '#FFA3A3',
-    'color-primary-400': '#FF6666',
-    'color-primary-500': '#FF3300',
-    'color-primary-600': '#DB2727',
-    'color-primary-700': '#B81A1A',
-    'color-primary-800': '#941010',
-    'color-primary-900': '#7A0909',
-    'color-primary-transparent-100': 'rgba(255, 51, 51, 0.08)',
-    'color-primary-transparent-200': 'rgba(255, 51, 51, 0.16)',
-    'color-primary-transparent-300': 'rgba(255, 51, 51, 0.24)',
-    'color-primary-transparent-400': 'rgba(255, 51, 51, 0.32)',
-    'color-primary-transparent-500': 'rgba(255, 51, 51, 0.40)',
-    'color-primary-transparent-600': 'rgba(255, 51, 51, 0.48)',
-
-    'text-font-family': 'SFPro',
-    'text-heading-1-font-family': 'SFPro',
-    'text-heading-2-font-family': 'SFPro',
-    'text-heading-3-font-family': 'SFPro',
-    'button-font-family': 'SFPro',
-    'font-family': 'SFPro',
+    'color-primary-500': '#004F70',
   }
 
   return (
@@ -78,10 +70,6 @@ export default function RootLayout() {
           <Stack screenOptions={{ headerShown: false }}>
             <Stack.Screen name="(tabs)" />
             <Stack.Screen name="ads/[id]" />
-            <Stack.Screen
-              name="processing"
-              screenOptions={{ headerShown: true }}
-            />
             <Stack.Screen name="+not-found" />
           </Stack>
           <AppSnackbar />
@@ -90,3 +78,5 @@ export default function RootLayout() {
     </Provider>
   )
 }
+
+export default React.memo(RootLayout) // Memoize the entire component

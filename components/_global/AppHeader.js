@@ -46,7 +46,7 @@ const AppHeader = ({ name, title, headerStyle, telephone }) => {
         ]}
       >
         <Appbar.BackAction
-          onPress={() => router.back()}
+          onPress={() => router.push('/')}
           color={headerStyle === 'dark' ? 'white' : 'black'}
         />
         <Appbar.Content

@@ -6,12 +6,13 @@ import {
   Image,
   ActivityIndicator,
 } from 'react-native'
-import { Text, Card, useTheme } from '@ui-kitten/components'
-import { useLocalSearchParams, useRouter } from 'expo-router'
-import { Appbar, Divider } from 'react-native-paper'
+import { Text, Card, useTheme, Divider } from '@ui-kitten/components'
+import { useLocalSearchParams } from 'expo-router'
 import { CheckCircle, XCircle, Clock } from 'phosphor-react-native'
 import { useGetOrderDetailsQuery } from '@/api'
 import AddressItem from '@/components/address/AddressItem'
+import SecureRoute from '@/components/_global/SecureRoute'
+import AppHeader from '../../components/_global/AppHeader'
 
 const activityTypeEnum = {
   ORDER_CREATED: {
@@ -57,8 +58,7 @@ const activityTypeEnum = {
 }
 
 const OrderDetailsScreen = () => {
-  const { id } = useLocalSearchParams() // Get the order ID from route params
-  const router = useRouter()
+  const { id } = useLocalSearchParams()
   const theme = useTheme()
 
   const { data: orderData, isLoading, isError } = useGetOrderDetailsQuery(id)
@@ -66,24 +66,12 @@ const OrderDetailsScreen = () => {
   const order = orderData?.order
 
   return (
-    <>
-      <Appbar.Header style={{ paddingRight: 15, backgroundColor: '#111b2d' }}>
-        <Appbar.BackAction
-          color={theme['color-basic-100']}
-          onPress={() => router.push('orders')}
-        />
-        <Appbar.Content
-          color={theme['color-basic-100']}
-          title={
-            <Text style={{ color: theme['color-basic-100'], fontSize: 18 }}>
-              Order Details
-            </Text>
-          }
-        />
-      </Appbar.Header>
-      <Divider />
-
-      <ScrollView style={styles.container}>
+    <SecureRoute>
+      <AppHeader title="Order Details" headerStyle="dark" />
+      <ScrollView
+        style={styles.container}
+        contentContainerStyle={{ paddingBottom: 50 }}
+      >
         {isLoading && (
           <View style={styles.errorContainer}>
             <ActivityIndicator
@@ -102,13 +90,26 @@ const OrderDetailsScreen = () => {
         )}
         {order && (
           <>
-            <View style={styles.card}>
-              <Text category="h5" style={{ marginBottom: 5 }}>
-                Order #{order._id?.slice(-7)}
-              </Text>
-              <Text category="s1" style={{ marginBottom: 5 }} appearance="hint">
-                Date: {new Date(order.createdAt).toLocaleDateString()}
-              </Text>
+            <View
+              style={[
+                styles.card,
+                {
+                  flexDirection: 'row',
+                  backgroundColor: theme['color-basic-300'],
+                  padding: 10,
+                  justifyContent: 'space-between',
+                  borderRadius: 5,
+                },
+              ]}
+            >
+              <View>
+                <Text category="h5" style={{ marginBottom: 5 }}>
+                  Order #{order._id?.slice(-7)}
+                </Text>
+                <Text category="s1" style={{ marginBottom: 5 }}>
+                  Date: {new Date(order.createdAt).toLocaleDateString()}
+                </Text>
+              </View>
               <Text category="s1" style={{ marginBottom: 5 }} appearance="hint">
                 {order.status}
               </Text>
@@ -119,6 +120,7 @@ const OrderDetailsScreen = () => {
               <Text category="h6" style={{ marginBottom: 5 }}>
                 Items:
               </Text>
+              <Divider />
               {order.items.map(item => (
                 <View key={item.productId} style={styles.itemCard}>
                   <View style={styles.itemContainer}>
@@ -210,7 +212,7 @@ const OrderDetailsScreen = () => {
           </>
         )}
       </ScrollView>
-    </>
+    </SecureRoute>
   )
 }
 

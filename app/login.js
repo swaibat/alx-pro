@@ -4,21 +4,24 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   TouchableOpacity,
-  StatusBar,
   View,
 } from 'react-native'
-import { Layout, Input, Text } from '@ui-kitten/components'
-import { Appbar, Button, Divider, useTheme } from 'react-native-paper'
+import { Layout, Input, Text, useTheme } from '@ui-kitten/components'
+import { Button, Divider } from 'react-native-paper'
 import { useLoginMutation } from '@/api'
-import { Eye, EyeClosed } from 'phosphor-react-native'
+import { Eye, EyeClosed, CheckCircle, Question } from 'phosphor-react-native'
 import { useLocalSearchParams, useRouter } from 'expo-router'
 import LoginIllustration from '@/assets/LoginIllustration'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useSnackbar } from '@/hooks/useSnackbar'
+import { useDispatch } from 'react-redux'
+import { setAuthState } from '@/store/authSlice'
+import AppHeader from '@/components/_global/AppHeader'
 
 const LoginScreen = () => {
   const router = useRouter()
   const theme = useTheme()
+  const dispatch = useDispatch()
   const { triggerSnackbar } = useSnackbar()
   const [phoneNumber, setPhoneNumber] = useState('')
   const [password, setPassword] = useState('')
@@ -37,10 +40,10 @@ const LoginScreen = () => {
       triggerSnackbar('Please enter your password', 'error')
       return
     }
-
     try {
       const response = await login({ phoneNumber, password }).unwrap()
       if (response.status === 200) {
+        dispatch(setAuthState({ user: response.data }))
         await AsyncStorage.setItem('@user', JSON.stringify(response.data))
         router.push(ref || '/')
       } else {
@@ -57,45 +60,30 @@ const LoginScreen = () => {
     }
   }
 
+  const isPhoneNumberValid = phoneValidationRegex.test(phoneNumber)
+
+  const renderPhoneAccessoryRight = () =>
+    isPhoneNumberValid ? (
+      <CheckCircle size={24} weight="fill" color={theme['color-success-500']} />
+    ) : (
+      <Question size={24} weight="fill" color={theme['color-basic-700']} />
+    )
   return (
     <>
-      <StatusBar barStyle="light-content" />
-      <Appbar.Header
-        style={{
-          paddingRight: 25,
-          backgroundColor: '#111b2d',
-          borderBottomColor: 'red',
-          borderBottomWidth: 2,
-        }}
-      >
-        <Appbar.BackAction
-          color={theme.colors.outlineVariant}
-          onPress={() => router.push('/')}
-        />
-        <Appbar.Content
-          color={theme.colors.outlineVariant}
-          title={
-            <Text style={{ color: theme.colors.outlineVariant, fontSize: 18 }}>
-              Login
-            </Text>
-          }
-        />
-      </Appbar.Header>
+      <AppHeader title={'Login'} headerStyle="dark" />
       <Layout style={{ flex: 1 }}>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <Layout style={styles.container}>
-            {/* Illustration at the top */}
             <LoginIllustration />
-
             <Input
               style={styles.input}
               label="Phone Number"
               placeholder="Enter phone number"
               onChangeText={text => setPhoneNumber(text)}
               accessoryLeft={() => <Text style={styles.countryCode}>+256</Text>}
+              accessoryRight={renderPhoneAccessoryRight}
               keyboardType="numeric"
             />
-
             <Input
               style={styles.input}
               label="Password"
@@ -107,11 +95,7 @@ const LoginScreen = () => {
                 <TouchableOpacity
                   onPress={() => setShowPassword(prev => !prev)}
                 >
-                  {showPassword ? (
-                    <Eye size={24} weight="bold" />
-                  ) : (
-                    <EyeClosed size={24} weight="bold" />
-                  )}
+                  {showPassword ? <Eye size={24} /> : <EyeClosed size={24} />}
                 </TouchableOpacity>
               )}
             />
@@ -124,7 +108,7 @@ const LoginScreen = () => {
               style={styles.button}
               mode="contained"
               onPress={handleLogin}
-              disabled={isLoading}
+              disabled={isLoading || !isPhoneNumberValid} // Disable button if phone is invalid
             >
               {isLoading ? 'Logging in...' : 'Login'}
             </Button>
@@ -170,7 +154,6 @@ const LoginScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // justifyContent: 'center',
     paddingHorizontal: 50,
   },
   title: {

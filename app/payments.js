@@ -6,6 +6,7 @@ import { Phone, CheckCircle, Question } from 'phosphor-react-native' // Import C
 import DraggableButton from '@/components/ConfirmRepay'
 import { useLocalSearchParams, useRouter } from 'expo-router'
 import { Appbar } from 'react-native-paper'
+import SecureRoute from '@/components/_global/SecureRoute'
 
 const PaymentOptions = () => {
   const [selected, setSelected] = useState('')
@@ -45,7 +46,7 @@ const PaymentOptions = () => {
     )
 
   return (
-    <>
+    <SecureRoute>
       <StatusBar barStyle="light-content" />
       <Appbar.Header
         dark={true}
@@ -150,7 +151,7 @@ const PaymentOptions = () => {
           />
         </View>
       </Layout>
-    </>
+    </SecureRoute>
   )
 }
 

@@ -4,22 +4,17 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   TouchableOpacity,
-  StatusBar,
 } from 'react-native'
 import { Layout, Input, Text } from '@ui-kitten/components'
-import { Appbar, useTheme, Button } from 'react-native-paper'
-import {
-  useSendOtpMutation,
-  useVerifyOtpMutation,
-  useResetPasswordMutation,
-} from '@/api'
+import { Button } from 'react-native-paper'
+import { useSendOtpMutation, useResetPasswordMutation } from '@/api'
 import { useLocalSearchParams, useRouter } from 'expo-router'
 import { Eye, EyeClosed } from 'phosphor-react-native'
 import { useSnackbar } from '@/hooks/useSnackbar'
+import AppHeader from '../components/_global/AppHeader'
 
 const PasswordResetScreen = () => {
   const router = useRouter()
-  const theme = useTheme()
   const { step: initialStep, phoneNumber: initialPhoneNumber } =
     useLocalSearchParams()
   const { triggerSnackbar } = useSnackbar()
@@ -33,7 +28,6 @@ const PasswordResetScreen = () => {
 
   const phoneValidationRegex = /^(75|74|70|78|77|76|3|2)\d{7}$/
   const [sendOtp, { isLoading: isSendingOtp }] = useSendOtpMutation()
-  const [verifyOtp, { isLoading: isVerifyingOtp }] = useVerifyOtpMutation()
   const [resetPassword, { isLoading: isResettingPassword }] =
     useResetPasswordMutation()
 
@@ -88,21 +82,7 @@ const PasswordResetScreen = () => {
       triggerSnackbar('Please enter a valid 4-digit OTP', 'error')
       return
     }
-
-    try {
-      const response = await verifyOtp({ phoneNumber, code: otp }).unwrap()
-      if (response.status === 200) {
-        setStep(3)
-      } else {
-        triggerSnackbar(
-          'Failed to verify OTP. Please check your code.',
-          'error'
-        )
-      }
-    } catch (error) {
-      triggerSnackbar('Failed to verify OTP. Please try again.', 'error')
-      console.log('error', error)
-    }
+    setStep(3)
   }
 
   const handlePasswordReset = async () => {
@@ -110,9 +90,14 @@ const PasswordResetScreen = () => {
       triggerSnackbar('Please enter a new password.', 'error')
       return
     }
-
+    console.log({
+      code: otp,
+      phoneNumber,
+      newPassword: password,
+    })
     try {
       const response = await resetPassword({
+        code: otp,
         phoneNumber,
         newPassword: password,
       }).unwrap()
@@ -141,20 +126,7 @@ const PasswordResetScreen = () => {
 
   return (
     <>
-      <StatusBar barStyle="light-content" />
-      <Appbar.Header style={{ paddingRight: 25, backgroundColor: '#111b2d' }}>
-        <Appbar.BackAction
-          color={theme.colors.outlineVariant}
-          onPress={() => router.push('/login')}
-        />
-        <Appbar.Content
-          title={
-            <Text style={{ color: theme.colors.outlineVariant, fontSize: 18 }}>
-              Reset Password
-            </Text>
-          }
-        />
-      </Appbar.Header>
+      <AppHeader title="Reset Password" headerStyle="dark" />
       <Layout style={{ flex: 1 }}>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <Layout style={styles.container}>
@@ -219,10 +191,9 @@ const PasswordResetScreen = () => {
                   style={styles.button}
                   onPress={handleOtpVerification}
                   mode="contained"
-                  loading={isVerifyingOtp}
-                  disabled={otp.length !== 4 || isVerifyingOtp}
+                  disabled={otp.length !== 4}
                 >
-                  {isVerifyingOtp ? 'Verifying...' : 'Verify OTP'}
+                  Continue
                 </Button>
                 <Text style={styles.resendText}>
                   {canResend

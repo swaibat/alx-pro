@@ -2,29 +2,21 @@ import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
   isAuthenticated: false,
-  isModalVisible: false,
+  user: null,
 }
 
 const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    login: state => {
-      state.isAuthenticated = true
+    setAuthState: (state, action) => {
+      state.user = action.payload.user
     },
     logout: state => {
-      state.isAuthenticated = false
-    },
-    setModalVisible: (state, action) => {
-      state.isModalVisible = action.payload
-    },
-    setTargetScreen: (state, action) => {
-      state.targetScreen = action.payload
+      state.user = null
     },
   },
 })
 
-export const { login, logout, setModalVisible, setTargetScreen } =
-  authSlice.actions
-
+export const { setAuthState, logout } = authSlice.actions
 export default authSlice.reducer

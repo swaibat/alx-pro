@@ -4,6 +4,7 @@ import { useGetOrdersQuery } from '@/api'
 import OrderCard from '@/components/orders/OrderCard'
 import ordersStateLayout from '@/components/orders/states/handleStates'
 import AppHeader from '@/components/_global/AppHeader'
+import SecureRoute from '@/components/_global/SecureRoute'
 
 const OrdersScreen = () => {
   const { data: ordersData, isLoading, error, refetch } = useGetOrdersQuery()
@@ -11,13 +12,13 @@ const OrdersScreen = () => {
   const orders = ordersData?.data || []
 
   return (
-    <>
+    <SecureRoute>
       <AppHeader title="Orders" backgroundColor="#111b2d" headerStyle="dark" />
       <ScrollView style={styles.container}>
         {renderState ||
           orders.map(order => <OrderCard key={order._id} order={order} />)}
       </ScrollView>
-    </>
+    </SecureRoute>
   )
 }
 

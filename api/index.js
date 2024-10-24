@@ -22,6 +22,7 @@ export const api = createApi({
       const storedCookies = await AsyncStorage.getItem('@user')
       const token = await AsyncStorage.getItem(EXPO_PUSH_TOKEN_STORAGE_KEY)
       const deviceId = getDeviceId()
+      console.log('===', JSON.parse(storedCookies).token)
       if (token) {
         headers.set('device_id', deviceId)
         headers.set('fcm_token', token)

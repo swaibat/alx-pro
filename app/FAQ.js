@@ -46,7 +46,8 @@ const FAQScreen = () => {
         },
         {
           question: 'How can I contact customer support?',
-          answer: 'You can contact customer support at support@alx.ug or call 0200922167.',
+          answer:
+            'You can contact customer support at support@alx.ug or call 0200922167.',
         },
       ],
     },
@@ -65,7 +66,8 @@ const FAQScreen = () => {
         },
         {
           question: 'How do I delete my account?',
-          answer: 'Please contact customer support to request account deletion.',
+          answer:
+            'Please contact customer support to request account deletion.',
         },
       ],
     },
@@ -104,7 +106,8 @@ const FAQScreen = () => {
         },
         {
           question: 'How long does it take for the payment to process?',
-          answer: 'Payments via Mobile Money are processed instantly, while Credit Card payments may take a few minutes.',
+          answer:
+            'Payments via Mobile Money are processed instantly, while Credit Card payments may take a few minutes.',
         },
       ],
     },

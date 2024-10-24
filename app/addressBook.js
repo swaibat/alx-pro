@@ -13,6 +13,7 @@ import AddressItem from '@/components/address/AddressItem'
 import AddressModal from '@/components/address/AddressModal'
 import SkeletonLoader from '@/components/address/SkeletonLoader'
 import { Appbar, useTheme, Button } from 'react-native-paper'
+import SecureRoute from '@/components/_global/SecureRoute'
 
 const AddressComponent = () => {
   const {
@@ -192,7 +193,7 @@ const AddressComponent = () => {
   }, [selectedCityIndex])
 
   return (
-    <>
+    <SecureRoute>
       <StatusBar barStyle="light-content" />
       <Appbar.Header style={{ paddingRight: 15, backgroundColor: '#111b2d' }}>
         <Appbar.BackAction
@@ -267,7 +268,7 @@ const AddressComponent = () => {
         region={region}
         isCreating={isCreating || isUpdating}
       />
-    </>
+    </SecureRoute>
   )
 }
 

@@ -1,16 +1,12 @@
 import React from 'react'
 import { Layout, Text, Input, Button, useTheme } from '@ui-kitten/components'
 import { ScrollView, View, ImageBackground } from 'react-native'
-import {
-  MagnifyingGlass,
-  ShoppingCart,
-  Sliders,
-  Globe,
-} from 'phosphor-react-native'
+import { MagnifyingGlass, Sliders, Globe } from 'phosphor-react-native'
 import CategoryGridView from '@/components/categories/GridView'
 import FlashSale from '@/components/products/FlashSale'
 import AdsList from '@/components/products/AdsList'
 import { useRouter } from 'expo-router'
+import Logo from '../../assets/Logo'
 
 const HomeScreen = () => {
   const theme = useTheme()
@@ -34,6 +30,17 @@ const HomeScreen = () => {
             padding: 10,
           }}
         >
+          <View
+            style={{
+              flexDirection: 'row',
+              backgroundColor: 'transparent',
+              alignItems: 'center',
+              width: 70,
+              height: 30,
+            }}
+          >
+            <Logo />
+          </View>
           <Layout
             style={{
               flexDirection: 'row',
@@ -45,15 +52,6 @@ const HomeScreen = () => {
             <Text appearance="alternative" category="s1">
               Uganda
             </Text>
-          </Layout>
-          <Layout
-            style={{
-              flexDirection: 'row',
-              backgroundColor: 'transparent',
-              alignItems: 'center',
-            }}
-          >
-            <ShoppingCart size={24} color="gainsboro" />
           </Layout>
         </Layout>
         {/* Search Bar */}

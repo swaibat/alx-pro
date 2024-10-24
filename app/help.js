@@ -54,7 +54,7 @@ const HelpCenterScreen = () => {
   )
 
   const renderContactItem = ({ label, number, email }) => (
-    <View style={styles.contactItem}>
+    <View key={label} style={styles.contactItem}>
       <View style={styles.contactInfo}>
         <View style={{ flexDirection: 'row' }}>
           <Phone size={20} color="#007bff" />

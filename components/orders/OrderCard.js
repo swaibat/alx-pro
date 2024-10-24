@@ -76,11 +76,7 @@ const OrderCard = ({ order }) => {
             {order.status?.replace('_', ' ')}
           </Text>
         </View>
-        <Button
-          appearance="outline"
-          size="tiny"
-          onPress={() => router.push(`orders/${order._id}`)}
-        >
+        <Button size="tiny" onPress={() => router.push(`orders/${order._id}`)}>
           Details
         </Button>
       </View>

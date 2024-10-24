@@ -1,29 +1,29 @@
-import React, { useState } from 'react'
-import AsyncStorage from '@react-native-async-storage/async-storage'
+import { useState, useCallback } from 'react'
 import { useFocusEffect } from 'expo-router'
+import { useSelector } from 'react-redux'
 
 const useLogin = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
-
-  const checkUserLoggedIn = async () => {
-    try {
-      const userData = await AsyncStorage.getItem('@user')
-      if (userData) {
-        const parsedData = JSON.parse(userData)
-        setIsLoggedIn(!!parsedData.user)
-      } else {
-        setIsLoggedIn(false)
-      }
-    } catch (error) {
-      console.error('Error checking login status:', error)
-      setIsLoggedIn(false)
-    }
-  }
+  const { user } = useSelector(state => state.auth)
 
   useFocusEffect(
-    React.useCallback(() => {
-      checkUserLoggedIn()
-    }, [])
+    useCallback(() => {
+      let isActive = true
+
+      const checkAuthState = async () => {
+        if (isActive) {
+          if (user !== null) {
+            setIsLoggedIn(true)
+          } else {
+            setIsLoggedIn(false)
+          }
+        }
+      }
+      checkAuthState()
+      return () => {
+        isActive = false
+      }
+    }, [user])
   )
 
   return isLoggedIn
