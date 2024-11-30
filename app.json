@@ -1,36 +1,62 @@
 {
   "expo": {
-    "name": "alx-lite",
+    "name": "Alx.ug",
     "slug": "alx-lite",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./src/assets/images/icon.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
     "splash": {
-      "image": "./assets/images/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "image": "./src/assets/images/splash.png",
+      "resizeMode": "cover",
+      "backgroundColor": "#004F70"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.swaibu.alxlite",
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "We use your location to show you relevant information.",
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "We use your location to provide background location tracking."
+      }
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      }
+        "foregroundImage": "./src/assets/images/adaptive-icon.png",
+        "backgroundColor": "#004F70"
+      },
+      "package": "com.swaibu.alxlite",
+      "googleServicesFile": "./serviceAccountKey.json",
+      "permissions": ["ACCESS_FINE_LOCATION", "ACCESS_COARSE_LOCATION"]
     },
     "web": {
       "bundler": "metro",
       "output": "static",
-      "favicon": "./assets/images/favicon.png"
+      "favicon": "./src/assets/images/favicon.png"
     },
     "plugins": [
-      "expo-router"
+      "expo-router",
+      "@react-native-google-signin/google-signin",
+      [
+        "expo-image-picker",
+        {
+          "cameraPermission": "Allow $(PRODUCT_NAME) to access your camera to let you ..."
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "SERVER_URL": "https://alx.up.railway.app",
+      "SERVER_URL_1": "https://simple-maggot-expert.ngrok-free.app",
+      "SERVER_URL_2": "https://alx-xkrn.onrender.com",
+      "GOOGLE_API_KEY": "AIzaSyCUDLXSSChuCg9p-RndMhRm3UiNryhRz4c",
+      "MAPS_API_URL":"https://maps.googleapis.com/maps/api",
+      "eas": {
+        "projectId": "fab576a6-53b5-4935-9714-3ac268b9dcc4"
+      }
     }
   }
 }
