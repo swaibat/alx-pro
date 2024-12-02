@@ -119,18 +119,17 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     flex: 1,
   },
-  heading: {
-    fontSize: 28,
-    marginBottom: 20,
-  },
   subheading: {
     marginTop: 20,
+    fontWeight: '500',
     marginBottom: 10,
   },
   text: {
     lineHeight: 20,
   },
-  highlight: {},
+  highlight: {
+    fontWeight: '500',
+  },
   lastUpdated: {
     fontSize: 14,
     marginTop: 20,

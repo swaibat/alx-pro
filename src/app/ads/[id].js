@@ -28,6 +28,7 @@ const ProductDetailsScreen = () => {
     skip: !id,
   })
   const product = data?.data
+
   const [selectedOptions, setSelectedOptions] = useState({})
 
   const formattedPrice = product?.acceptInstallments
@@ -47,11 +48,14 @@ const ProductDetailsScreen = () => {
       console.error('Error sharing the product:', error)
     }
   }
-  if (isLoading) return <Loading text={'Loading Ad details'} />
+  if (!product || isLoading) return <Loading text={'Loading Ad details'} />
 
   return (
     <>
-      <ScrollView style={styles.scrollView}>
+      <ScrollView
+        style={styles.scrollView}
+        contentContainerStyle={styles.contentContainer}
+      >
         <View style={styles.content}>
           <ProductImageCarousel images={product?.files} />
           <VariantSelector
@@ -85,7 +89,7 @@ const ProductDetailsScreen = () => {
                     onPress={handleShare}
                   />
                 </View>
-                <RatingChip review={product?.review} />
+                <RatingChip reviews={product?.reviews} />
                 <View style={styles.sealContainer}>
                   <Image
                     source={{ uri: `https://${product.store.logo}` }}
@@ -98,7 +102,7 @@ const ProductDetailsScreen = () => {
                       borderColor: colors.grey[300],
                     }}
                   />
-                  <SealCheck color="#039be5" size={15} weight="fill" />
+                  <SealCheck color={colors.blue[500]} size={15} weight="fill" />
                   <Text style={styles.sealText} bold>
                     {product.store.name}
                   </Text>
@@ -120,7 +124,7 @@ const ProductDetailsScreen = () => {
                 <DeliveryReturnInfo specs={data?.data?.specifications} />
               </Section>
               <Section title="Reviews">
-                <ReviewsScreen data={data?.data?.review} />
+                <ReviewsScreen reviews={product?.reviews} />
               </Section>
             </View>
           </View>
@@ -135,6 +139,9 @@ const ProductDetailsScreen = () => {
 }
 
 const styles = StyleSheet.create({
+  contentContainer: {
+    paddingBottom: 10,
+  },
   scrollView: {
     backgroundColor: 'white',
   },

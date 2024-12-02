@@ -152,6 +152,10 @@ export const api = createApi({
     validatePhoneNumber: builder.query({
       query: msisdn => `/payments/validate/${msisdn}`,
     }),
+    getProductReviews: builder.query({
+      query: ({ productId, limit }) =>
+        `/reviews/product/${productId}?limit=${limit}`,
+    }),
     sendOtp: builder.mutation({
       query: ({ phoneNumber, type }) => ({
         url: `/sms/otp/send/${phoneNumber}?type=${type}`,
@@ -269,4 +273,5 @@ export const {
   useGetMessagesQuery,
   useSendMessageMutation,
   useMakeDefaultAddressMutation,
+  useGetProductReviewsQuery,
 } = api

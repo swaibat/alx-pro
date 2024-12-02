@@ -38,7 +38,7 @@ const CategoryScreen = () => {
         keyExtractor={item => item.id.toString()}
         renderItem={({ item }) => (
           <TouchableOpacity
-            style={[styles.subcategoryItem, styles.borderStyle]}
+            style={[sx.subcategoryItem, sx.borderStyle]}
             onPress={() =>
               router.push({
                 pathname: '/ads/list',
@@ -59,7 +59,7 @@ const CategoryScreen = () => {
   if (isLoading) return <Loading text="Loading Categories" />
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={sx.container}>
       {expandedCategory && parentCategory && (
         <Button
           title={parentCategory.name}
@@ -71,7 +71,7 @@ const CategoryScreen = () => {
         />
       )}
 
-      <View style={styles.body}>
+      <View style={sx.body}>
         {!expandedCategory && data?.data && (
           <FlatList
             data={data?.data}
@@ -79,8 +79,8 @@ const CategoryScreen = () => {
             renderItem={({ item }) => (
               <TouchableOpacity
                 style={[
-                  styles.categoryItem,
-                  expandedCategory === item.id && styles.selectedCategory,
+                  sx.categoryItem,
+                  expandedCategory === item.id && sx.selectedCategory,
                 ]}
                 onPress={() =>
                   handleCategoryPress(item.id, item.name, item.children)
@@ -102,7 +102,7 @@ const CategoryScreen = () => {
   )
 }
 
-const styles = StyleSheet.create({
+const sx = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white',

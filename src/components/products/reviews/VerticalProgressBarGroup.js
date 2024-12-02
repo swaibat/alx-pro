@@ -1,52 +1,17 @@
 import React from 'react'
 import { View, StyleSheet } from 'react-native'
-import { Star } from 'phosphor-react-native' // Import the Star icon
+import { Star } from 'phosphor-react-native'
 import VerticalProgressBar from './VerticalProgressBar'
 import { Text } from '@/components/@ui/Text'
+import { colors } from '@/constants/theme'
 
 const VerticalProgressBarGroup = ({ ratingsDistribution, totalReviews }) => {
-  const barsData = [
-    {
-      label: '1',
-      progress: totalReviews
-        ? (ratingsDistribution['1'] / totalReviews) * 100
-        : 0,
-      color: '#FF6B6B',
-      tooltipText: `${ratingsDistribution['1']} Review${ratingsDistribution['1'] !== 1 ? 's' : ''}`,
-    },
-    {
-      label: '2',
-      progress: totalReviews
-        ? (ratingsDistribution['2'] / totalReviews) * 100
-        : 0,
-      color: '#FF6B6B',
-      tooltipText: `${ratingsDistribution['2']} Review${ratingsDistribution['2'] !== 1 ? 's' : ''}`,
-    },
-    {
-      label: '3',
-      progress: totalReviews
-        ? (ratingsDistribution['3'] / totalReviews) * 100
-        : 0,
-      color: '#FF6B6B',
-      tooltipText: `${ratingsDistribution['3']} Review${ratingsDistribution['3'] !== 1 ? 's' : ''}`,
-    },
-    {
-      label: '4',
-      progress: totalReviews
-        ? (ratingsDistribution['4'] / totalReviews) * 100
-        : 0,
-      color: '#FF6B6B',
-      tooltipText: `${ratingsDistribution['4']} Review${ratingsDistribution['4'] !== 1 ? 's' : ''}`,
-    },
-    {
-      label: '5',
-      progress: totalReviews
-        ? (ratingsDistribution['5'] / totalReviews) * 100
-        : 0,
-      color: '#004F70',
-      tooltipText: `${ratingsDistribution['5']} Review${ratingsDistribution['5'] !== 1 ? 's' : ''}`,
-    },
-  ]
+  const barsData = Object.keys(ratingsDistribution).map(rating => ({
+    label: rating,
+    progress: totalReviews
+      ? (ratingsDistribution[rating] / totalReviews) * 100
+      : 0,
+  }))
 
   return (
     <View style={styles.groupContainer}>
@@ -55,15 +20,14 @@ const VerticalProgressBarGroup = ({ ratingsDistribution, totalReviews }) => {
           key={index}
           label={
             <View style={styles.labelContainer}>
-              <Text bold style={{ fontSize: 12 }}>
+              <Text bold style={{ fontSize: 12, color: colors.grey[700] }}>
                 {bar.label}
               </Text>
-              <Star size={12} color="gainsboro" weight="fill" />
+              <Star size={12} color={colors.grey[700]} />
             </View>
-          } // Updated label with Star icon
+          }
           progress={bar.progress}
-          color={bar.color}
-          tooltipText={bar.tooltipText}
+          color={colors.orange[700]}
         />
       ))}
     </View>

@@ -24,6 +24,8 @@ const ShippingOptions = ({
     setSelectedShipping(option)
   }
 
+  console.log(data?.data)
+
   return (
     <FlatList
       data={data?.data}

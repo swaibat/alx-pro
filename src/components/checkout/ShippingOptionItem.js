@@ -15,7 +15,7 @@ const ShippingOptionItem = ({ option, selectedShipping, onSelect }) => (
   >
     <View style={styles.optionDetails}>
       {onSelect && (
-        <View>
+        <View style={styles.radioIconContainer}>
           {selectedShipping?._id === option._id ? (
             <MaterialCommunityIcons
               name="radiobox-marked"
@@ -33,17 +33,16 @@ const ShippingOptionItem = ({ option, selectedShipping, onSelect }) => (
       )}
       <View>
         <View style={styles.cardContainer}>
-          <DeliveryLogo type={option?.shippingType} />
-          <Text style={styles.priceText}>
-            UGX
-            {(option?.baseAmount * option?.baseRate)
-              .toFixed(2)
-              .toLocaleString()}
-          </Text>
+          <View>
+            <DeliveryLogo type={option?.shippingType} />
+          </View>
         </View>
 
         <Text style={styles.deliveryText}>
-          Delivery In: {option?.standardTime}
+          Delivery In: {option?.shippingTime}
+        </Text>
+        <Text style={styles.priceText}>
+          UGX {(option?.baseAmount * option?.multiplier).toLocaleString()}
         </Text>
       </View>
     </View>
@@ -51,6 +50,11 @@ const ShippingOptionItem = ({ option, selectedShipping, onSelect }) => (
 )
 
 const styles = StyleSheet.create({
+  radioIconContainer: {
+    position: 'absolute',
+    right: 0,
+    top: 0,
+  },
   option: {
     padding: 15,
     borderWidth: 0.8,
@@ -63,7 +67,7 @@ const styles = StyleSheet.create({
   cardContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    width: '100%',
+    flex: 1,
   },
   selectedOption: {
     backgroundColor: colors.orange[50],
@@ -72,6 +76,7 @@ const styles = StyleSheet.create({
   optionDetails: {
     flexDirection: 'row',
     alignItems: 'center',
+    flex: 1,
     gap: 10,
   },
   deliveryText: {
@@ -81,6 +86,7 @@ const styles = StyleSheet.create({
   priceText: {
     color: colors.orange[500],
     fontWeight: 'bold',
+    marginLeft: 20,
   },
 })
 

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Stack } from 'expo-router'
 import * as SplashScreen from 'expo-splash-screen'
 import { Provider } from 'react-redux'
@@ -8,14 +8,43 @@ import { useNetworkStatus } from '@/hooks/useNetworkStatus'
 import { StatusBar } from 'expo-status-bar'
 import { HeaderRight } from '@/components/@ui/HeaderRight'
 
+import * as Font from 'expo-font'
+import Entypo from '@expo/vector-icons/Entypo'
+import SplashScreenComponent from '@/components/global/SplashScreenComponent'
+
 SplashScreen.preventAutoHideAsync()
 
+SplashScreen.setOptions({
+  duration: 1000,
+  fade: true,
+})
+
 const RootLayout = () => {
-  const { isOffline, checkNetworkStatus } = useNetworkStatus()
+  useNetworkStatus()
+  const [appIsReady, setAppIsReady] = useState(false)
 
   useEffect(() => {
-    checkNetworkStatus()
-  }, [isOffline])
+    async function prepare() {
+      try {
+        await Font.loadAsync(Entypo.font)
+      } catch (e) {
+        console.warn(e)
+      } finally {
+        SplashScreen.hide()
+        setAppIsReady(true)
+      }
+    }
+
+    prepare()
+  }, [])
+
+  if (!appIsReady) {
+    return <SplashScreenComponent />
+  }
+
+  // useEffect(() => {
+  //   checkNetworkStatus()
+  // }, [isOffline])
 
   const headerTitleStyle = {
     textTransform: 'capitalize',
@@ -23,8 +52,7 @@ const RootLayout = () => {
 
   return (
     <Provider store={store}>
-      <Stack initialRouteName="splash_screen">
-        <Stack.Screen name="splash_screen" />
+      <Stack>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen
           name="ads/[id]"

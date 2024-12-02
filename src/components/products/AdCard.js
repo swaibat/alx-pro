@@ -45,7 +45,9 @@ const AdCard = ({ product }) => {
       {!!product.ratingCount && (
         <View style={styles.ratingContainer}>
           <Star color="#FFC107" size={12} weight="fill" />
-          <Text style={styles.ratingText}>{product.averageRating || 0}</Text>
+          <Text style={styles.ratingText}>
+            {Math.abs(product.averageRating).toFixed(1) || 0}
+          </Text>
           <Text style={styles.ratingCount}>({product.ratingCount || 0})</Text>
         </View>
       )}

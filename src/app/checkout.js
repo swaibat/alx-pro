@@ -76,9 +76,9 @@ const CheckoutScreen = () => {
       }).unwrap()
       dispatch(clearCart())
       if (res.status === 'SUCCESS') {
-        router.push('payment_success')
+        router.replace('payment_success')
       } else {
-        router.push('payment_failed')
+        router.replace('payment_failed')
       }
     } catch (error) {
       console.error('Error updating order:', error)

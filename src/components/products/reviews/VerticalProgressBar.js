@@ -1,33 +1,16 @@
 import React from 'react'
-import { View, StyleSheet, TouchableOpacity } from 'react-native'
+import { View, StyleSheet } from 'react-native'
 import Svg, { Rect } from 'react-native-svg'
-import Tooltip from 'react-native-walkthrough-tooltip'
 import { Text } from '@/components/@ui/Text'
+import { colors } from '@/constants/theme'
 
-const VerticalProgressBar = ({ progress, label, color, tooltipText }) => {
-  const [isTooltipVisible, setTooltipVisible] = React.useState(false)
-
+const VerticalProgressBar = ({ progress, label, color }) => {
   return (
     <View style={styles.container}>
-      <Tooltip
-        isVisible={isTooltipVisible}
-        content={<Text>{tooltipText}</Text>}
-        placement="top"
-        onClose={() => setTooltipVisible(false)}
-      >
-        <TouchableOpacity onPress={() => setTooltipVisible(true)}>
-          <Svg height="70" width="15">
-            <Rect x="0" y="0" width="15" height="70" rx="0" fill="#E0E0E0" />
-            <Rect
-              x="0"
-              y={70 - progress}
-              width="15"
-              height={progress}
-              fill={color}
-            />
-          </Svg>
-        </TouchableOpacity>
-      </Tooltip>
+      <Svg height="50" width="10">
+        <Rect width="15" height="50" fill={colors.grey[400]} />
+        <Rect y={50 - progress} width="15" height={progress} fill={color} />
+      </Svg>
       <Text style={styles.label}>{label}</Text>
     </View>
   )
@@ -36,12 +19,11 @@ const VerticalProgressBar = ({ progress, label, color, tooltipText }) => {
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
-    marginHorizontal: 8,
+    marginHorizontal: 5,
   },
   label: {
-    marginTop: 5,
+    marginTop: 4,
     fontSize: 12,
-    color: '#333',
   },
 })
 

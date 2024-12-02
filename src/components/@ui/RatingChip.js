@@ -4,9 +4,9 @@ import { Star, StarHalf } from 'phosphor-react-native'
 import { Text } from '@/components/@ui/Text'
 import { colors } from '@/constants/theme'
 
-const RatingChip = ({ review }) => {
-  const averageRating = review?.averageRating || 0
-  const totalReviews = review?.totalReviews || 0
+const RatingChip = ({ reviews }) => {
+  const averageRating = reviews?.summary?.averageRating || 0
+  const totalReviews = reviews?.summary?.totalRatings || 0
 
   // Calculate how many full and half stars to show
   const fullStars = Math.floor(averageRating)

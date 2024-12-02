@@ -28,7 +28,7 @@ export const Text = ({
 
     const conditionalStyles = {
       ...(primary && { color: colors.orange[500] }),
-      ...(secondary && { color: '#6e7a7f' }),
+      ...(secondary && { color: colors.grey[700] }),
       ...(success && { color: colors.success[500] }),
       ...(warning && { color: '#faad14' }),
       ...(danger && { color: '#f5222d' }),

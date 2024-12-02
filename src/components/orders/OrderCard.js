@@ -7,6 +7,7 @@ import { Text } from '@/components/@ui/Text'
 import { colors } from '@/constants/theme'
 import { Button } from '@/components/@ui/Button'
 import Divider from '@/components/@ui/Divider'
+import DeliveryLogo from '../checkout/DeliveryLogo'
 
 const OrderCard = ({ order }) => {
   const router = useRouter()
@@ -48,17 +49,38 @@ const OrderCard = ({ order }) => {
           }
         />
         <View style={styles.cardDetails}>
-          <View style={styles.detailRow}>
-            <Text> Items:</Text>
-            <Text style={styles.boldText}>{totalQuantity}</Text>
+          <View
+            style={[
+              styles.detailRow,
+              {
+                justifyContent: 'space-between',
+                flex: 1,
+              },
+            ]}
+          >
+            <View style={styles.detailRow}>
+              <Text> Items:</Text>
+              <Text style={styles.boldText}>{totalQuantity}</Text>
+            </View>
+            <DeliveryLogo type={order.shippingOption.shippingType} />
           </View>
           <View style={styles.detailRow}>
             <Text> Total:</Text>
             <Text style={styles.boldText}>{order.total} UGX</Text>
           </View>
-          <View style={styles.detailRow}>
-            <Text> Payment Type:</Text>
-            <Text style={styles.boldText}>{order.paymentType}</Text>
+          <View
+            style={[
+              styles.detailRow,
+              {
+                justifyContent: 'space-between',
+                flex: 1,
+              },
+            ]}
+          >
+            <View style={styles.detailRow}>
+              <Text> Mode:</Text>
+              <Text style={styles.boldText}>{order.paymentType}</Text>
+            </View>
           </View>
         </View>
       </View>
@@ -83,7 +105,7 @@ const OrderCard = ({ order }) => {
 const styles = StyleSheet.create({
   card: {
     marginVertical: 5,
-    borderWidth: 1,
+    borderWidth: 0.8,
     borderColor: colors.borderColor,
     borderRadius: colors.borderRadius,
     padding: 10,
@@ -117,14 +139,15 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginBottom: 5,
     gap: 5,
+    flex: 1,
   },
   detailRow: {
     flexDirection: 'row',
     gap: 10,
   },
   boldText: {
-    fontWeight: '600',
-    fontSize: 14,
+    fontWeight: '500',
+    fontSize: 13,
   },
   cardFooter: {
     flexDirection: 'row',

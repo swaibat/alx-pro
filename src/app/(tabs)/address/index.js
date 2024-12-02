@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, View, Dimensions } from 'react-native'
+import { StyleSheet, View, Dimensions, FlatList } from 'react-native'
 import { useGetAddressQuery } from '@/api'
 import { useLocalSearchParams, useRouter } from 'expo-router'
 import AddressItem from '@/components/address/AddressItem'
@@ -24,7 +24,7 @@ const AddressComponent = () => {
   return (
     <SecureRoute>
       <View style={styles.container}>
-        <FlashList
+        <FlatList
           data={data?.data}
           renderItem={({ item }) => (
             <AddressItem
@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
   },
   listContainer: {
     paddingBottom: 16,
-    gap: 10,
+    gap: 15,
   },
   footer: {
     justifyContent: 'center',

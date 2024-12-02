@@ -104,7 +104,7 @@ export default function Component() {
 
         <View style={styles.dangerZoneContainer}>
           <TouchableOpacity
-            style={{ flexDirection: 'row', padding: 5 }}
+            style={styles.logoutBtn}
             onPress={() => setIsLogoutModalVisible(true)}
           >
             <SignOut size={20} color={colors.red[500]} />
@@ -188,4 +188,5 @@ const styles = {
     marginLeft: 7,
     color: colors.red[500],
   },
+  logoutBtn: { flexDirection: 'row', padding: 5 },
 }

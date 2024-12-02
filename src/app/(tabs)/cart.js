@@ -1,79 +1,46 @@
 import React from 'react'
-import { View, Image, StyleSheet, FlatList } from 'react-native'
+import { View, StyleSheet, FlatList } from 'react-native'
 import { useSelector } from 'react-redux'
-import { useRouter } from 'expo-router'
-import { Text } from '@/components/@ui/Text'
-import { Button } from '@/components/@ui/Button'
 import { colors } from '@/constants/theme'
 import CartItemCard from '@/components/products/CartItemCard'
+import EmptyCart from '@/components/cart/EmptyCart'
+import CartFooter from '@/components/cart/CartFooter'
 
 const CartScreen = () => {
-  const router = useRouter()
-
   const cartItems = useSelector(state => state.cart)
-
-  const getTotalPrice = () => {
-    return cartItems.reduce((total, item) => {
-      return total + item.price * (item.quantity || 1)
-    }, 0)
-  }
 
   return (
     <>
-      <View style={styles.container}>
+      <View style={sx.container}>
         <FlatList
-          style={{ padding: 15 }}
+          style={sx.list}
           contentContainerStyle={
-            cartItems.length === 0
-              ? styles.emptyCartContentContainer
-              : { paddingBottom: 20, gap: 5 }
+            !cartItems.length ? sx.emptyCartContent : sx.content
           }
           data={cartItems}
           keyExtractor={(item, index) => `${item._id}-${index}`}
           renderItem={({ item }) => <CartItemCard editable item={item} />}
-          ListEmptyComponent={
-            <View style={styles.emptyCartContainer}>
-              <Image
-                source={require('@/assets/images/shopping.png')}
-                style={{ height: 120, width: 120 }}
-              />
-              <Text style={styles.emptyCartText}>Your cart is empty!</Text>
-              <Button
-                onPress={() => router.push('/ads/list')}
-                title="Shop Now"
-              />
-            </View>
-          }
+          ListEmptyComponent={<EmptyCart />}
         />
-        {cartItems.length && (
-          <View style={styles.footer}>
-            <View>
-              <Text>Total</Text>
-              <Text bold primary style={{ fontSize: 17 }}>
-                UGX {getTotalPrice().toLocaleString()}
-              </Text>
-            </View>
-            <Button
-              style={styles.checkoutButton}
-              onPress={() => router.push('checkout')}
-              title="Checkout"
-            />
-          </View>
-        )}
+        <CartFooter cartItems={cartItems} />
       </View>
     </>
   )
 }
 
-const styles = StyleSheet.create({
+const sx = StyleSheet.create({
+  list: {
+    padding: 15,
+  },
   container: {
     flex: 1,
     backgroundColor: 'white',
   },
-  appbar: {
-    backgroundColor: 'white',
-    borderWidth: 1,
-    borderColor: colors.borderColor,
+  emptyCartContent: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
   },
   footer: {
     flexDirection: 'row',
@@ -89,23 +56,7 @@ const styles = StyleSheet.create({
   checkoutButton: {
     width: 120,
   },
-  emptyCartContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: -100,
-    padding: 20,
-  },
-  emptyCartContentContainer: {
-    flexGrow: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  emptyCartText: {
-    marginTop: 5,
-    marginBottom: 20,
-    fontSize: 14,
-  },
+  content: { paddingBottom: 20, gap: 5 },
 })
 
 export default CartScreen

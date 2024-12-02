@@ -4,8 +4,10 @@ import { ArrowsClockwise, Package, ShieldCheck } from 'phosphor-react-native'
 import GooglePlacesAutocomplete from '@/components/address/GoogleAutoComplete'
 import { colors } from '@/constants/theme'
 import { Button } from '@/components/@ui/Button'
+import { useRouter } from 'expo-router'
 
 const DeliveryReturnInfo = () => {
+  const router = useRouter()
   return (
     <View style={styles.container}>
       {/* Delivery Information Section */}
@@ -36,7 +38,7 @@ const DeliveryReturnInfo = () => {
           </Text>
           <Button
             title="Details"
-            onPress={() => ''}
+            onPress={() => router.push('/return_policy')}
             style={{ marginLeft: -10 }}
             size="small"
             ghost
