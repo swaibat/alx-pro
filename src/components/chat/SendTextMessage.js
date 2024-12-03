@@ -23,6 +23,7 @@ const SendTextMessage = ({
     const newMessageObj = {
       _id: Date.now(),
       message: newMessage,
+      type: 'text',
       ...(replyingTo?.type === 'product'
         ? { replyToProductDetails: replyingTo?.message }
         : { replyTo: replyingTo }),

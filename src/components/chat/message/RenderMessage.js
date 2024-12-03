@@ -14,7 +14,7 @@ const RenderMessage = ({
   const [isLongPressed, setIsLongPressed] = useState(false)
 
   const handleLongPress = (message, event) => {
-    setIsLongPressed(true) // Change the background to red
+    setIsLongPressed(true)
     setSelectedMessage(message)
     setPopoverPosition({
       x: event.nativeEvent.pageX,
@@ -24,7 +24,7 @@ const RenderMessage = ({
   }
 
   const handlePressOut = () => {
-    setIsLongPressed(false) // Reset the background when the press is released
+    setIsLongPressed(false)
   }
 
   return (
@@ -44,7 +44,6 @@ const RenderMessage = ({
           item.to ? sx.inComingMessage : sx.myMessage,
         ]}
       >
-        {/* <ContentReply item={item} /> */}
         <ContentType item={item} />
         <Text style={sx.messageTime}>
           {item.createdAt
@@ -53,23 +52,7 @@ const RenderMessage = ({
         </Text>
         <Chat
           size={40}
-          style={
-            item.to
-              ? {
-                  position: 'absolute',
-                  left: -7,
-                  zIndex: -1,
-                  bottom: -3.7,
-                  transform: [{ rotate: '-90deg' }, { scaleY: -1 }],
-                }
-              : {
-                  position: 'absolute',
-                  right: -7,
-                  zIndex: -1,
-                  bottom: -3.7,
-                  transform: [{ rotate: '270deg' }],
-                }
-          }
+          style={item.to ? sx.chatIncoming : sx.chatOutgoing}
           color={item.to ? 'white' : '#004F70'}
           weight="fill"
         />
@@ -98,5 +81,19 @@ export const sx = StyleSheet.create({
     borderTopEndRadius: 20,
     borderBottomRightRadius: 20,
     borderBottomLeftRadius: 0,
+  },
+  chatIncoming: {
+    position: 'absolute',
+    left: -7,
+    zIndex: -1,
+    bottom: -3.7,
+    transform: [{ rotate: '-90deg' }, { scaleY: -1 }],
+  },
+  chatOutgoing: {
+    position: 'absolute',
+    right: -7,
+    zIndex: -1,
+    bottom: -3.7,
+    transform: [{ rotate: '270deg' }],
   },
 })

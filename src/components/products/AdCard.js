@@ -9,6 +9,8 @@ import { colors } from '@/constants/theme'
 import AppImg from '../@ui/AppImg'
 import FreeShippingBadge from '../@ui/FreeShippingBadge'
 import PriceDisplay from '../@ui/PriceDisplay'
+import ShippedFromAbroadBadge from '../@ui/ShippedFromAbroadBadge'
+import RatingChip from '../@ui/RatingChip'
 
 const AdCard = ({ product }) => {
   const router = useRouter()
@@ -21,7 +23,7 @@ const AdCard = ({ product }) => {
   return (
     <TouchableOpacity
       style={styles.productCard}
-      onPress={() => router.push(`/ads/${product._id}`)}
+      onPress={() => console.log('=======')}
     >
       <View style={styles.productImageContainer}>
         <AppImg src={product?.thumbnail} style={styles.productImage} />
@@ -35,23 +37,10 @@ const AdCard = ({ product }) => {
       <Text style={styles.productTitle} numberOfLines={1}>
         {product.title}
       </Text>
-      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 3 }}>
-        <SealCheck color="#039be5" size={15} weight="fill" />
-        <Text style={{ fontSize: 12 }} bold>
-          U-Home
-        </Text>
-      </View>
-      <FreeShippingBadge freeShipping={product.freeShipping} />
-      {!!product.ratingCount && (
-        <View style={styles.ratingContainer}>
-          <Star color="#FFC107" size={12} weight="fill" />
-          <Text style={styles.ratingText}>
-            {Math.abs(product.averageRating).toFixed(1) || 0}
-          </Text>
-          <Text style={styles.ratingCount}>({product.ratingCount || 0})</Text>
-        </View>
-      )}
-      <PriceDisplay product={product} size="small" />
+      <PriceDisplay primary product={product} size="small" />
+      <RatingChip average={product.averageRating} count={product.ratingCount} />
+      <FreeShippingBadge small freeShipping={!product.freeShipping} />
+      <ShippedFromAbroadBadge small isLocalStore={product.isLocalStore} />
     </TouchableOpacity>
   )
 }

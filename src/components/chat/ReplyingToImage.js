@@ -4,13 +4,15 @@ import React from 'react'
 import { colors } from '@/constants/theme'
 import AppImg from '../@ui/AppImg'
 
-const ReplyingToImage = ({ replyingTo: { type, message, to } }) => {
-  if (type !== 'image') return
+const ReplyingToImage = ({ replyingTo }) => {
+  if (replyingTo?.type !== 'image') {
+    return
+  }
   return (
     <View style={sx.imageGrid}>
       <View>
         <Text bold style={{ color: colors.primary }}>
-          {to ? 'Support Team' : 'You'}
+          {replyingTo.to ? 'Support Team' : 'You'}
         </Text>
         <View style={sx.replyHeader}>
           <ImgIcon size={18} style={sx.replyIcon} />
@@ -19,7 +21,7 @@ const ReplyingToImage = ({ replyingTo: { type, message, to } }) => {
       </View>
 
       <View style={{ flexDirection: 'row', gap: 3 }}>
-        {JSON.parse(message).map((url, index) => (
+        {replyingTo.message.map((url, index) => (
           <AppImg key={index} src={url} style={sx.replyPreviewImage} />
         ))}
       </View>

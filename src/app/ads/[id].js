@@ -111,7 +111,7 @@ const ProductDetailsScreen = () => {
                 <FreeShippingBadge freeShipping={product?.freeShipping} />
               </View>
             </View>
-            <View style={styles.tabContent}>
+            <View>
               <Section title="Description">
                 <Text style={styles.productDescription}>
                   {product?.description}
@@ -220,9 +220,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginVertical: 10,
     gap: 5,
-  },
-  tabContent: {
-    gap: 15,
   },
   productDescription: {
     fontSize: 12,

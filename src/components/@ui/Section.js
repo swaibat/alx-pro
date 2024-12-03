@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
   container: {
     borderBottomColor: colors.grey[200],
     borderTopColor: colors.grey[200],
-    paddingVertical: 10,
+    paddingVertical: 7,
   },
   header: {
     flex: 1,
@@ -45,7 +45,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 5,
   },
   headerText: {
     textTransform: 'capitalize',
@@ -53,7 +52,7 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
   content: {
-    paddingVertical: 10,
+    paddingVertical: 15,
     paddingHorizontal: 15,
   },
 })

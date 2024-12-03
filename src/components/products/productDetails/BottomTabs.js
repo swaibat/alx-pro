@@ -6,6 +6,7 @@ import { useDispatch } from 'react-redux'
 import { useSnackbar } from '@/hooks/useSnackbar'
 import { useRouter } from 'expo-router'
 import { addToCart } from '@/store/cartSlice'
+import { colors } from '@/constants/theme'
 
 const BottomTabs = ({ product, selectedOptions }) => {
   const dispatch = useDispatch()
@@ -66,10 +67,10 @@ const styles = StyleSheet.create({
   bottomTabsContainer: {
     borderTopWidth: 0.8,
     gap: 5,
-    borderTopColor: 'grey',
+    borderTopColor: colors.borderColor,
     backgroundColor: 'white',
     position: 'absolute',
-    bottom: 0,
+    bottom: 30,
     flexDirection: 'row',
     width: '100%',
     justifyContent: 'space-between',

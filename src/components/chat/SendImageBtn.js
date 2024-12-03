@@ -47,7 +47,7 @@ export default function SendImageBtn({ replyingTo, clearReplyingTo, refetch }) {
 
       imageMessages = {
         _id: Date.now(),
-        message: previewUris.length ? JSON.stringify(previewUris) : '',
+        message: previewUris.length ? previewUris : '',
         type: 'image',
         replyTo: replyingTo,
       }
@@ -60,7 +60,7 @@ export default function SendImageBtn({ replyingTo, clearReplyingTo, refetch }) {
 
         imageMessages = {
           _id: Date.now(),
-          message: imageUrls.length ? JSON.stringify(imageUrls) : '',
+          message: imageUrls.length ? imageUrls : '',
           type: 'image',
           replyTo: replyingTo,
         }

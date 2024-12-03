@@ -3,41 +3,74 @@ import { View, Text, StyleSheet } from 'react-native'
 import { Truck } from 'phosphor-react-native'
 import { colors } from '@/constants/theme'
 
-const FreeShippingBadge = ({ freeShipping }) => {
+const FreeShippingBadge = ({ freeShipping, small }) => {
   if (!freeShipping) return null
+
   return (
-    <View style={styles.freeShippingBadge}>
-      <View style={styles.iconContainer}>
-        <Truck color="white" size={13} weight="fill" />
+    <View
+      style={[
+        styles.shippedBadge,
+        {
+          height: small ? 21 : 30,
+          marginVertical: small ? 2 : 3,
+          borderColor: small ? colors.grey[400] : colors.blue[500],
+        },
+      ]}
+    >
+      <View style={{ paddingHorizontal: small ? 3 : 5 }}>
+        <Truck
+          color={small ? colors.grey[500] : colors.blue[500]}
+          size={13}
+          weight="fill"
+        />
       </View>
-      <Text style={styles.freeShippingText}>Free Shipping</Text>
+
+      <View
+        style={[
+          styles.textContainer,
+          {
+            marginRight: small ? 2 : 5,
+            backgroundColor: small ? colors.grey[300] : colors.blue[500],
+          },
+        ]}
+      >
+        <Text
+          style={{
+            fontSize: small ? 7 : 10,
+            marginLeft: 4,
+            color: small ? 'black' : 'white',
+          }}
+        >
+          Free Shipping
+        </Text>
+      </View>
     </View>
   )
 }
 
 const styles = StyleSheet.create({
-  freeShippingBadge: {
+  shippedBadge: {
     borderWidth: 0.7,
+    backgroundColor: 'white',
     overflow: 'hidden',
-    height: 20,
     marginRight: 'auto',
-    borderColor: colors.green[300],
     flexDirection: 'row',
     alignItems: 'center',
-    borderRadius: 3,
-    marginVertical: 3,
+    borderRadius: 2,
+    marginVertical: 1,
+  },
+  textContainer: {
+    paddingHorizontal: 7,
+    borderRadius: 2,
+    borderColor: 'white',
+    paddingVertical: 2,
+    marginRight: 5,
+  },
+  shippedText: {
+    color: 'white',
   },
   iconContainer: {
-    backgroundColor: colors.green[500],
     paddingHorizontal: 5,
-    paddingVertical: 3,
-  },
-  freeShippingText: {
-    color: colors.green[500],
-    paddingRight: 6,
-    paddingVertical: 1,
-    fontSize: 10,
-    marginLeft: 4,
   },
 })
 

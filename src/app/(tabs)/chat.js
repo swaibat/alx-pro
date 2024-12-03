@@ -165,7 +165,13 @@ const sx = StyleSheet.create({
   header: { position: 'absolute', top: 0, width: '100%', zIndex: 1 },
   footer: { position: 'absolute', bottom: 0, width: '100%', zIndex: 1 },
   messageText: { color: 'black' },
-  dateContainer: { marginVertical: 10, alignItems: 'center' },
+  dateContainer: {
+    marginVertical: 10,
+    padding: 5,
+    borderRadius: 5,
+    alignItems: 'center',
+    backgroundColor: 'rgba(245, 245, 245, 0.5)',
+  },
   dateText: { color: '#aaa', fontSize: 12 },
   listContent: { paddingTop: 70, paddingBottom: 100, paddingHorizontal: 15 },
   emptyWrapper: {

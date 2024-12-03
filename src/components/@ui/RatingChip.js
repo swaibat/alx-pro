@@ -4,9 +4,10 @@ import { Star, StarHalf } from 'phosphor-react-native'
 import { Text } from '@/components/@ui/Text'
 import { colors } from '@/constants/theme'
 
-const RatingChip = ({ reviews }) => {
-  const averageRating = reviews?.summary?.averageRating || 0
-  const totalReviews = reviews?.summary?.totalRatings || 0
+const RatingChip = ({ reviews, average, count }) => {
+  if (count === 0) return
+  const averageRating = reviews?.summary?.averageRating || average || 0
+  const totalReviews = reviews?.summary?.totalRatings || count || 0
 
   // Calculate how many full and half stars to show
   const fullStars = Math.floor(averageRating)
@@ -24,24 +25,31 @@ const RatingChip = ({ reviews }) => {
     <View style={styles.ratingContainer}>
       {stars.map((star, index) => {
         if (star === 'full') {
-          return <Star key={index} size={16} color="#FFD700" weight="fill" />
+          return (
+            <Star
+              key={index}
+              size={average ? 12 : 16}
+              color="#FFD700"
+              weight="fill"
+            />
+          )
         }
         if (star === 'half') {
           return (
-            <StarHalf key={index} size={16} color="#FFD700" weight="fill" />
+            <StarHalf
+              key={index}
+              size={average ? 12 : 16}
+              color="#FFD700"
+              weight="fill"
+            />
           )
         }
         return (
-          <Star
-            key={index}
-            size={16}
-            color={colors.grey[400]}
-            weight="duotone"
-          />
+          <Star key={index} size={average ? 12 : 16} color={colors.grey[400]} />
         )
       })}
-      <Text style={styles.ratingText}>
-        {averageRating.toFixed(2)} ({totalReviews}) Rating(s)
+      <Text style={[styles.ratingText, { fontSize: average ? 12 : 13 }]}>
+        {averageRating.toFixed(1)} ({totalReviews}) {!average && 'Rating(s)'}
       </Text>
     </View>
   )

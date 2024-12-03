@@ -31,7 +31,7 @@ const SendLocationBtn = ({ refetch, replyingTo }) => {
     }
 
     dispatch(addMessage(locationMessage))
-    await sendMessage({ ...locationMessage, replyTo: replyingTo._id }).unwrap()
+    await sendMessage({ ...locationMessage, replyTo: replyingTo?._id }).unwrap()
     refetch()
   }
   return (

@@ -21,7 +21,7 @@ export default function TopToolbar() {
           <Logo />
         </View>
         <View>
-          <Text style={styles.userName}>Alx Support</Text>
+          <Text style={styles.userName}>Support</Text>
           <View style={{ flexDirection: 'row', alignItems: 'center', gap: 5 }}>
             <View
               style={[

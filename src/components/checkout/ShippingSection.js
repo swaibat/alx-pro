@@ -9,6 +9,7 @@ const ShippingOptions = ({
   selectedShipping,
   setSelectedShipping,
 }) => {
+  console.log('===', address)
   const { data, isLoading } = useGetShippingByRegionQuery(
     { region: address?.state?.split(' ')?.[0]?.toLowerCase() },
     { skip: !address?._id }

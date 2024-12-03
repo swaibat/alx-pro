@@ -11,6 +11,7 @@ import { HeaderRight } from '@/components/@ui/HeaderRight'
 import * as Font from 'expo-font'
 import Entypo from '@expo/vector-icons/Entypo'
 import SplashScreenComponent from '@/components/global/SplashScreenComponent'
+import SalesPopup from '@/components/products/SalesPopup'
 
 SplashScreen.preventAutoHideAsync()
 
@@ -20,7 +21,10 @@ SplashScreen.setOptions({
 })
 
 const RootLayout = () => {
-  useNetworkStatus()
+  // useNetworkStatus()
+  // useEffect(() => {
+  //     checkNetworkStatus()
+  //   }, [isOffline])
   const [appIsReady, setAppIsReady] = useState(false)
 
   useEffect(() => {
@@ -42,9 +46,7 @@ const RootLayout = () => {
     return <SplashScreenComponent />
   }
 
-  // useEffect(() => {
-  //   checkNetworkStatus()
-  // }, [isOffline])
+  // 
 
   const headerTitleStyle = {
     textTransform: 'capitalize',
@@ -144,6 +146,7 @@ const RootLayout = () => {
       </Stack>
       <StatusBar style="auto" />
       <AppSnackbar />
+      {/* <SalesPopup /> */}
     </Provider>
   )
 }

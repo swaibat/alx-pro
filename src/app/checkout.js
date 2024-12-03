@@ -25,6 +25,7 @@ import { LockSimple } from 'phosphor-react-native'
 import { colors } from '@/constants/theme'
 import { Text } from '@/components/@ui/Text'
 import Section from '@/components/@ui/Section'
+import LoadingOverlay from '@/components/@ui/LoadingOverlay'
 
 const CheckoutScreen = () => {
   const [selectedShipping, setSelectedShipping] = useState(null)
@@ -171,13 +172,12 @@ const CheckoutScreen = () => {
                 textStyle={{ marginRight: 'auto' }}
                 style={styles.checkoutButton}
                 onPress={async () => {
-                  console.log('orderData?._id', orderData?.data?._id)
                   if (!orderData?.data?._id) {
                     await handlePayNow()
                   }
                   props.onPress()
                 }}
-                disabled={props.disabled || isCreating || isUpdating}
+                disabled={props.disabled || isCreating}
                 title={`Pay ${(totalPrice + (selectedShipping?.price || 0)).toLocaleString()} /-`}
                 iconLeft={
                   <LockSimple
@@ -191,6 +191,7 @@ const CheckoutScreen = () => {
           />
         </View>
       </SafeAreaView>
+      <LoadingOverlay visible={isUpdating} />
     </SecureRoute>
   )
 }
@@ -212,7 +213,7 @@ const styles = StyleSheet.create({
     padding: 15,
     position: 'absolute',
     width: '100%',
-    bottom: 0,
+    bottom: 30,
     backgroundColor: '#F7F9FC',
     borderTopWidth: 1,
     borderColor: '#E4E9F2',

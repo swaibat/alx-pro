@@ -24,6 +24,7 @@ const sx = StyleSheet.create({
     flex: 1,
     padding: 7,
     borderRadius: 5,
+    gap: 10,
     backgroundColor: colors.grey[50],
   },
   replyImage: {
@@ -32,7 +33,9 @@ const sx = StyleSheet.create({
     borderRadius: 5,
   },
   productDetails: {
-    marginLeft: 10,
+    // marginLeft: 10,
+    // padding: 10,
+    flex: 1,
   },
   productPrice: {
     fontWeight: 'bold',

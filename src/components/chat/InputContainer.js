@@ -38,6 +38,17 @@ const InputContainer = ({
             <ReplyingToLocation replyingTo={replyingTo} />
             <ReplyingToText replyingTo={replyingTo} />
             <ReplyingToProduct replyingTo={replyingTo} />
+          </View>
+          <View
+            style={{
+              // width: 50,
+              // backgroundColor:'red',
+              marginLeft:-15,
+              marginTop:-5,
+              justifyContent: 'flex-start',
+              alignItems: 'flex-end',
+            }}
+          >
             <TouchableOpacity
               onPress={clearReplyingTo}
               style={sx.clearReplyButton}
@@ -109,6 +120,10 @@ const sx = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    flex: 1,
+    borderWidth: 0.8,
+    borderRadius: 5,
+    borderColor: colors.grey[400],
   },
   replyingTo: {
     flex: 1,
@@ -116,15 +131,13 @@ const sx = StyleSheet.create({
   replyingToText: { fontSize: 14 },
   clearReplyButton: {
     backgroundColor: theme.colors.grey[700],
-    position: 'absolute',
-    right: -7,
-    top: -5,
     padding: 2,
     borderRadius: 3,
   },
   replyToContainer: {
-    backgroundColor: colors.grey[300],
-    borderTopColor: colors.grey[400],
+    backgroundColor: 'white',
+    flexDirection: 'row',
+    borderTopColor: colors.grey[100],
     borderTopWidth: 0.8,
     paddingHorizontal: 15,
     paddingVertical: 7,
