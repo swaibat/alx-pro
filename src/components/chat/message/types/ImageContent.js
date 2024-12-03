@@ -1,13 +1,12 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import React from 'react'
 import AppImg from '@/components/@ui/AppImg'
 import { colors } from '@/constants/theme'
 
-const ImageContent = ({ to, type, message, replyToMessage }) => {
+const ImageContent = ({ type, message }) => {
   if (type !== 'image' || !Array.isArray(message) || message.length === 0) {
     return null
   }
-  console.log('=============', type, '====', message)
   return (
     <View>
       <View style={styles.imageGrid}>
@@ -15,9 +14,6 @@ const ImageContent = ({ to, type, message, replyToMessage }) => {
           <AppImg key={index} src={url} style={styles.image} />
         ))}
       </View>
-      {/* <Text style={[to ? styles.messageText : styles.myMessageText]}>
-        {message}
-      </Text> */}
     </View>
   )
 }

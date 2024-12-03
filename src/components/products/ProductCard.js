@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, TouchableOpacity, StyleSheet, Image } from 'react-native'
-import { ShoppingCart, Star } from 'phosphor-react-native'
+import { ShoppingCartSimple, Star } from 'phosphor-react-native'
 import { useRouter } from 'expo-router'
 import { useDispatch } from 'react-redux'
 import { addToCart } from '@/store/cartSlice'
@@ -33,7 +33,7 @@ const ProductCard = ({ product }) => {
           style={styles.addToCartButton}
           onPress={handleAddToCart}
         >
-          <ShoppingCart size={16} color="white" weight="bold" />
+          <ShoppingCartSimple size={16} color="white" weight="bold" />
         </TouchableOpacity>
       </View>
       <Text style={styles.productTitle} numberOfLines={1} ellipsizeMode="tail">

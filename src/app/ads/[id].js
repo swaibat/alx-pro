@@ -21,10 +21,11 @@ import BottomTabs from '@/components/products/productDetails/BottomTabs'
 import { Button } from '@/components/@ui/Button'
 import DeliveryReturnInfo from '@/components/products/productDetails/DeliveryReturnInfo'
 import VariantSelector from '@/components/products/productDetails/VariantSelector'
+import ErrorScreen from '@/components/global/Error'
 
 const ProductDetailsScreen = () => {
   const { id } = useLocalSearchParams()
-  const { data, isLoading } = useGetProductQuery(id, {
+  const { data, isLoading, isError, refetch } = useGetProductQuery(id, {
     skip: !id,
   })
   const product = data?.data
@@ -49,6 +50,7 @@ const ProductDetailsScreen = () => {
     }
   }
   if (!product || isLoading) return <Loading text={'Loading Ad details'} />
+  if (isError) return <ErrorScreen refetch={refetch} />
 
   return (
     <>

@@ -31,7 +31,7 @@ const CategoryChipsList = () => {
 
   useEffect(() => {
     if (data?.data) {
-      setCurrentCategories(data.data) // Initially, show top-level categories
+      setCurrentCategories(data.data)
     }
   }, [data])
 
@@ -43,7 +43,7 @@ const CategoryChipsList = () => {
         setCurrentCategories(category.children)
         setParentCategory(category)
       } else {
-        setCurrentCategories(data.data) // Reset to top-level categories if not found
+        setCurrentCategories(data.data)
       }
     }
   }, [initialCategoryId, data])
@@ -55,7 +55,6 @@ const CategoryChipsList = () => {
       data?.data?.find(cat => cat.id === categoryId)
 
     if (category && category.children && category.children.length > 0) {
-      // Open modal with children categories
       setChildrenCategories(category.children)
       setIsModalVisible(true)
     } else {
@@ -76,10 +75,10 @@ const CategoryChipsList = () => {
 
   const handleBackToParent = () => {
     if (parentCategory) {
-      setCurrentCategories(data.data) // Go back to top-level categories
+      setCurrentCategories(data.data)
       setParentCategory(null)
-      setActiveChip('') // Reset active chip to 'ALL'
-      router.push(`/ads/list`) // Clear categoryId
+      setActiveChip('')
+      router.push(`/ads/list`)
     }
   }
 

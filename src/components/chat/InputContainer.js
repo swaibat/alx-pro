@@ -41,10 +41,8 @@ const InputContainer = ({
           </View>
           <View
             style={{
-              // width: 50,
-              // backgroundColor:'red',
-              marginLeft:-15,
-              marginTop:-5,
+              marginLeft: -15,
+              marginTop: -5,
               justifyContent: 'flex-start',
               alignItems: 'flex-end',
             }}

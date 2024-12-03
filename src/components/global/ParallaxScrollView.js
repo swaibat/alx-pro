@@ -15,7 +15,7 @@ import { colors, theme } from '@/constants/theme'
 
 const HEADER_HEIGHT = 150
 const MIN_HEADER_HEIGHT = 95
-const SCREEN_WIDTH = Dimensions.get('window').width;
+const SCREEN_WIDTH = Dimensions.get('window').width
 
 export default function ParallaxScrollView({ children, headerImage }) {
   const router = useRouter()
@@ -46,12 +46,10 @@ export default function ParallaxScrollView({ children, headerImage }) {
       ),
       transform: [
         {
-          translateY: interpolate(
-            scrollY.value,
-            [0, 150],
-            [0, -20], // Slight upward movement for smoothness
-            { extrapolateLeft: 'clamp', extrapolateRight: 'extend' }
-          ),
+          translateY: interpolate(scrollY.value, [0, 150], [0, -20], {
+            extrapolateLeft: 'clamp',
+            extrapolateRight: 'extend',
+          }),
         },
       ],
     }
@@ -178,8 +176,8 @@ const styles = StyleSheet.create({
   xDiagonal: {
     position: 'absolute',
     width: '150%',
-    height: 70, // Wide stroke
-    backgroundColor: colors.orange[300], // Translucent white
+    height: 80, // Wide stroke
+    backgroundColor: colors.orange[900], // Translucent white
     transform: [{ rotate: '45deg' }],
   },
   xDiagonalReverse: {

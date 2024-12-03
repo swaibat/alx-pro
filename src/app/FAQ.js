@@ -60,7 +60,6 @@ const FAQScreen = () => {
         },
       ],
     },
-    // Add other categories here
   ]
 
   const allFAQs = faqContent.flatMap(category => category.questions)

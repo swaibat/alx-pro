@@ -4,14 +4,12 @@ import * as SplashScreen from 'expo-splash-screen'
 import { Provider } from 'react-redux'
 import { store } from '@/store'
 import AppSnackbar from '@/components/global/AppSnackbar'
-import { useNetworkStatus } from '@/hooks/useNetworkStatus'
 import { StatusBar } from 'expo-status-bar'
 import { HeaderRight } from '@/components/@ui/HeaderRight'
-
 import * as Font from 'expo-font'
 import Entypo from '@expo/vector-icons/Entypo'
 import SplashScreenComponent from '@/components/global/SplashScreenComponent'
-import SalesPopup from '@/components/products/SalesPopup'
+// import SalesPopup from '@/components/products/SalesPopup'
 
 SplashScreen.preventAutoHideAsync()
 
@@ -46,8 +44,6 @@ const RootLayout = () => {
     return <SplashScreenComponent />
   }
 
-  // 
-
   const headerTitleStyle = {
     textTransform: 'capitalize',
   }
@@ -64,7 +60,7 @@ const RootLayout = () => {
             headerRight: () => (
               <HeaderRight buttons={[{ name: 'search' }, { name: 'cart' }]} />
             ),
-            headerTitleStyle, // Reusable header title style
+            headerTitleStyle,
           }}
         />
         <Stack.Screen
@@ -73,7 +69,7 @@ const RootLayout = () => {
             title: 'Checkout',
             headerShown: true,
             headerShadowVisible: false,
-            headerTitleStyle, // Reusable header title style
+            headerTitleStyle,
           }}
         />
         <Stack.Screen name="+not-found" options={{ headerShown: false }} />
@@ -81,14 +77,14 @@ const RootLayout = () => {
           name="privacy_policy"
           options={{
             title: 'Privacy Policy',
-            headerTitleStyle, // Reusable header title style
+            headerTitleStyle,
           }}
         />
         <Stack.Screen
           name="terms_of_service"
           options={{
             title: 'Terms of Service',
-            headerTitleStyle, // Reusable header title style
+            headerTitleStyle,
           }}
         />
         <Stack.Screen
@@ -97,7 +93,7 @@ const RootLayout = () => {
             title: 'Forgot Password',
             headerShown: true,
             headerShadowVisible: false,
-            headerTitleStyle, // Reusable header title style
+            headerTitleStyle,
           }}
         />
         <Stack.Screen
@@ -110,7 +106,7 @@ const RootLayout = () => {
             headerRight: () => (
               <HeaderRight buttons={[{ name: 'search' }, { name: 'cart' }]} />
             ),
-            headerTitleStyle, // Reusable header title style
+            headerTitleStyle,
           }}
         />
         <Stack.Screen
@@ -140,7 +136,7 @@ const RootLayout = () => {
         <Stack.Screen
           name="FAQ"
           options={{
-            headerTitleStyle, // Reusable header title style
+            headerTitleStyle,
           }}
         />
       </Stack>

@@ -6,7 +6,7 @@ import { colors } from '@/constants/theme'
 import { MapPin } from 'phosphor-react-native'
 import { Text } from '@/components/@ui/Text'
 
-const LocationContent = ({ to, type, message, replyToMessage }) => {
+const LocationContent = ({ to, message, replyToMessage }) => {
   if (
     !(
       replyToMessage?.message?.startsWith('https') ||
@@ -15,7 +15,7 @@ const LocationContent = ({ to, type, message, replyToMessage }) => {
   ) {
     return null
   }
-  console.log(message, replyToMessage)
+
   return (
     <View>
       {replyToMessage?.type === 'location' ? (

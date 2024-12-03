@@ -1,11 +1,10 @@
 import React from 'react'
 import {
   House,
-  ShoppingCart,
   User,
   CirclesFour,
-  Chat,
   ChatCircleDots,
+  ShoppingCartSimple,
 } from 'phosphor-react-native'
 
 export const icons = {
@@ -13,31 +12,35 @@ export const icons = {
     <House
       size={25}
       {...props}
-      weight={!props.isFocused ? 'regular' : 'fill'}
+      weight={!props.isFocused ? 'light' : 'regular'}
     />
   ),
   category: props => (
     <CirclesFour
       size={24}
       {...props}
-      weight={!props.isFocused ? 'regular' : 'fill'}
+      weight={!props.isFocused ? 'light' : 'regular'}
     />
   ),
   cart: props => (
-    <ShoppingCart
+    <ShoppingCartSimple
       size={24}
       {...props}
-      weight={!props.isFocused ? 'regular' : 'fill'}
+      weight={!props.isFocused ? 'light' : 'regular'}
     />
   ),
   account: props => (
-    <User size={24} {...props} weight={!props.isFocused ? 'regular' : 'fill'} />
+    <User
+      size={24}
+      {...props}
+      weight={!props.isFocused ? 'light' : 'regular'}
+    />
   ),
   chat: props => (
     <ChatCircleDots
       size={24}
       {...props}
-      weight={!props.isFocused ? 'regular' : 'fill'}
+      weight={!props.isFocused ? 'light' : 'regular'}
     />
   ),
 }

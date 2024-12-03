@@ -2,6 +2,7 @@ import React from 'react'
 import { View, Image, StyleSheet } from 'react-native'
 import PagerView from 'react-native-pager-view'
 import Placeholder from '@/assets/Placeholder'
+import { colors } from '@/constants/theme'
 
 const ProductImageCarousel = ({ images = [] }) => {
   const [currentIndex, setCurrentIndex] = React.useState(0)
@@ -21,8 +22,9 @@ const ProductImageCarousel = ({ images = [] }) => {
       />
     ))
   }
+
   return images.length ? (
-    <View>
+    <View style={styles.carouselContainer}>
       <PagerView
         style={styles.viewPager}
         onPageSelected={handlePageChange}
@@ -44,20 +46,52 @@ const ProductImageCarousel = ({ images = [] }) => {
 }
 
 const styles = StyleSheet.create({
-  viewPager: { height: 300, width: '100%' },
-  imageContainer: { flex: 1, justifyContent: 'center', alignItems: 'center' },
-  image: { width: '100%', height: '100%', resizeMode: 'cover' },
-  placeholder: { height: 300, justifyContent: 'center', alignItems: 'center' },
+  carouselContainer: {
+    position: 'relative',
+    height: 300,
+    width: '100%',
+  },
+  viewPager: {
+    height: 300,
+    width: '100%',
+  },
+  imageContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  image: {
+    width: '100%',
+    height: '100%',
+    resizeMode: 'cover',
+  },
+  placeholder: {
+    height: 300,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#f0f0f0',
+  },
   dotsContainer: {
     position: 'absolute',
+    bottom: 10,
+    width: '100%',
     flexDirection: 'row',
     justifyContent: 'center',
-    backgroundColor: 'rgba(255, 255, 255, 0.8)',
-    borderTopRightRadius: 10,
-    padding: 10,
-    paddingVertical: 5,
-    bottom: 20,
-    right: 0,
+    alignItems: 'center',
+  },
+  dot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    marginHorizontal: 4,
+    backgroundColor: '#ccc',
+  },
+  activeDot: {
+    backgroundColor: '#000',
+    width: 20,
+  },
+  inactiveDot: {
+    backgroundColor: colors.grey[500],
   },
 })
 

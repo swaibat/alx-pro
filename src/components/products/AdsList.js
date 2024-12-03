@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState, useMemo, useCallback } from 'react'
 import { StyleSheet, SafeAreaView, View, TouchableOpacity } from 'react-native'
 import { MasonryFlashList } from '@shopify/flash-list'
@@ -21,7 +22,6 @@ const AdsList = () => {
   const [isSortModalVisible, setSortModalVisible] = useState(false)
   const [pageLimit, setPageLimit] = useState(ITEMS_PER_PAGE)
 
-  // Memoize query parameters to avoid unnecessary re-renders
   const queryParams = useMemo(() => {
     const baseParams = { ...params, limit: pageLimit }
     return Object.fromEntries(
@@ -29,7 +29,6 @@ const AdsList = () => {
     )
   }, [params, pageLimit])
 
-  // API call for fetching products
   const { data, isLoading, isFetching, refetch } = useGetProductsQuery(
     queryParams,
     {
@@ -37,7 +36,6 @@ const AdsList = () => {
     }
   )
 
-  // Handle load more products
   const loadMoreProducts = useCallback(() => {
     if (data?.data?.hasNextPage && !isFetching) {
       setPageLimit(data?.data?.limit + ITEMS_PER_PAGE)
@@ -45,7 +43,6 @@ const AdsList = () => {
     }
   }, [data, isFetching, refetch])
 
-  // Modal toggles
   const toggleFilterModal = () => setFilterModalVisible(!isFilterModalVisible)
   const toggleSortModal = () => setSortModalVisible(!isSortModalVisible)
 
@@ -95,8 +92,6 @@ const AdsList = () => {
           contentContainerStyle={styles.masonryContent}
         />
       </View>
-
-      {/* Filter and Sort Modals */}
       <FilterModal visible={isFilterModalVisible} onClose={toggleFilterModal} />
       <SortModal
         visible={isSortModalVisible}

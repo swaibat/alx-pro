@@ -30,7 +30,7 @@ const RecentProducts = () => {
       <MasonryFlashList
         data={products}
         renderItem={({ item }) => (
-          <AdCard key={item._id} product={item} style={styles.adCard} />
+          <AdCard product={item} style={styles.adCard} />
         )}
         keyExtractor={item => item._id}
         numColumns={2}

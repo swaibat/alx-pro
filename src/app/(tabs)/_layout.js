@@ -6,11 +6,7 @@ import { setAuthState } from '@/store/authSlice'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { Text } from '@/components/@ui/Text'
 import TabBar from '@/components/@ui/TabBar'
-import {
-  ShoppingCart,
-  MagnifyingGlass,
-  CaretCircleLeft,
-} from 'phosphor-react-native'
+import { MagnifyingGlass, CaretCircleLeft } from 'phosphor-react-native'
 import { TouchableOpacity } from 'react-native'
 import { colors } from '@/constants/theme'
 import { useSocket } from '@/hooks/useSocket'
@@ -19,10 +15,7 @@ import { usePushNotifications } from '@/scripts/NotificationsService'
 const CustomHeaderTitle = ({ title, onBackPress, isCentered = false }) => {
   return (
     <View
-      style={[
-        styles.headerTitleContainer,
-        isCentered && { justifyContent: 'center' },
-      ]}
+      style={[styles.headerTitleContainer, isCentered && styles.centeredHeader]}
     >
       {onBackPress && (
         <TouchableOpacity onPress={onBackPress}>
@@ -40,11 +33,6 @@ export default function TabLayout() {
   const router = useRouter()
   const dispatch = useDispatch()
   const { user } = useSelector(state => state.auth)
-  const cartCount = useSelector(({ cart }) => cart?.length)
-
-  useEffect(() => {
-    console.log('===cartCount===', cartCount)
-  }, [cartCount])
 
   useEffect(() => {
     const loadUser = async () => {
@@ -71,24 +59,11 @@ export default function TabLayout() {
       <Tabs.Screen
         name="cart"
         options={{
-          headerStyle: { height: 100 },
+          headerStyle: styles.headerStyle,
           headerShadowVisible: false,
-          headerTitle: () => (
-            <Text
-              style={[styles.headerTitle, { fontSize: 25, marginTop: 'auto' }]}
-            >
-              Cart
-            </Text>
-          ),
+          headerTitle: () => <Text style={styles.cartHeaderTitle}>Cart</Text>,
           headerRight: () => (
-            <View
-              style={{
-                flexDirection: 'row',
-                marginTop: 'auto',
-                paddingRight: 30,
-                gap: 20,
-              }}
-            >
+            <View style={styles.headerRightContainer}>
               <TouchableOpacity>
                 <MagnifyingGlass size={24} />
               </TouchableOpacity>
@@ -100,24 +75,12 @@ export default function TabLayout() {
         name="category"
         options={{
           title: 'Categories',
-          headerStyle: {
-            backgroundColor: colors.grey[200],
-          },
+          headerStyle: styles.categoryHeaderStyle,
           headerShadowVisible: false,
           headerRight: () => (
-            <View style={{ flexDirection: 'row', paddingRight: 30, gap: 20 }}>
+            <View style={styles.headerRightContainer}>
               <TouchableOpacity onPress={() => router.push('/search')}>
                 <MagnifyingGlass size={24} />
-              </TouchableOpacity>
-              <TouchableOpacity>
-                <>
-                  <ShoppingCart size={24} />
-                  {cartCount >= 0 && (
-                    <View style={styles.badge}>
-                      <Text style={styles.badgeText}>{cartCount}</Text>
-                    </View>
-                  )}
-                </>
               </TouchableOpacity>
             </View>
           ),
@@ -160,21 +123,17 @@ export default function TabLayout() {
       <Tabs.Screen
         name="register"
         options={{
-          title: 'register',
+          title: 'Register',
           headerShadowVisible: false,
-          headerTitleStyle: {
-            textTransform: 'capitalize',
-          }, // Reusable header title style
+          headerTitleStyle: styles.capitalizeHeaderTitle,
         }}
       />
       <Tabs.Screen
         name="login"
         options={{
-          title: 'login',
+          title: 'Login',
           headerShadowVisible: false,
-          headerTitleStyle: {
-            textTransform: 'capitalize',
-          }, // Reusable header title style
+          headerTitleStyle: styles.capitalizeHeaderTitle,
         }}
       />
       <Tabs.Screen
@@ -217,11 +176,31 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-start',
   },
+  centeredHeader: {
+    justifyContent: 'center',
+  },
   headerTitle: {
     fontSize: 18,
     marginLeft: 10,
     color: 'black',
     fontWeight: 'semibold',
+  },
+  cartHeaderTitle: {
+    fontSize: 25,
+    marginTop: 'auto',
+  },
+  headerStyle: {
+    height: 100,
+  },
+  headerRightContainer: {
+    flexDirection: 'row',
+    marginTop: 'auto',
+    paddingRight: 30,
+    marginBottom: 15,
+  },
+  categoryHeaderStyle: {
+    backgroundColor: colors.grey[200],
+    justifyContent: 'center',
   },
   badge: {
     position: 'absolute',
@@ -238,5 +217,8 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 10,
     fontWeight: 'bold',
+  },
+  capitalizeHeaderTitle: {
+    textTransform: 'capitalize',
   },
 })

@@ -1,6 +1,6 @@
 import React from 'react'
 import { StyleSheet, View, TouchableOpacity } from 'react-native'
-import { SealCheck, ShoppingCart, Star } from 'phosphor-react-native'
+import { ShoppingCartSimple } from 'phosphor-react-native'
 import { useRouter } from 'expo-router'
 import { useDispatch } from 'react-redux'
 import { addToCart } from '@/store/cartSlice'
@@ -23,7 +23,7 @@ const AdCard = ({ product }) => {
   return (
     <TouchableOpacity
       style={styles.productCard}
-      onPress={() => console.log('=======')}
+      onPress={() => router.push(`/ads/${product._id}`)}
     >
       <View style={styles.productImageContainer}>
         <AppImg src={product?.thumbnail} style={styles.productImage} />
@@ -32,7 +32,7 @@ const AdCard = ({ product }) => {
         style={[styles.addToCartButton, { borderColor: colors.grey[600] }]}
         onPress={handleAddToCart}
       >
-        <ShoppingCart size={15} color={colors.grey[600]} />
+        <ShoppingCartSimple size={15} color={colors.grey[600]} />
       </TouchableOpacity>
       <Text style={styles.productTitle} numberOfLines={1}>
         {product.title}

@@ -12,9 +12,7 @@ export default function TopToolbar() {
   return (
     <View style={styles.toolbar}>
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-        <TouchableOpacity
-          onPress={() => router.push({ pathname: '/', params: {} })}
-        >
+        <TouchableOpacity onPress={() => router.back()}>
           <CaretLeft weight="bold" />
         </TouchableOpacity>
         <View style={styles.avatar}>

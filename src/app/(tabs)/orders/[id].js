@@ -12,13 +12,16 @@ import ShippingOptionItem from '@/components/checkout/ShippingOptionItem'
 import ActivitySection from '@/components/orders/ActivitySection'
 import OrderItemsList from '@/components/orders/OrderItems'
 import OrderSummary from '@/components/orders/OrderSummary'
+import ErrorScreen from '@/components/global/Error'
 
 const OrderDetailsScreen = () => {
   const { id } = useLocalSearchParams()
-  const { data, isLoading, isFetching } = useGetOrderDetailsQuery({ id })
+  const { data, isLoading, isFetching, refetch, isError } =
+    useGetOrderDetailsQuery({ id })
   const order = data?.order || {}
 
   if (isLoading || isFetching) return <Loading text="Loading details ... " />
+  if (isError) return <ErrorScreen refetch={refetch} />
 
   return (
     <SecureRoute>
