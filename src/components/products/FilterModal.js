@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import {
   Modal,
   View,
@@ -8,25 +8,41 @@ import {
   StyleSheet,
 } from 'react-native'
 import { Text } from '@/components/@ui/Text'
-import { Star, X } from 'phosphor-react-native'
+import {
+  CaretUpDown,
+  ClockCountdown,
+  FunnelSimple,
+  Star,
+  X,
+} from 'phosphor-react-native'
 import { useLocalSearchParams, useRouter } from 'expo-router'
 import Divider from '@/components/@ui/Divider'
 import { Button } from '@/components/@ui/Button'
-import { theme } from '@/constants/theme'
+import { colors } from '@/constants/theme'
 
-const FilterModal = ({ visible, onClose }) => {
+const ITEMS_PER_PAGE = 50
+
+const FilterModal = ({ isLoading, isSuccess, data, isFetching }) => {
+  const [visible, setFilterModalVisible] = useState(false)
   const router = useRouter()
   const params = useLocalSearchParams()
   const [filterState, setFilterState] = useState({
-    discount: '',
+    discount: 'All',
     minPrice: '',
     maxPrice: '',
-    shipping: '',
-    rating: null,
+    shipping: 'All',
+    rating: 'All',
+    isLocalStore: 'All',
   })
+
+  const toggleFilterModal = () => setFilterModalVisible(!visible)
 
   const handleDiscountSelect = label => {
     setFilterState(prev => ({ ...prev, discount: label }))
+  }
+
+  const handleLocalStoreSelect = label => {
+    setFilterState(prev => ({ ...prev, isLocalStore: label }))
   }
 
   const handlePriceChange = (type, value) => {
@@ -41,214 +57,316 @@ const FilterModal = ({ visible, onClose }) => {
     setFilterState(prev => ({ ...prev, rating: selectedRating }))
   }
 
-  const applyFilter = () => {
-    const paramsData = {
-      ...(filterState.discount && { discount: filterState.discount }),
-      ...(filterState.minPrice && { minPrice: filterState.minPrice }),
-      ...(filterState.maxPrice && { maxPrice: filterState.maxPrice }),
-      ...(filterState.shipping && { shipping: filterState.shipping }),
-      ...(filterState.rating && { rating: filterState.rating }),
-    }
-
-    router.push({ pathname: 'ads/list', params: { ...params, ...paramsData } })
+  const hasFilters = () => {
+    return (
+      filterState.discount !== 'All' ||
+      filterState.minPrice ||
+      filterState.maxPrice ||
+      filterState.shipping !== 'All' ||
+      filterState.rating !== 'All' ||
+      filterState.isLocalStore !== 'All'
+    )
   }
 
+  const prevDataRef = useRef(data)
+
+  useEffect(() => {
+    if (isSuccess && visible && prevDataRef.current !== data && hasFilters()) {
+      toggleFilterModal()
+    }
+    prevDataRef.current = data
+  }, [data, isSuccess, visible, filterState, toggleFilterModal])
+
+  const applyFilter = () => {
+    const paramsData = {
+      ...params,
+      ...filterState,
+      limit: ITEMS_PER_PAGE,
+    }
+    Object.keys(paramsData).forEach(key => {
+      if (!paramsData[key] || paramsData[key] === 'All') {
+        delete paramsData[key]
+      }
+    })
+    router.push({
+      pathname: 'ads/list',
+      params: paramsData,
+    })
+  }
+
+  const handleClearFilters = () => {
+    const filterKeys = [
+      'discount',
+      'minPrice',
+      'maxPrice',
+      'shipping',
+      'rating',
+      'isLocalStore',
+    ]
+    const filteredParams = Object.fromEntries(
+      Object.entries(params).filter(([key]) => !filterKeys.includes(key))
+    )
+
+    setFilterState({
+      discount: 'All',
+      minPrice: '',
+      maxPrice: '',
+      shipping: 'All',
+      rating: null,
+      isLocalStore: 'All',
+    })
+    router.push({ pathname: 'ads/list', params: filteredParams })
+  }
+//TODO:
+  // if (
+  //   !data?.data?.docs?.length &&
+  //   !hasFilters() &&
+  //   params.categoryId &&
+  //   !isLoading &&
+  //   !isFetching
+  // ) {
+  //   return null
+  // }
+
   return (
-    <Modal visible={visible} transparent animationType="slide">
-      <View style={styles.modalBackground}>
-        <View style={styles.modalContainer}>
-          {/* Close Icon */}
-          <TouchableOpacity style={styles.closeIcon} onPress={onClose}>
-            <X size={24} color="#000" />
-          </TouchableOpacity>
-
-          <Text style={styles.modalTitle}>Filters</Text>
-          <Divider />
-          <View
-            style={{
-              paddingVertical: 3,
-            }}
-          >
-            <Text
-              fontWeight="medium"
-              style={{ textTransform: 'uppercase', fontSize: 12 }}
+    <>
+      <TouchableOpacity
+        style={[styles.button]}
+        disabled={isLoading || isFetching}
+        onPress={toggleFilterModal}
+      >
+        <FunnelSimple size={20} />
+        <Text style={styles.buttonText}>Filter</Text>
+        {isLoading || isFetching ? (
+          <ClockCountdown size={16} />
+        ) : (
+          <CaretUpDown size={16} />
+        )}
+      </TouchableOpacity>
+      <Modal visible={visible} transparent animationType="slide">
+        <View style={styles.modalBackground}>
+          <View style={styles.modalContainer}>
+            <TouchableOpacity
+              style={styles.closeIcon}
+              onPress={toggleFilterModal}
             >
-              Discount:
-            </Text>
-          </View>
-          <ScrollView horizontal contentContainerStyle={styles.optionGroup}>
-            {['50%', '40%', '30%', '20%', '10%'].map((label, index) => (
-              <TouchableOpacity
-                key={index}
-                style={[
-                  styles.optionButton,
-                  filterState.discount === label && styles.selectedOption,
-                ]}
-                onPress={() => handleDiscountSelect(label)}
+              <X size={24} color="#000" />
+            </TouchableOpacity>
+
+            <Text style={styles.modalTitle}>Filters</Text>
+            <Divider />
+
+            {/* Discount Filter */}
+            <View style={{ paddingVertical: 3 }}>
+              <Text
+                fontWeight="medium"
+                style={{ textTransform: 'uppercase', fontSize: 12 }}
               >
-                <Text
+                Discount:
+              </Text>
+            </View>
+            <ScrollView horizontal contentContainerStyle={styles.optionGroup}>
+              {[
+                'All',
+                '50% & Above',
+                '40% & Above',
+                '30% & Above',
+                '20% & Above',
+                '10% & Above',
+              ].map((label, index) => (
+                <TouchableOpacity
+                  key={index}
                   style={[
-                    styles.optionText,
-                    filterState.discount === label && styles.selectedOptionText,
+                    styles.optionButton,
+                    filterState.discount === label && styles.selectedOption,
                   ]}
+                  onPress={() => handleDiscountSelect(label)}
                 >
-                  {label} or More
-                </Text>
-              </TouchableOpacity>
-            ))}
-          </ScrollView>
+                  <Text
+                    style={[
+                      styles.optionText,
+                      filterState.discount === label &&
+                        styles.selectedOptionText,
+                    ]}
+                  >
+                    {label}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            </ScrollView>
 
-          {/* Price Range Filter */}
-          <View
-            style={{
-              paddingVertical: 3,
-            }}
-          >
-            <Text
-              fontWeight="medium"
-              style={{ textTransform: 'uppercase', fontSize: 12 }}
-            >
-              Price Range:
-            </Text>
-          </View>
-          <View style={styles.priceRangeContainer}>
-            <TextInput
-              style={styles.priceInput}
-              placeholder="Min Price"
-              keyboardType="numeric"
-              value={filterState.minPrice}
-              onChangeText={value => handlePriceChange('minPrice', value)}
-            />
-            <Text style={styles.toText}>to</Text>
-            <TextInput
-              style={styles.priceInput}
-              placeholder="Max Price"
-              keyboardType="numeric"
-              value={filterState.maxPrice}
-              onChangeText={value => handlePriceChange('maxPrice', value)}
-            />
-          </View>
-
-          {/* Shipping Filter */}
-          <View
-            style={{
-              paddingVertical: 3,
-            }}
-          >
-            <Text
-              fontWeight="medium"
-              style={{ textTransform: 'uppercase', fontSize: 12 }}
-            >
-              Shipping:
-            </Text>
-          </View>
-          <ScrollView horizontal contentContainerStyle={styles.optionGroup}>
-            {['All', 'Free', 'Paid'].map((shippingOption, index) => (
-              <TouchableOpacity
-                key={index}
-                style={[
-                  styles.optionButton,
-                  filterState.shipping === shippingOption &&
-                    styles.selectedOption,
-                ]}
-                onPress={() => handleShippingSelect(shippingOption)}
+            {/* Local Store Filter */}
+            <View style={{ paddingVertical: 3 }}>
+              <Text
+                fontWeight="medium"
+                style={{ textTransform: 'uppercase', fontSize: 12 }}
               >
-                <Text
+                Local Store:
+              </Text>
+            </View>
+            <ScrollView horizontal contentContainerStyle={styles.optionGroup}>
+              {['All', 'Local Store', 'From Abroad'].map((label, index) => (
+                <TouchableOpacity
+                  key={index}
                   style={[
-                    styles.optionText,
+                    styles.optionButton,
+                    filterState.isLocalStore === label && styles.selectedOption,
+                  ]}
+                  onPress={() => handleLocalStoreSelect(label)}
+                >
+                  <Text
+                    style={[
+                      styles.optionText,
+                      filterState.isLocalStore === label &&
+                        styles.selectedOptionText,
+                    ]}
+                  >
+                    {label}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            </ScrollView>
+
+            {/* Price Range Filter */}
+            <View style={{ paddingVertical: 3 }}>
+              <Text
+                fontWeight="medium"
+                style={{ textTransform: 'uppercase', fontSize: 12 }}
+              >
+                Price Range:
+              </Text>
+            </View>
+            <View style={styles.priceRangeContainer}>
+              <TextInput
+                style={styles.priceInput}
+                placeholder="Min Price"
+                keyboardType="numeric"
+                value={filterState.minPrice}
+                onChangeText={value => handlePriceChange('minPrice', value)}
+              />
+              <Text style={styles.toText}>to</Text>
+              <TextInput
+                style={styles.priceInput}
+                placeholder="Max Price"
+                keyboardType="numeric"
+                value={filterState.maxPrice}
+                onChangeText={value => handlePriceChange('maxPrice', value)}
+              />
+            </View>
+
+            {/* Shipping Filter */}
+            <View style={{ paddingVertical: 3 }}>
+              <Text
+                fontWeight="medium"
+                style={{ textTransform: 'uppercase', fontSize: 12 }}
+              >
+                Shipping:
+              </Text>
+            </View>
+            <ScrollView horizontal contentContainerStyle={styles.optionGroup}>
+              {['All', 'Free', 'Paid'].map((shippingOption, index) => (
+                <TouchableOpacity
+                  key={index}
+                  style={[
+                    styles.optionButton,
                     filterState.shipping === shippingOption &&
-                      styles.selectedOptionText,
+                      styles.selectedOption,
                   ]}
+                  onPress={() => handleShippingSelect(shippingOption)}
                 >
-                  {shippingOption}
-                </Text>
-              </TouchableOpacity>
-            ))}
-          </ScrollView>
+                  <Text
+                    style={[
+                      styles.optionText,
+                      filterState.shipping === shippingOption &&
+                        styles.selectedOptionText,
+                    ]}
+                  >
+                    {shippingOption}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            </ScrollView>
 
-          <View
-            style={{
-              paddingVertical: 3,
-              marginBottom: 10,
-            }}
-          >
-            <Text
-              fontWeight="medium"
-              style={{ textTransform: 'uppercase', fontSize: 12 }}
-            >
-              Product Ratings:
-            </Text>
-          </View>
-          <ScrollView horizontal contentContainerStyle={styles.optionGroup}>
-            {[4, 3, 2, 1].map((ratingOption, index) => (
-              <TouchableOpacity
-                key={index}
-                style={[
-                  styles.optionButton,
-                  filterState.rating === ratingOption && styles.selectedOption,
-                ]}
-                onPress={() => handleRatingSelect(ratingOption)}
+            {/* Product Ratings */}
+            <View style={{ paddingVertical: 3, marginBottom: 10 }}>
+              <Text
+                fontWeight="medium"
+                style={{ textTransform: 'uppercase', fontSize: 12 }}
               >
-                <View style={styles.starContainer}>
-                  <Star
-                    size={16}
-                    color={
-                      filterState.rating === ratingOption
-                        ? '#FF6B00'
-                        : '#687076'
-                    }
-                    weight={
-                      filterState.rating === ratingOption ? 'fill' : 'duotone'
-                    }
-                  />
-                  <Text
-                    style={[
-                      styles.optionText,
-                      filterState.rating === ratingOption &&
-                        styles.selectedOptionText,
-                    ]}
-                  >
-                    {ratingOption}
-                  </Text>
-                  <Text
-                    style={[
-                      styles.optionText,
-                      filterState.rating === ratingOption &&
-                        styles.selectedOptionText,
-                    ]}
-                  >
-                    {' '}
-                    & Up
-                  </Text>
-                </View>
-              </TouchableOpacity>
-            ))}
-          </ScrollView>
+                Product Ratings:
+              </Text>
+            </View>
+            <ScrollView horizontal contentContainerStyle={styles.optionGroup}>
+              {['All', 4, 3, 2, 1].map((ratingOption, index) => (
+                <TouchableOpacity
+                  key={index}
+                  style={[
+                    styles.optionButton,
+                    filterState.rating === ratingOption &&
+                      styles.selectedOption,
+                  ]}
+                  onPress={() => handleRatingSelect(ratingOption)}
+                >
+                  {ratingOption === 'All' ? (
+                    <Text
+                      style={[
+                        styles.optionText,
+                        filterState.rating === ratingOption &&
+                          styles.selectedOptionText,
+                      ]}
+                    >
+                      All
+                    </Text>
+                  ) : (
+                    <View style={styles.starContainer}>
+                      <Star
+                        size={16}
+                        color={
+                          filterState.rating === ratingOption
+                            ? '#FF6B00'
+                            : '#687076'
+                        }
+                        weight={
+                          filterState.rating === ratingOption
+                            ? 'fill'
+                            : 'duotone'
+                        }
+                      />
+                      <Text
+                        style={[
+                          styles.optionText,
+                          filterState.rating === ratingOption &&
+                            styles.selectedOptionText,
+                        ]}
+                      >
+                        {ratingOption} & Up
+                      </Text>
+                    </View>
+                  )}
+                </TouchableOpacity>
+              ))}
+            </ScrollView>
 
-          <View style={styles.modalActions}>
-            <Button
-              title="Clear Filters"
-              secondary
-              style={{ flex: 1 }}
-              onPress={() =>
-                setFilterState({
-                  discount: '',
-                  minPrice: '',
-                  maxPrice: '',
-                  shipping: '',
-                  rating: null,
-                })
-              }
-            />
-            <Button
-              title="Apply Filter"
-              style={{ flex: 1 }}
-              onPress={applyFilter}
-            />
+            <View style={styles.modalActions}>
+              <Button
+                title="Clear Filters"
+                secondary
+                style={{ flex: 1 }}
+                onPress={handleClearFilters}
+              />
+              <Button
+                title="Apply Filter"
+                primary
+                isLoading={data && isFetching}
+                style={{ flex: 1 }}
+                onPress={applyFilter}
+                isDisabled={!hasFilters()}
+              />
+            </View>
           </View>
         </View>
-      </View>
-    </Modal>
+      </Modal>
+    </>
   )
 }
 
@@ -286,7 +404,7 @@ const styles = StyleSheet.create({
   },
   optionButton: {
     borderWidth: 0.8,
-    borderColor: theme.colors.grey[300],
+    borderColor: colors.grey[300],
     paddingVertical: 5,
     paddingHorizontal: 18,
     borderRadius: 30,
@@ -294,8 +412,8 @@ const styles = StyleSheet.create({
     marginVertical: 5,
   },
   selectedOption: {
-    borderColor: theme.colors.orange[500],
-    color: theme.colors.orange[500],
+    borderColor: colors.orange[500],
+    color: colors.orange[500],
   },
   priceRangeContainer: {
     flexDirection: 'row',
@@ -305,7 +423,7 @@ const styles = StyleSheet.create({
   },
   priceInput: {
     borderWidth: 0.9,
-    borderColor: theme.colors.grey[400],
+    borderColor: colors.grey[400],
     borderRadius: 3,
     flex: 1,
     padding: 8,
@@ -327,6 +445,18 @@ const styles = StyleSheet.create({
   },
   selectedOptionText: {
     color: '#FF6B00',
+  },
+  button: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 7,
+    flex: 1,
+    gap: 5,
+  },
+  buttonText: {
+    flex: 1,
+    fontSize: 14,
+    textAlign: 'center',
   },
 })
 

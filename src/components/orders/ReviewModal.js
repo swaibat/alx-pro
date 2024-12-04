@@ -5,15 +5,15 @@ import {
   StyleSheet,
   TextInput,
   TouchableOpacity,
-  Image,
 } from 'react-native'
 import { Star } from 'phosphor-react-native'
 import { colors } from '@/constants/theme'
 import { Button } from '@/components/@ui/Button'
 import { Text } from '@/components/@ui/Text'
 import { useCreateReviewMutation } from '@/api'
+import AppImg from '../@ui/AppImg'
 
-const ReviewModal = ({ product, order }) => {
+const ReviewModal = ({ order }) => {
   const [comment, setComment] = useState('')
   const [rating, setRating] = useState(0)
   const [visible, setVisible] = useState(false)
@@ -28,11 +28,10 @@ const ReviewModal = ({ product, order }) => {
       reviewData: { comment, rating },
     })
 
-    // Move to the next item if there are more items to review
     if (currentItemIndex < order.items.length - 1) {
       setCurrentItemIndex(currentItemIndex + 1)
     } else {
-      setVisible(false) // Close modal when all items are reviewed
+      setVisible(false)
       setCurrentItemIndex(0)
     }
 
@@ -56,14 +55,11 @@ const ReviewModal = ({ product, order }) => {
   return (
     <>
       {showReviewButton && (
-        <TouchableOpacity
-          style={styles.reviewButton}
+        <Button
+          title="Add Review"
+          style={{ borderRadius: 0 }}
           onPress={() => setVisible(true)}
-        >
-          <Text category="h6" style={styles.reviewButtonText}>
-            Add Review
-          </Text>
-        </TouchableOpacity>
+        />
       )}
 
       <Modal
@@ -76,22 +72,16 @@ const ReviewModal = ({ product, order }) => {
           <View style={styles.modalContent}>
             {/* Display Product Image and Title */}
             <View style={styles.productInfo}>
-              <Image
-                source={
-                  product?.thumbnail
-                    ? { uri: product.thumbnail }
-                    : require('@/assets/placeholder.png')
-                }
+              <AppImg
+                src={order?.items?.[currentItemIndex]?.thumbnail}
                 style={styles.productImage}
               />
-              <Text category="h6" style={styles.productTitle}>
-                {product?.title}
+              <Text style={styles.productTitle}>
+                {order?.items?.[currentItemIndex]?.title}
               </Text>
             </View>
 
-            <Text category="h5" style={styles.modalTitle}>
-              Add Your Review
-            </Text>
+            <Text style={styles.modalTitle}>Add Your Review</Text>
             <Text style={styles.modalText}>
               Your order has been successfully completed. We would appreciate it
               if you could take a moment to review your experience.
@@ -105,9 +95,9 @@ const ReviewModal = ({ product, order }) => {
                   onPress={() => setRating(num)}
                 >
                   <Star
-                    size={50}
-                    color={num <= rating ? colors.amber[500] : colors.grey[300]}
-                    weight={num <= rating ? 'fill' : 'regular'}
+                    size={40}
+                    color={num <= rating ? colors.amber[500] : colors.grey[500]}
+                    weight={num <= rating ? 'fill' : 'thin'}
                   />
                 </TouchableOpacity>
               ))}
@@ -163,14 +153,16 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   productImage: {
-    width: 40,
-    height: 40,
+    width: 45,
+    height: 45,
     borderRadius: 8,
     marginRight: 10,
   },
   productTitle: {
-    fontSize: 16,
-    fontWeight: '600',
+    fontSize: 13,
+    fontWeight: '400',
+    color: 'black',
+    flex: 1,
   },
   modalTitle: {
     fontSize: 18,
@@ -181,12 +173,12 @@ const styles = StyleSheet.create({
   },
   input: {
     height: 100,
-    borderWidth: 1,
+    borderWidth: 0.8,
     borderRadius: 10,
     padding: 10,
     textAlignVertical: 'top',
     marginVertical: 7,
-    borderColor: colors.grey[600],
+    borderColor: colors.grey[500],
   },
   ratingContainer: {
     flexDirection: 'row',

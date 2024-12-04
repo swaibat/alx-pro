@@ -1,7 +1,7 @@
-import React, { useCallback } from 'react'
+import React from 'react'
 import { View, TouchableOpacity, StyleSheet } from 'react-native'
 import { useGetCategoriesQuery } from '@/api'
-import { useFocusEffect, useRouter } from 'expo-router'
+import { useRouter } from 'expo-router'
 import { Text } from '@/components/@ui/Text'
 import AppImg from '@/components/@ui/AppImg'
 
@@ -17,22 +17,14 @@ const PlaceholderItem = () => {
 const GridScreen = () => {
   const { data, isLoading, error } = useGetCategoriesQuery()
 
-  useFocusEffect(
-    useCallback(() => {
-      if (error) {
-        // router.push('/connection-failed')
-      }
-    }, [error]) // Only re-run when error changes
-  )
-
   const router = useRouter()
 
-  const renderItem = (item, index) => (
+  const renderItem = item => (
     <TouchableOpacity
       key={item.id}
       style={styles.item}
       onPress={() =>
-        router.push(`/category?category=${item.id}&index=${index}`)
+        router.replace(`/category?id=${item.id}&name=${item.name.trim()}`)
       }
     >
       <AppImg src={item.imageUrl} style={styles.image} />

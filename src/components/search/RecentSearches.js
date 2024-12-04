@@ -3,12 +3,21 @@ import { View, FlatList, TouchableOpacity, StyleSheet } from 'react-native'
 import { Text } from '@/components/@ui/Text'
 import { Clock, X } from 'phosphor-react-native'
 import { Button } from '@/components/@ui/Button'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import Section from '../@ui/Section'
 
 const RecentSearches = ({
   recentSearches,
+  setRecentSearches,
   setSearchQuery,
-  clearAllRecentSearches,
 }) => {
+  if (!recentSearches.length) return null
+
+  const clearAllRecentSearches = async () => {
+    setRecentSearches([])
+    await AsyncStorage.removeItem('recentSearches')
+  }
+
   const removeSearch = async item => {
     const updatedSearches = recentSearches.filter(search => search !== item)
     setRecentSearches(updatedSearches)
@@ -19,26 +28,35 @@ const RecentSearches = ({
   }
 
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.headerText}>Recent Searches</Text>
+    <Section
+      title="Recent Searches"
+      actionBtn={
         <Button
           title="Clear All"
-          outline
+          ghost
           size="tiny"
           onPress={clearAllRecentSearches}
         />
-      </View>
+      }
+    >
       <FlatList
         data={recentSearches}
         keyExtractor={item => item}
+        style={styles.list}
         renderItem={({ item }) => (
           <View style={styles.itemRow}>
-            <TouchableOpacity onPress={() => setSearchQuery(item)}>
-              <View style={styles.itemContent}>
-                <Clock size={20} color="#687076" weight="fill" />
-                <Text style={styles.itemText}>{item}</Text>
-              </View>
+            <TouchableOpacity
+              style={styles.itemContent}
+              onPress={() => setSearchQuery(item)}
+            >
+              <Clock size={20} color="#687076" weight="light" />
+              <Text
+                style={styles.itemText}
+                numberOfLines={1}
+                ellipsizeMode="tail"
+              >
+                {item}
+              </Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => removeSearch(item)}>
               <X size={16} color="#687076" />
@@ -46,25 +64,33 @@ const RecentSearches = ({
           </View>
         )}
       />
-    </View>
+    </Section>
   )
-
-  const styles = StyleSheet.create({
-    container: { paddingVertical: 16 },
-    header: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      padding: 20,
-    },
-    headerText: { textTransform: 'uppercase', fontSize: 12 },
-    itemRow: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      padding: 10,
-    },
-    itemContent: { flexDirection: 'row', alignItems: 'center' },
-    itemText: { marginLeft: 10 },
-  })
 }
 
 export default RecentSearches
+
+const styles = StyleSheet.create({
+  list: {
+    width: '100%',
+  },
+  itemRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 10,
+  },
+  itemContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+  },
+  itemText: {
+    // marginLeft: 10,
+    paddingHorizontal: 10,
+    fontSize: 13,
+    flexShrink: 1,
+    flexGrow: 1,
+    overflow: 'hidden',
+  },
+})

@@ -10,7 +10,6 @@ import {
 import { useGetViewedProductsQuery } from '@/api'
 import { Text } from '@/components/@ui/Text'
 import { useRouter } from 'expo-router'
-import { theme } from '@/constants/theme'
 
 const ProductSkeleton = () => (
   <View style={styles.skeletonProductContainer}>
@@ -21,6 +20,9 @@ const ProductSkeleton = () => (
 )
 
 const RecentlyViewed = ({ showAll }) => {
+  const len = recentlyViewedProducts?.data?.length
+  if (len > 2 || (!len && showAll)) return
+
   const router = useRouter()
   const { data: recentlyViewedProducts, isLoading } = useGetViewedProductsQuery(
     undefined,
@@ -77,29 +79,13 @@ const RecentlyViewed = ({ showAll }) => {
   }
 
   return (
-    (recentlyViewedProducts?.data?.length > 2 || showAll) && (
-      <View
-        style={{
-          borderBottomWidth: showAll ? 0 : 10,
-          borderBottomColor: theme.colors.grey[300],
-          paddingLeft: 7,
-          padding: 15,
-        }}
-      >
-        <View style={styles.layout}>
-          <View style={styles.header}>
-            <Text style={styles.recentlyViewedTitle}>Recently Viewed</Text>
-          </View>
-          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-            {isLoading
-              ? renderSkeleton()
-              : recentlyViewedProducts?.data?.length > 2
-                ? recentlyViewedProducts.data.map(renderProduct)
-                : null}
-          </ScrollView>
-        </View>
-      </View>
-    )
+    <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+      {isLoading
+        ? renderSkeleton()
+        : recentlyViewedProducts?.data?.length > 2
+          ? recentlyViewedProducts.data.map(renderProduct)
+          : null}
+    </ScrollView>
   )
 }
 
@@ -147,26 +133,6 @@ const styles = StyleSheet.create({
   productSold: {
     fontSize: 10,
     color: '#555',
-  },
-  skeletonProductContainer: {
-    width: 115,
-    paddingVertical: 0,
-    paddingHorizontal: 4,
-    borderRadius: 3,
-    marginHorizontal: 5,
-  },
-  skeletonImage: {
-    height: 100,
-    borderRadius: 5,
-    width: '100%',
-    backgroundColor: '#ddd',
-  },
-  skeletonText: {
-    height: 15,
-    width: '70%',
-    backgroundColor: '#ccc',
-    marginTop: 5,
-    borderRadius: 3,
   },
 })
 

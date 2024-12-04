@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   View,
   StyleSheet,
@@ -9,26 +9,32 @@ import {
 import { useGetCategoriesQuery } from '@/api'
 import { CaretDoubleLeft, CaretRight } from 'phosphor-react-native'
 import { Text } from '@/components/@ui/Text'
-import { useRouter } from 'expo-router'
+import { useLocalSearchParams, useRouter } from 'expo-router'
 import { Button } from '@/components/@ui/Button'
 import Loading from '@/components/global/Loading'
 import { colors } from '@/constants/theme'
 
 const CategoryScreen = () => {
   const { data, isLoading } = useGetCategoriesQuery()
+  const params = useLocalSearchParams()
   const [expandedCategory, setExpandedCategory] = useState(null)
-  const [parentCategory, setParentCategory] = useState(null)
   const router = useRouter()
 
   const handleCategoryPress = (categoryId, categoryName) => {
-    setParentCategory({ id: categoryId, name: categoryName })
+    router.push(`/category?id=${categoryId}&name=${categoryName}`)
     setExpandedCategory(categoryId)
   }
 
   const handleBackToParent = () => {
     setExpandedCategory(null)
-    setParentCategory(null)
+    router.push(`/category`)
   }
+
+  useEffect(() => {
+    if (params.id) {
+      setExpandedCategory(params.id)
+    }
+  }, [params])
 
   const renderSubcategories = category => {
     if (!category?.children) return null
@@ -60,9 +66,9 @@ const CategoryScreen = () => {
 
   return (
     <SafeAreaView style={sx.container}>
-      {expandedCategory && parentCategory && (
+      {expandedCategory && params.name && (
         <Button
-          title={parentCategory.name}
+          title={params.name}
           onPress={handleBackToParent}
           secondary
           style={{ borderRadius: 0 }}

@@ -41,10 +41,12 @@ const ProductDetailsScreen = () => {
 
   const handleShare = async () => {
     try {
-      await Share.share({
-        message: `Check out this product: ${product?.title}\n\n${product?.description}\n\nPrice: UGX ${formattedPrice}`,
+      const shareContent = {
         title: 'Product Share',
-      })
+        message: `${product?.title}\n\nPrice: UGX ${formattedPrice}`,
+        url: product?.thumbnail,
+      }
+      await Share.share(shareContent)
     } catch (error) {
       console.error('Error sharing the product:', error)
     }
@@ -72,11 +74,6 @@ const ProductDetailsScreen = () => {
                   <PriceDisplay product={product} />
                   <ShippedFromAbroadBadge isLocalStore={product.isLocalStore} />
                 </View>
-                {product?.acceptInstallments && (
-                  <View style={styles.badgeContainer}>
-                    <Text style={styles.discountBadge}>1st Pay</Text>
-                  </View>
-                )}
                 <View style={styles.productTitleContainer}>
                   <Text style={styles.productTitle}>{product?.title}</Text>
                   <Button

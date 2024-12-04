@@ -125,7 +125,13 @@ export default function TabLayout() {
         options={{
           title: 'Register',
           headerShadowVisible: false,
-          headerTitleStyle: styles.capitalizeHeaderTitle,
+        }}
+      />
+      <Tabs.Screen
+        name="search"
+        options={{
+          title: 'Search',
+          headerShadowVisible: false,
         }}
       />
       <Tabs.Screen
@@ -133,7 +139,6 @@ export default function TabLayout() {
         options={{
           title: 'Login',
           headerShadowVisible: false,
-          headerTitleStyle: styles.capitalizeHeaderTitle,
         }}
       />
       <Tabs.Screen
@@ -158,14 +163,14 @@ export default function TabLayout() {
           headerShadowVisible: false,
         }}
       />
-      <Tabs.Screen
+      {/* <Tabs.Screen
         name="address/create"
         options={{
           title: 'Address',
           headerShown: true,
           headerShadowVisible: false,
         }}
-      />
+      /> */}
     </Tabs>
   )
 }
@@ -200,7 +205,6 @@ const styles = StyleSheet.create({
   },
   categoryHeaderStyle: {
     backgroundColor: colors.grey[200],
-    justifyContent: 'center',
   },
   badge: {
     position: 'absolute',

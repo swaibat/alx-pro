@@ -20,7 +20,7 @@ const Section = ({
         },
       ]}
     >
-      <View style={styles.header}>
+      <View style={[styles.header, { minHeight: title ? 26 : 0 }]}>
         <Text style={styles.headerText}>{title}</Text>
         <View>{actionBtn}</View>
       </View>
@@ -44,7 +44,8 @@ const styles = StyleSheet.create({
     borderBottomColor: colors.grey[300],
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
+    alignItems: 'flex-end',
+    minHeight: 26,
   },
   headerText: {
     textTransform: 'capitalize',

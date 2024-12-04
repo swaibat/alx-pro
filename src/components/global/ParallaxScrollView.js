@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
     zIndex: 1,
     paddingHorizontal: 15,
     paddingBottom: 5,
-    justifyContent: 'flex-end', // Align search input to the bottom
+    justifyContent: 'flex-end',
     overflow: 'hidden',
   },
   headerRow: {

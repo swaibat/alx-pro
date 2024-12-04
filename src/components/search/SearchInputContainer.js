@@ -8,6 +8,7 @@ import {
 import { Text } from '@/components/@ui/Text'
 import Input from '@/components/@ui/Input'
 import { X } from 'phosphor-react-native'
+import { theme } from '@/constants/theme'
 
 const SearchInputContainer = ({
   searchQuery,
@@ -46,16 +47,20 @@ const SearchInputContainer = ({
 )
 
 const styles = StyleSheet.create({
-  container: { flexDirection: 'row', justifyContent: 'center', padding: 18 },
+  container: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    paddingHorizontal: 18,
+  },
   inputRow: { flexDirection: 'row', width: '100%' },
   input: { flexGrow: 1 },
   textInput: { fontSize: 14 },
   suffixContainer: { flexDirection: 'row', alignItems: 'center', gap: 10 },
   searchButton: {
     backgroundColor: 'black',
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    borderRadius: 8,
+    borderRadius: theme.borderRadius.sm,
+    padding: theme.spacing.sm,
+    paddingHorizontal: 10,
   },
   searchButtonText: { color: '#FFFFFF' },
 })

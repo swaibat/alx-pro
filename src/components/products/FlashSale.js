@@ -127,8 +127,9 @@ const FlashSale = () => {
       style={{
         borderBottomWidth: 10,
         paddingLeft: 7,
-        padding: 15,
-        borderColor: colors.grey[300],
+        paddingHorizontal: 15,
+        paddingBottom: 15,
+        borderColor: colors.grey[200],
       }}
     >
       <View style={styles.layout}>
@@ -140,11 +141,11 @@ const FlashSale = () => {
                 { backgroundColor: colors.orange[500] },
               ]}
             >
-              <Lightning color="white" weight="fill" size={25} />
+              <Lightning color="white" weight="fill" size={20} />
             </View>
             <View>
               <Text style={styles.flashSaleTitle}>Flash Sale</Text>
-              <Text style={styles.flashSaleSubtitle}>Limited time offer.</Text>
+              {/* <Text style={styles.flashSaleSubtitle}>Limited time offer.</Text> */}
             </View>
           </View>
           <View style={styles.countdown}>
@@ -199,8 +200,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   flipDigit: {
-    width: 30,
-    height: 30,
+    width: 28,
+    height: 25,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#000',
@@ -208,7 +209,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 2,
   },
   digitText: {
-    fontSize: 15,
+    fontSize: 13,
     fontWeight: 'bold',
     color: 'white',
   },

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import {
   Modal,
   View,
@@ -8,7 +8,10 @@ import {
 } from 'react-native'
 import { Text } from '@/components/@ui/Text'
 import {
+  CaretUpDown,
   CheckCircle,
+  Circle,
+  ClockCountdown,
   SortAscending,
   SortDescending,
   X,
@@ -16,15 +19,17 @@ import {
 import { Button } from '@/components/@ui/Button'
 import { useLocalSearchParams, useRouter } from 'expo-router'
 import Divider from '@/components/@ui/Divider'
-import { theme } from '@/constants/theme'
+import { colors, theme } from '@/constants/theme'
 
-const SortModal = ({ visible, onClose, isLoading }) => {
+const SortModal = ({ isLoading, isSuccess, data, isFetching }) => {
+  const [isSortModalVisible, setSortModalVisible] = useState(false)
+  const toggleSortModal = () => setSortModalVisible(!isSortModalVisible)
   const [selectedSort, setSelectedSort] = useState({})
   const params = useLocalSearchParams()
   const router = useRouter()
 
   useEffect(() => {
-    if (visible) {
+    if (isSortModalVisible) {
       const existingSortKey = Object.keys(params).find(key =>
         key.startsWith('sort[')
       )
@@ -38,7 +43,21 @@ const SortModal = ({ visible, onClose, isLoading }) => {
         setSelectedSort({})
       }
     }
-  }, [visible])
+  }, [isSortModalVisible])
+
+  const prevDataRef = useRef(data)
+
+  useEffect(() => {
+    if (
+      isSuccess &&
+      isSortModalVisible &&
+      prevDataRef.current !== data &&
+      selectedSort
+    ) {
+      toggleSortModal()
+    }
+    prevDataRef.current = data
+  }, [data, isSuccess, isSortModalVisible, selectedSort, toggleSortModal])
 
   const handleSortSelection = option => {
     setSelectedSort({ [`sort[${option.key}]`]: option.value })
@@ -60,88 +79,116 @@ const SortModal = ({ visible, onClose, isLoading }) => {
       params: { ...filteredParams, ...selectedSort },
     })
     if (!isLoading) {
-      onClose()
+      toggleSortModal()
     }
   }
 
   return (
-    <Modal visible={visible} transparent animationType="slide">
-      <View style={styles.modalBackground}>
-        <View style={styles.modalContainer}>
-          <Text style={styles.modalTitle}>Sorting</Text>
-          {/* Close Icon Button */}
-          <TouchableOpacity style={styles.closeIconButton} onPress={onClose}>
-            <X size={24} color="#333" />
-          </TouchableOpacity>
+    <>
+      <TouchableOpacity
+        disabled={isLoading || isFetching}
+        style={styles.button}
+        onPress={toggleSortModal}
+      >
+        <SortAscending size={20} />
+        <Text style={styles.buttonText}>Sort</Text>
+        {isLoading || isFetching ? (
+          <ClockCountdown size={16} />
+        ) : (
+          <CaretUpDown size={16} />
+        )}
+      </TouchableOpacity>
 
-          {/* Sort Options */}
-          <Divider />
-          <ScrollView contentContainerStyle={styles.optionGroup}>
-            {[
-              {
-                label: 'Highest Price',
-                key: 'price',
-                value: 'desc',
-                icon: <SortDescending size={20} color="#333" />,
-              },
-              {
-                label: 'Lowest Price',
-                key: 'price',
-                value: 'asc',
-                icon: <SortAscending size={20} color="#333" />,
-              },
-              {
-                label: 'Best Rating',
-                key: 'rating',
-                value: 'desc',
-                icon: <SortDescending size={20} color="#333" />,
-              },
-              {
-                label: 'Best Discounts',
-                key: 'discount',
-                value: 'desc',
-                icon: <SortDescending size={20} color="#333" />,
-              },
-            ].map((option, index) => (
-              <TouchableOpacity
-                key={index}
-                style={styles.optionButton}
-                onPress={() => handleSortSelection(option)}
-              >
-                <View style={styles.checkboxContainer}>
-                  {option.icon}
-                  <Text style={styles.optionText}>{option.label}</Text>
-                  {JSON.stringify(selectedSort) ===
-                  JSON.stringify({ [`sort[${option.key}]`]: option.value }) ? (
-                    <CheckCircle
-                      size={23}
-                      color="#FF6B00"
-                      weight="fill"
-                      style={styles.checkIcon}
-                    />
-                  ) : null}
-                </View>
-              </TouchableOpacity>
-            ))}
-          </ScrollView>
+      <Modal visible={isSortModalVisible} transparent animationType="slide">
+        <View style={styles.modalBackground}>
+          <View style={styles.modalContainer}>
+            <Text style={styles.modalTitle}>Sorting</Text>
+            {/* Close Icon Button */}
+            <TouchableOpacity
+              style={styles.closeIconButton}
+              onPress={toggleSortModal}
+            >
+              <X size={24} color="#333" />
+            </TouchableOpacity>
 
-          <View style={styles.modalActions}>
-            <Button
-              title="Clear Sort"
-              secondary
-              appearance="secondary"
-              onPress={handleClearSort}
-            />
-            <Button
-              title="Apply Sort"
-              style={{ flex: 1 }}
-              isLoading={isLoading}
-              onPress={handleApplySort}
-            />
+            {/* Sort Options */}
+            <Divider />
+            <ScrollView contentContainerStyle={styles.optionGroup}>
+              {[
+                {
+                  label: 'Highest Price',
+                  key: 'price',
+                  value: 'desc',
+                  icon: <SortDescending size={20} color="#333" />,
+                },
+                {
+                  label: 'Lowest Price',
+                  key: 'price',
+                  value: 'asc',
+                  icon: <SortAscending size={20} color="#333" />,
+                },
+                {
+                  label: 'Best Rating',
+                  key: 'rating',
+                  value: 'desc',
+                  icon: <SortDescending size={20} color="#333" />,
+                },
+                {
+                  label: 'Best Discounts',
+                  key: 'discount',
+                  value: 'desc',
+                  icon: <SortDescending size={20} color="#333" />,
+                },
+              ].map((option, index) => (
+                <TouchableOpacity
+                  key={index}
+                  style={styles.optionButton}
+                  onPress={() => handleSortSelection(option)}
+                >
+                  <View style={styles.checkboxContainer}>
+                    {option.icon}
+                    <Text style={styles.optionText}>{option.label}</Text>
+                    {JSON.stringify(selectedSort) ===
+                    JSON.stringify({
+                      [`sort[${option.key}]`]: option.value,
+                    }) ? (
+                      <CheckCircle
+                        size={23}
+                        color={colors.primary}
+                        weight="fill"
+                        style={styles.checkIcon}
+                      />
+                    ) : (
+                      <Circle
+                        size={23}
+                        color={colors.grey[600]}
+                        weight="light"
+                        style={styles.checkIcon}
+                      />
+                    )}
+                  </View>
+                </TouchableOpacity>
+              ))}
+            </ScrollView>
+
+            <View style={styles.modalActions}>
+              <Button
+                title="Clear Sort"
+                secondary
+                appearance="secondary"
+                onPress={handleClearSort}
+              />
+              <Button
+                title="Apply Sort"
+                style={{ flex: 1 }}
+                isLoading={isFetching}
+                onPress={handleApplySort}
+              />
+            </View>
           </View>
         </View>
-      </View>
-    </Modal>
+      </Modal>
+    </>
   )
 }
 
@@ -196,6 +243,18 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginTop: 15,
     gap: 10,
+  },
+  buttonText: {
+    flex: 1,
+    fontSize: 14,
+    textAlign: 'center',
+  },
+  button: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 7,
+    flex: 1,
+    gap: 5,
   },
 })
 
