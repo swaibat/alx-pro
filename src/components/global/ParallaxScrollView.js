@@ -1,17 +1,16 @@
-import React from 'react';
-import { Dimensions, StyleSheet, View, ScrollView } from 'react-native';
-import Input from '@/components/@ui/Input';
-import { useRouter } from 'expo-router';
-import Logo from '@/assets/Logo';
-import { Text } from '@/components/@ui/Text';
-import { colors, theme } from '@/constants/theme';
+import React from 'react'
+import { Dimensions, StyleSheet, View, ScrollView } from 'react-native'
+import Input from '@/components/@ui/Input'
+import { useRouter } from 'expo-router'
+import Logo from '@/assets/Logo'
+import { Text } from '@/components/@ui/Text'
+import { colors, theme } from '@/constants/theme'
 
-const HEADER_HEIGHT = 150;
-const MIN_HEADER_HEIGHT = 95;
-const SCREEN_WIDTH = Dimensions.get('window').width;
+const HEADER_HEIGHT = 150
+const SCREEN_WIDTH = Dimensions.get('window').width
 
 export default function ParallaxScrollView({ children, headerImage }) {
-  const router = useRouter();
+  const router = useRouter()
 
   return (
     <View style={styles.container}>
@@ -52,7 +51,7 @@ export default function ParallaxScrollView({ children, headerImage }) {
         <View style={styles.content}>{children}</View>
       </ScrollView>
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -140,4 +139,4 @@ const styles = StyleSheet.create({
   xDiagonalReverse: {
     transform: [{ rotate: '-45deg' }],
   },
-});
+})

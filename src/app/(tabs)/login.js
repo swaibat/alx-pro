@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import { useLoginMutation } from '@/api'
 import { Eye, EyeClosed, CheckCircle, Question } from 'phosphor-react-native'
-import { Stack, usePathname, useRouter } from 'expo-router'
+import { usePathname, useRouter } from 'expo-router'
 import LoginIllustration from '@/assets/LoginIllustration'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useSnackbar } from '@/hooks/useSnackbar'
@@ -124,19 +124,11 @@ const LoginScreen = () => {
     )
 
   return (
-    <View
-      style={{
-        flexGrow: 1,
-        backgroundColor: 'white',
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}
-    >
+    <View style={styles.loginContainer}>
       <View style={styles.container}>
         <View>
           <LoginIllustration />
           <PhoneInput
-            style={styles.input}
             label="Phone Number"
             testID="phone"
             placeholder="Enter phone number"
@@ -146,7 +138,6 @@ const LoginScreen = () => {
             keyboardType="numeric"
           />
           <Input
-            style={styles.input}
             label="Password"
             testID="password"
             placeholder="Enter password"
@@ -188,7 +179,7 @@ const LoginScreen = () => {
             dashed
             align="center"
             fontSize={14}
-            style={{ marginVertical: 25 }}
+            style={styles.divider}
           >
             Don’t have an account?
           </Divider>
@@ -205,6 +196,12 @@ const LoginScreen = () => {
 }
 
 const styles = StyleSheet.create({
+  loginContainer: {
+    flexGrow: 1,
+    backgroundColor: 'white',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   container: {
     flex: 1,
     padding: 10,
@@ -226,9 +223,6 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     fontWeight: 'bold',
     textAlign: 'left',
-  },
-  input: {
-    // marginBottom: 15,
   },
   countryCode: {
     marginRight: 10,
@@ -252,6 +246,7 @@ const styles = StyleSheet.create({
     color: colors.orange[300],
     textDecorationLine: 'underline',
   },
+  divider: { marginVertical: 25 },
 })
 
 export default LoginScreen

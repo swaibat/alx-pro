@@ -71,7 +71,7 @@ const CategoryScreen = () => {
           title={params.name}
           onPress={handleBackToParent}
           secondary
-          style={{ borderRadius: 0 }}
+          style={sx.btn}
           size="small"
           iconLeft={<CaretDoubleLeft size={15} />}
         />
@@ -142,6 +142,7 @@ const sx = StyleSheet.create({
   selectedCategory: {
     backgroundColor: '#f0f0f0',
   },
+  btn: { borderRadius: 0 },
 })
 
 export default CategoryScreen

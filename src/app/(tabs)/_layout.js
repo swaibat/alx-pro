@@ -67,7 +67,7 @@ export default function TabLayout() {
           headerTitle: () => <Text style={styles.cartHeaderTitle}>Cart</Text>,
           headerRight: () => (
             <View style={styles.headerRightContainer}>
-              <TouchableOpacity>
+              <TouchableOpacity onPress={() => router.push('/search')}>
                 <MagnifyingGlass size={24} />
               </TouchableOpacity>
             </View>
@@ -166,14 +166,6 @@ export default function TabLayout() {
           headerShadowVisible: false,
         }}
       />
-      {/* <Tabs.Screen
-        name="address/create"
-        options={{
-          title: 'Address',
-          headerShown: true,
-          headerShadowVisible: false,
-        }}
-      /> */}
     </Tabs>
   )
 }
@@ -194,11 +186,13 @@ const styles = StyleSheet.create({
     fontWeight: 'semibold',
   },
   cartHeaderTitle: {
-    fontSize: 25,
-    marginTop: 'auto',
+    fontSize: 20,
+    fontWeight: '500',
+    marginVertical: 'auto',
   },
   headerStyle: {
     height: 100,
+    backgroundColor: colors.grey[200],
   },
   headerRightContainer: {
     flexDirection: 'row',
@@ -208,6 +202,17 @@ const styles = StyleSheet.create({
   },
   categoryHeaderStyle: {
     backgroundColor: colors.grey[200],
+  },
+  headerIconBackground: {
+    position: 'absolute',
+    top: 0,
+    // left: 0,
+    // right: 0,
+    bottom: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+    opacity: 0.1,
+    overflow: 'hidden',
   },
   badge: {
     position: 'absolute',

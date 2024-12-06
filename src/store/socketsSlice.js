@@ -20,19 +20,12 @@ const socketsSlice = createSlice({
       const newMessage = action.payload
       const messageDate = new Date().toLocaleDateString('en-CA')
       if (state?.messages?.docs) {
-        // Find the group for the current date
         const dateGroup = state.messages.docs.find(group => {
-          console.log('======', group.date, messageDate)
           return group.date === messageDate
         })
-
-        // console.log('======', dateGroup)
-
         if (dateGroup) {
-          // If the date group exists, add the new message to that group
-          dateGroup.messages.docs.push(newMessage) // Adds the message at the beginning (most recent)
+          dateGroup.messages.docs.push(newMessage)
         } else {
-          // If no group for this date exists, create a new one and add the message
           state.messages.docs.push({
             date: messageDate,
             messages: [newMessage],

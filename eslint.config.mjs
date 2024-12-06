@@ -33,7 +33,7 @@ export default [
       'react/prop-types': 'off',
       // 'react-native/no-unused-styles': 'error',
       // 'react-native/split-platform-components': 'error',
-      // 'react-native/no-inline-styles': 'error',
+      'react-native/no-inline-styles': 'error',
       // 'react-native/no-raw-text': 'error',
       // 'react-native/no-single-element-style-arrays': 'error',
       'no-console': 'error',
