@@ -17,7 +17,14 @@ const AdCard = ({ product }) => {
   const dispatch = useDispatch()
 
   const handleAddToCart = () => {
-    dispatch(addToCart(product))
+    const cartItem = {
+      _id: product._id,
+      thumbnail: product.thumbnail,
+      discount: product.discount,
+      title: product.title,
+      price: product.price,
+    }
+    dispatch(addToCart(cartItem))
   }
 
   return (
@@ -29,7 +36,7 @@ const AdCard = ({ product }) => {
         <AppImg src={product?.thumbnail} style={styles.productImage} />
       </View>
       <TouchableOpacity
-        style={[styles.addToCartButton, { borderColor: colors.grey[600] }]}
+        style={[styles.addToCartButton]}
         onPress={handleAddToCart}
       >
         <ShoppingCartSimple size={15} color={colors.grey[600]} />
@@ -57,21 +64,30 @@ const styles = StyleSheet.create({
   productImageContainer: {
     position: 'relative',
     height: 180,
-    backgroundColor: '#f1f1f1',
+    backgroundColor: colors.grey[100],
   },
   productImage: {
     width: '100%',
     height: 180,
     borderRadius: 8,
     marginBottom: 10,
+    backgroundColor: colors.grey[100],
   },
   addToCartButton: {
-    borderWidth: 1,
     top: 12,
     right: 12,
     position: 'absolute',
     padding: 5,
     borderRadius: 10,
+    backgroundColor: 'white',
+    elevation: 8,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 9,
+    },
+    shadowOpacity: 1,
+    shadowRadius: 6,
   },
   productTitle: {
     fontSize: 14,

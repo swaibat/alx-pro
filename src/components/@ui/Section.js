@@ -9,6 +9,8 @@ const Section = ({
   borderTop,
   children,
   actionBtn,
+  large,
+  paddingHorizontal,
 }) => {
   return (
     <View
@@ -21,10 +23,21 @@ const Section = ({
       ]}
     >
       <View style={[styles.header, { minHeight: title ? 26 : 0 }]}>
-        <Text style={styles.headerText}>{title}</Text>
+        <Text
+          style={[
+            styles.headerText,
+            large ? styles.largeHeader : styles.smallHeader,
+          ]}
+        >
+          {title}
+        </Text>
         <View>{actionBtn}</View>
       </View>
-      <View style={styles.content}>{children}</View>
+      <View
+        style={[styles.content, { paddingHorizontal: paddingHorizontal || 15 }]}
+      >
+        {children}
+      </View>
     </View>
   )
 }
@@ -52,9 +65,17 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontWeight: '500',
   },
+  largeHeader: {
+    fontSize: 15,
+    fontWeight: 'bold',
+  },
+  smallHeader: {
+    fontSize: 13,
+    fontWeight: '500',
+  },
   content: {
     paddingVertical: 15,
-    paddingHorizontal: 15,
+    // paddingHorizontal: 15,
   },
 })
 

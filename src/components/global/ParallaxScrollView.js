@@ -1,77 +1,34 @@
-import React from 'react'
-import { Dimensions, StyleSheet, View } from 'react-native'
-import Animated, {
-  useAnimatedScrollHandler,
-  useSharedValue,
-  useAnimatedStyle,
-  interpolate,
-  Extrapolation,
-} from 'react-native-reanimated'
-import Input from '@/components/@ui/Input'
-import { useRouter } from 'expo-router'
-import Logo from '@/assets/Logo'
-import { Text } from '@/components/@ui/Text'
-import { colors, theme } from '@/constants/theme'
+import React from 'react';
+import { Dimensions, StyleSheet, View, ScrollView } from 'react-native';
+import Input from '@/components/@ui/Input';
+import { useRouter } from 'expo-router';
+import Logo from '@/assets/Logo';
+import { Text } from '@/components/@ui/Text';
+import { colors, theme } from '@/constants/theme';
 
-const HEADER_HEIGHT = 150
-const MIN_HEADER_HEIGHT = 95
-const SCREEN_WIDTH = Dimensions.get('window').width
+const HEADER_HEIGHT = 150;
+const MIN_HEADER_HEIGHT = 95;
+const SCREEN_WIDTH = Dimensions.get('window').width;
 
 export default function ParallaxScrollView({ children, headerImage }) {
-  const router = useRouter()
-  const scrollY = useSharedValue(0)
-
-  const onScroll = useAnimatedScrollHandler(event => {
-    scrollY.value = event.contentOffset.y
-  })
-
-  const animatedInputContainerStyle = useAnimatedStyle(() => {
-    return {
-      height: interpolate(
-        scrollY.value,
-        [0, 500],
-        [HEADER_HEIGHT, MIN_HEADER_HEIGHT],
-        Extrapolation.CLAMP
-      ),
-    }
-  })
-
-  const animatedLogoOpacity = useAnimatedStyle(() => {
-    return {
-      opacity: interpolate(
-        scrollY.value,
-        [0, 150],
-        [1, 0],
-        Extrapolation.CLAMP
-      ),
-      transform: [
-        {
-          translateY: interpolate(scrollY.value, [0, 150], [0, -20], {
-            extrapolateLeft: 'clamp',
-            extrapolateRight: 'extend',
-          }),
-        },
-      ],
-    }
-  })
+  const router = useRouter();
 
   return (
     <View style={styles.container}>
-      <Animated.View
-        style={[styles.inputContainer, animatedInputContainerStyle]}
-      >
+      {/* Static Header */}
+      <View style={styles.inputContainer}>
         <View style={styles.xBackground}>
           <View style={styles.xDiagonal} />
           <View style={[styles.xDiagonal, styles.xDiagonalReverse]} />
         </View>
-        <Animated.View style={[styles.headerRow, animatedLogoOpacity]}>
+        <View style={styles.headerRow}>
           <View style={styles.logoContainer}>
             <Logo />
           </View>
           <View style={styles.location}>
             <Text style={styles.locationText}>uganda</Text>
           </View>
-        </Animated.View>
+        </View>
         <Input
           placeholder="Search..."
           onFocus={() => router.push('/search')}
@@ -85,18 +42,17 @@ export default function ParallaxScrollView({ children, headerImage }) {
           }
           style={{ borderColor: 'white' }}
         />
-      </Animated.View>
+      </View>
 
-      <Animated.ScrollView
-        contentContainerStyle={{ paddingTop: HEADER_HEIGHT }}
-        onScroll={onScroll}
-        scrollEventThrottle={16}
+      {/* Scrollable Content */}
+      <ScrollView
+        contentContainerStyle={{ paddingTop: HEADER_HEIGHT, flexGrow: 1 }}
       >
         <View style={styles.header}>{headerImage}</View>
         <View style={styles.content}>{children}</View>
-      </Animated.ScrollView>
+      </ScrollView>
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -109,6 +65,7 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     right: 0,
+    height: HEADER_HEIGHT, // Fixed height
     backgroundColor: colors.orange[500],
     zIndex: 1,
     paddingHorizontal: 15,
@@ -183,4 +140,4 @@ const styles = StyleSheet.create({
   xDiagonalReverse: {
     transform: [{ rotate: '-45deg' }],
   },
-})
+});

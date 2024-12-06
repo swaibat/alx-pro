@@ -51,6 +51,7 @@ const styles = StyleSheet.create({
   },
   replyMessage: {
     color: colors.grey[300],
+    backgroundColor: colors.grey[300],
   },
   messageText: {
     color: 'black',

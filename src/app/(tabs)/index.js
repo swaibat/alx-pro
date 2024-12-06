@@ -26,9 +26,10 @@ const HomeScreen = () => {
 
         <FlashSale />
 
-        <RecentlyViewed />
-
-        <Section title="Popular Products">
+        <Section large title="Recently Viewed">
+          <RecentlyViewed />
+        </Section>
+        <Section large paddingHorizontal={1} title="Explore">
           <RecentProducts />
         </Section>
       </ParallaxScrollView>

@@ -101,9 +101,13 @@ const CheckoutScreen = () => {
   return (
     <SecureRoute>
       <SafeAreaView style={styles.container}>
-        <ScrollView style={styles.content}>
+        <ScrollView
+          style={styles.content}
+          contentContainerStyle={styles.contentContainerStyle}
+        >
           <Section
             title="Shipping Address"
+            borderTop
             actionBtn={
               <Button
                 title="Change"
@@ -133,7 +137,7 @@ const CheckoutScreen = () => {
           >
             <OrderItems cartItems={cartItems} />
           </Section>
-          <Section title="Shipping">
+          <Section borderBottom={0} title="Shipping">
             <ShippingOptions
               address={selectedAddress}
               selectedShipping={selectedShipping}
@@ -141,55 +145,55 @@ const CheckoutScreen = () => {
             />
           </Section>
         </ScrollView>
-        <View style={styles.footer}>
-          <PayWithFlutterwave
-            onRedirect={async data => {
-              if (data.status !== 'cancelled') {
-                handleUpdateOrder(data)
-              }
-            }}
-            options={{
-              tx_ref: `flw_tx_ref_${keysData?.iat}`,
-              authorization: keysData?.keys,
-              customer: {
-                email: selectedAddress?.email,
-                phone: selectedAddress?.phonenumber,
-                fullName: selectedAddress?.name,
-              },
-              amount: 1000,
-              // amount: totalPrice + (selectedShipping?.price || 0),
-              currency: 'UGX',
-            }}
-            customButton={props => (
-              <Button
-                isLoading={
-                  isCreating ||
-                  props.isInitializing ||
-                  props.disabled ||
-                  isUpdating
-                }
-                textStyle={{ marginRight: 'auto' }}
-                style={styles.checkoutButton}
-                onPress={async () => {
-                  if (!orderData?.data?._id) {
-                    await handlePayNow()
-                  }
-                  props.onPress()
-                }}
-                disabled={props.disabled || isCreating}
-                title={`Pay ${(totalPrice + (selectedShipping?.price || 0)).toLocaleString()} /-`}
-                iconLeft={
-                  <LockSimple
-                    style={{ marginLeft: 'auto' }}
-                    size={17}
-                    color="white"
-                  />
-                }
-              />
-            )}
-          />
-        </View>
       </SafeAreaView>
+      <View style={styles.footer}>
+        <PayWithFlutterwave
+          onRedirect={async data => {
+            if (data.status !== 'cancelled') {
+              handleUpdateOrder(data)
+            }
+          }}
+          options={{
+            tx_ref: `flw_tx_ref_${keysData?.iat}`,
+            authorization: keysData?.keys,
+            customer: {
+              email: selectedAddress?.email,
+              phone: selectedAddress?.phonenumber,
+              fullName: selectedAddress?.name,
+            },
+            amount: 1000,
+            // amount: totalPrice + (selectedShipping?.price || 0),
+            currency: 'UGX',
+          }}
+          customButton={props => (
+            <Button
+              isLoading={
+                isCreating ||
+                props.isInitializing ||
+                props.disabled ||
+                isUpdating
+              }
+              textStyle={{ marginRight: 'auto' }}
+              style={styles.checkoutButton}
+              onPress={async () => {
+                if (!orderData?.data?._id) {
+                  await handlePayNow()
+                }
+                props.onPress()
+              }}
+              disabled={props.disabled || isCreating}
+              title={`Pay ${(totalPrice + (selectedShipping?.price || 0)).toLocaleString()} /-`}
+              iconLeft={
+                <LockSimple
+                  style={{ marginLeft: 'auto' }}
+                  size={17}
+                  color="white"
+                />
+              }
+            />
+          )}
+        />
+      </View>
       <LoadingOverlay visible={isUpdating} />
     </SecureRoute>
   )
@@ -212,13 +216,13 @@ const styles = StyleSheet.create({
     padding: 15,
     position: 'absolute',
     width: '100%',
-    bottom: 30,
+    bottom: 0,
     backgroundColor: '#F7F9FC',
     borderTopWidth: 1,
     borderColor: '#E4E9F2',
   },
-  checkoutButton: {
-    // marginLeft: 16,
+  contentContainerStyle: {
+    paddingBottom: 120,
   },
 })
 

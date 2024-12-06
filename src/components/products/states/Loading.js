@@ -8,11 +8,10 @@ const AdsSkeletonLoader = () => {
     <View style={styles.safeArea}>
       {[...Array(6)].map((_, index) => (
         <View style={styles.skeletonCard} key={index}>
-          {/* Product Image Skeleton */}
           <View
             style={[
               styles.skeletonImageContainer,
-              { backgroundColor: colors.grey[300] },
+              { backgroundColor: colors.grey[100] },
             ]}
           >
             <Placeholder />
@@ -28,14 +27,14 @@ const AdsSkeletonLoader = () => {
 
           {/* Product Title Skeleton */}
           <View
-            style={[styles.skeletonText, { backgroundColor: colors.grey[300] }]}
+            style={[styles.skeletonText, { backgroundColor: colors.grey[200] }]}
           />
 
           {/* Free Shipping Badge Skeleton */}
           <View
             style={[
               styles.skeletonFreeShippingBadge,
-              { backgroundColor: colors.grey[300] },
+              { backgroundColor: colors.grey[200] },
             ]}
           />
 
@@ -43,7 +42,7 @@ const AdsSkeletonLoader = () => {
           <View
             style={[
               styles.skeletonTextSmall,
-              { backgroundColor: colors.grey[300] },
+              { backgroundColor: colors.grey[200] },
             ]}
           />
 
@@ -51,7 +50,7 @@ const AdsSkeletonLoader = () => {
           <View
             style={[
               styles.skeletonPrice,
-              { backgroundColor: colors.grey[300] },
+              { backgroundColor: colors.grey[200] },
             ]}
           />
         </View>

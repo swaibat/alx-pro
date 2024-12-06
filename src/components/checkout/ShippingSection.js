@@ -21,7 +21,10 @@ const ShippingOptions = ({
   }, [data, selectedShipping, setSelectedShipping])
 
   const handleSelectOption = option => {
-    setSelectedShipping(option)
+    setSelectedShipping({
+      ...option,
+      price: option.baseAmount * option.multiplier,
+    })
   }
 
   return (

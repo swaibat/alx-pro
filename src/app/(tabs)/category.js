@@ -41,7 +41,7 @@ const CategoryScreen = () => {
     return (
       <FlatList
         data={category.children}
-        keyExtractor={item => item.id.toString()}
+        keyExtractor={item => item.id?.toString()}
         renderItem={({ item }) => (
           <TouchableOpacity
             style={[sx.subcategoryItem, sx.borderStyle]}
@@ -81,7 +81,7 @@ const CategoryScreen = () => {
         {!expandedCategory && data?.data && (
           <FlatList
             data={data?.data}
-            keyExtractor={item => item.id.toString()}
+            keyExtractor={item => item.id?.toString()}
             renderItem={({ item }) => (
               <TouchableOpacity
                 style={[

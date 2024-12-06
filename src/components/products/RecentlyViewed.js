@@ -1,7 +1,6 @@
 import React from 'react'
 import {
   ScrollView,
-  Image,
   View,
   StyleSheet,
   Dimensions,
@@ -10,6 +9,7 @@ import {
 import { useGetViewedProductsQuery } from '@/api'
 import { Text } from '@/components/@ui/Text'
 import { useRouter } from 'expo-router'
+import AppImg from '../@ui/AppImg'
 
 const ProductSkeleton = () => (
   <View style={styles.skeletonProductContainer}>
@@ -43,14 +43,7 @@ const RecentlyViewed = ({ showAll }) => {
         key={product._id}
         style={styles.productContainer}
       >
-        <Image
-          source={
-            product?.thumbnail
-              ? { uri: product.thumbnail }
-              : require('@/assets/placeholder.png')
-          }
-          style={styles.productImage}
-        />
+        <AppImg src={product?.thumbnail} style={styles.productImage} />
         <View style={styles.productDetails}>
           <Text bold ellipsis style={styles.productCategory}>
             {product.title}

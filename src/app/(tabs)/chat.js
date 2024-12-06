@@ -1,5 +1,5 @@
-import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react'
-import { View, StyleSheet, Alert, ImageBackground } from 'react-native'
+import React, { useState, useRef, useEffect, useCallback } from 'react'
+import { View, StyleSheet, Alert } from 'react-native'
 import { SafeAreaView } from 'react-native'
 import { ArrowElbowUpLeft, Copy, TrashSimple } from 'phosphor-react-native'
 import { useGetMessagesQuery } from '@/api'
@@ -14,6 +14,7 @@ import Loading from '@/components/global/Loading'
 import EmptyChatScreen from '@/components/chat/Empty'
 import { useLocalSearchParams } from 'expo-router'
 import RenderMessage from '@/components/chat/message/RenderMessage'
+// import SecureRoute from '@/components/global/SecureRoute'
 
 const ITEMS_PER_PAGE = 200
 
@@ -31,19 +32,6 @@ const ChatScreen = () => {
     limit: pageLimit,
   })
   const messages = useSelector(state => state.chat.messages)
-
-  const groupedMessages = useMemo(() => {
-    const grouped = {}
-    messages?.docs?.forEach(message => {
-      const date = new Date(message.createdAt || Date.now()).toDateString()
-      if (!grouped[date]) grouped[date] = []
-      grouped[date].push(message)
-    })
-    return Object.entries(grouped).map(([date, messages]) => ({
-      date,
-      messages: messages.reverse(),
-    }))
-  }, [messages])
 
   useEffect(() => {
     if (product) {
@@ -83,59 +71,52 @@ const ChatScreen = () => {
   )
 
   const loadMoreMessages = useCallback(() => {
-    if (messages?.hasNextPage && !isFetching) {
+    if (messages?.hasNext && !isFetching) {
       setPageLimit(messages?.limit + ITEMS_PER_PAGE)
       refetch()
     }
   }, [messages, isFetching, refetch])
 
   return (
+    // <SecureRoute>
     <SafeAreaView style={sx.container}>
       <View style={sx.header}>
         <TopToolbar />
       </View>
-      <ImageBackground
-        source={{
-          uri: 'https://cloud.githubusercontent.com/assets/398893/15136779/4e765036-1639-11e6-9201-67e728e86f39.jpg',
-        }}
-        style={sx.backgroundImage}
-      >
-        <FlashList
-          ref={flatListRef}
-          data={groupedMessages}
-          keyExtractor={item => item.date}
-          renderItem={({ item }) => (
-            <>
-              {renderDate(item.date)}
-              {item.messages.map(msg => (
-                <View key={msg._id}>
-                  <RenderMessage
-                    item={msg}
-                    setSelectedMessage={setSelectedMessage}
-                    setPopoverPosition={setPopoverPosition}
-                    setPopoverVisible={setPopoverVisible}
-                  />
-                </View>
-              ))}
-            </>
-          )}
-          inverted
-          estimatedItemSize={100}
-          contentContainerStyle={sx.listContent}
-          onEndReached={loadMoreMessages}
-          onEndReachedThreshold={0.5}
-          ListEmptyComponent={
-            !isLoading && (
-              <View style={sx.emptyWrapper}>
-                <EmptyChatScreen />
+      <FlashList
+        ref={flatListRef}
+        data={messages?.docs}
+        renderItem={({ item }) => (
+          <View key={item.date}>
+            {renderDate(item.date)}
+            {item.messages.map(msg => (
+              <View key={msg._id}>
+                <RenderMessage
+                  item={msg}
+                  setSelectedMessage={setSelectedMessage}
+                  setPopoverPosition={setPopoverPosition}
+                  setPopoverVisible={setPopoverVisible}
+                />
               </View>
-            )
-          }
-          ListFooterComponent={
-            isLoading && <Loading text={'Loading Conversation...'} />
-          }
-        />
-      </ImageBackground>
+            ))}
+          </View>
+        )}
+        inverted
+        estimatedItemSize={100}
+        contentContainerStyle={sx.listContent}
+        onEndReached={loadMoreMessages}
+        onEndReachedThreshold={0.5}
+        ListEmptyComponent={
+          !isLoading && (
+            <View style={sx.emptyWrapper}>
+              <EmptyChatScreen />
+            </View>
+          )
+        }
+        ListFooterComponent={
+          isLoading && <Loading text={'Loading Conversation...'} />
+        }
+      />
       <View style={sx.footer}>
         <InputContainer
           replyingTo={replyingTo}
@@ -173,11 +154,17 @@ const sx = StyleSheet.create({
     backgroundColor: 'rgba(245, 245, 245, 0.5)',
   },
   dateText: { color: '#aaa', fontSize: 12 },
-  listContent: { paddingTop: 70, paddingBottom: 100, paddingHorizontal: 15 },
+  listContent: {
+    paddingTop: 70,
+    paddingBottom: 100,
+    paddingHorizontal: 15,
+    backgroundColor: 'white',
+  },
   emptyWrapper: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    width: '100%',
     transform: [{ rotate: '180deg' }],
   },
   backgroundImage: {

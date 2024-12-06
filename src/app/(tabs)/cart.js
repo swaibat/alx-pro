@@ -18,7 +18,7 @@ const CartScreen = () => {
             !cartItems.length ? sx.emptyCartContent : sx.content
           }
           data={cartItems}
-          keyExtractor={(item, index) => `${item._id}-${index}`}
+          keyExtractor={item => item.uniqueKey}
           renderItem={({ item }) => <CartItemCard editable item={item} />}
           ListEmptyComponent={<EmptyCart />}
         />

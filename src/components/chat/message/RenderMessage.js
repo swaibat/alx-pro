@@ -51,7 +51,7 @@ const RenderMessage = ({
         <Chat
           size={40}
           style={item.to ? sx.chatIncoming : sx.chatOutgoing}
-          color={item.to ? 'white' : '#004F70'}
+          color={item.to ? colors.grey[300] : '#004F70'}
           weight="fill"
         />
       </View>
@@ -73,7 +73,7 @@ export const sx = StyleSheet.create({
   messageTime: { color: colors.grey[500], fontSize: 10, marginLeft: 'auto' },
   myMessage: { backgroundColor: '#004F70', alignSelf: 'flex-end' },
   inComingMessage: {
-    backgroundColor: 'white',
+    backgroundColor: colors.grey[300],
     alignSelf: 'flex-start',
     borderTopLeftRadius: 20,
     borderTopEndRadius: 20,

@@ -44,7 +44,7 @@ const ShowSuggestions = ({
       <FlatList
         data={searchSuggestions}
         contentContainerStyle={{ paddingBottom: 20, maxHeight: 400 }}
-        keyExtractor={item => item._id?.toString()}
+        keyExtractor={item => item?._id?.toString()}
         renderItem={({ item }) => (
           <View style={styles.itemRow}>
             <TouchableOpacity

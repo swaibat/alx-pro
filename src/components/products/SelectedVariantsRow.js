@@ -66,6 +66,7 @@ const styles = StyleSheet.create({
   },
   variantValue: {
     color: colors.grey[700],
+    fontSize: 12,
   },
   variantImage: {
     width: 20,

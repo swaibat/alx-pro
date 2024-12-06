@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
     borderTopColor: colors.borderColor,
     backgroundColor: 'white',
     position: 'absolute',
-    bottom: 30,
+    bottom: 0,
     flexDirection: 'row',
     width: '100%',
     justifyContent: 'space-between',
