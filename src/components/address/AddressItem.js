@@ -21,6 +21,7 @@ import Divider from '@/components/@ui/Divider'
 import { theme } from '@/constants/theme'
 import { useMakeDefaultAddressMutation } from '@/api'
 import Constants from 'expo-constants'
+import { useSnackbar } from '@/hooks/useSnackbar'
 
 const { MAPS_API_URL, GOOGLE_API_KEY } = Constants.expoConfig.extra
 
@@ -32,6 +33,7 @@ const AddressItem = ({
   renderSelectComponent,
 }) => {
   const [isDeleteModalVisible, setDeleteModalVisible] = useState(false)
+  const { triggerSnackbar } = useSnackbar()
 
   const [makeDefaultAddress, { isLoading }] = useMakeDefaultAddressMutation()
 
@@ -40,7 +42,7 @@ const AddressItem = ({
       await makeDefaultAddress(address._id).unwrap()
       refetch()
     } catch (error) {
-      console.error('Failed to mark as default:', error)
+      triggerSnackbar('Failed to mark as default', 'error')
     }
   }
 

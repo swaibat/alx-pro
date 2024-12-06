@@ -1,16 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import {
-  ScrollView,
-  Image,
-  View,
-  StyleSheet,
-  TouchableOpacity,
-} from 'react-native'
+import { ScrollView, View, StyleSheet, TouchableOpacity } from 'react-native'
 import { Lightning } from 'phosphor-react-native'
-import { useGetProductsQuery } from '@/api'
+import { useGetFlashSalesQuery } from '@/api'
 import { Text } from '@/components/@ui/Text'
 import { useRouter } from 'expo-router'
 import { colors } from '@/constants/theme'
+import AppImg from '../@ui/AppImg'
 
 const ProductSkeleton = () => (
   <View style={styles.skeletonProductContainer}>
@@ -20,12 +15,16 @@ const ProductSkeleton = () => (
   </View>
 )
 
-const calculateTimeLeft = expiryDate => {
-  const difference = new Date(expiryDate) - new Date()
+const calculateTimeLeft = endTime => {
+  const difference = new Date(endTime) - new Date()
   let timeLeft = {}
 
   if (difference > 0) {
     timeLeft = {
+      days: String(Math.floor(difference / (1000 * 60 * 60 * 24))).padStart(
+        2,
+        '0'
+      ),
       hours: String(Math.floor((difference / (1000 * 60 * 60)) % 24)).padStart(
         2,
         '0'
@@ -38,6 +37,7 @@ const calculateTimeLeft = expiryDate => {
     }
   } else {
     timeLeft = {
+      days: '00',
       hours: '00',
       minutes: '00',
       seconds: '00',
@@ -55,24 +55,24 @@ const FlipClockDigit = ({ digit }) => (
 
 const FlashSale = () => {
   const router = useRouter()
-  const expiryDate = '2025-01-01T23:59:59'
-  const [timeLeft, setTimeLeft] = useState(calculateTimeLeft(expiryDate))
-
-  const { data: flashSaleProducts, isLoading } = useGetProductsQuery({
-    flashsale: true,
-  })
+  const { data, isLoading } = useGetFlashSalesQuery()
+  const [timeLeft, setTimeLeft] = useState(null)
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setTimeLeft(calculateTimeLeft(expiryDate))
-    }, 1000)
+    if (data?.data?.endTime) {
+      setTimeLeft(calculateTimeLeft(data?.data?.endTime))
 
-    return () => clearInterval(timer)
-  }, [])
+      const timer = setInterval(() => {
+        setTimeLeft(calculateTimeLeft(data?.data?.endTime))
+      }, 1000)
+
+      return () => clearInterval(timer)
+    }
+  }, [data?.data?.endTime]) // Dependency on endTime to recalculate on change
 
   const renderProduct = product => {
-    const mainPrice = product?.price.toLocaleString().slice(0, -3)
-    const smallDigits = product?.price.toLocaleString().slice(-3)
+    const mainPrice = product?.price?.toLocaleString().slice(0, -3)
+    const smallDigits = product?.price.toLocaleString()?.slice(-3)
 
     return (
       <TouchableOpacity
@@ -80,18 +80,10 @@ const FlashSale = () => {
         key={product._id}
         style={styles.productContainer}
       >
-        {/* Discount Badge */}
         <View style={styles.badgeContainer}>
           <Text style={styles.discountBadge}>-{product.discount.value}%</Text>
         </View>
-        <Image
-          source={
-            product?.thumbnail
-              ? { uri: product.thumbnail }
-              : require('@/assets/placeholder.png')
-          }
-          style={styles.productImage}
-        />
+        <AppImg src={product?.thumbnail} style={styles.productImage} />
         <View style={styles.productDetails}>
           <Text ellipsis={1} style={styles.productTitle}>
             {product.title}
@@ -115,10 +107,7 @@ const FlashSale = () => {
     </View>
   )
 
-  if (
-    !isLoading &&
-    (!flashSaleProducts?.data || flashSaleProducts?.data?.docs?.length === 0)
-  ) {
+  if (!isLoading && !data?.data?.products?.length) {
     return null
   }
 
@@ -149,18 +138,20 @@ const FlashSale = () => {
             </View>
           </View>
           <View style={styles.countdown}>
-            <FlipClockDigit digit={timeLeft.hours} />
+            <FlipClockDigit digit={timeLeft?.days} />
+            <Text style={styles.daysLabel}>days</Text>
+            <FlipClockDigit digit={timeLeft?.hours} />
             <Text style={styles.colon}>:</Text>
-            <FlipClockDigit digit={timeLeft.minutes} />
+            <FlipClockDigit digit={timeLeft?.minutes} />
             <Text style={styles.colon}>:</Text>
-            <FlipClockDigit digit={timeLeft.seconds} />
+            <FlipClockDigit digit={timeLeft?.seconds} />
           </View>
         </View>
 
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           {isLoading
             ? renderSkeleton()
-            : flashSaleProducts?.data?.docs?.map(renderProduct)}
+            : data?.data?.products?.map(renderProduct)}
         </ScrollView>
       </View>
     </View>
@@ -284,6 +275,11 @@ const styles = StyleSheet.create({
   productTitle: {
     fontSize: 12,
     color: '#777',
+  },
+  daysLabel: {
+    marginHorizontal: 10,
+    fontWeight: 'bold',
+    fontSize: 14,
   },
 })
 

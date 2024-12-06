@@ -11,10 +11,7 @@ const DeliveryReturnInfo = () => {
   return (
     <View style={styles.container}>
       {/* Delivery Information Section */}
-      <GooglePlacesAutocomplete
-        mapHeight={70}
-        onPress={loc => console.log(loc)}
-      />
+      <GooglePlacesAutocomplete mapHeight={70} onPress={loc => loc} />
       {/* Delivery Info */}
       <View style={styles.infoRow}>
         <Package size={24} style={styles.icon} />

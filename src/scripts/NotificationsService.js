@@ -5,6 +5,7 @@ import * as Notifications from 'expo-notifications'
 import * as Device from 'expo-device'
 import { useRouter } from 'expo-router'
 import { useRouteInfo } from 'expo-router/build/hooks'
+import { useSnackbar } from '@/hooks/useSnackbar'
 
 export const EXPO_PUSH_TOKEN_STORAGE_KEY = 'expoPushToken'
 
@@ -17,27 +18,18 @@ export const getDeviceId = () => {
 }
 
 export async function storeExpoPushToken(token) {
-  try {
-    await AsyncStorage.setItem(EXPO_PUSH_TOKEN_STORAGE_KEY, token)
-  } catch (e) {
-    console.error('Failed to save push token to storage', e)
-  }
+  await AsyncStorage.setItem(EXPO_PUSH_TOKEN_STORAGE_KEY, token)
 }
 
 export async function getStoredExpoPushToken() {
-  try {
-    const token = await AsyncStorage.getItem(EXPO_PUSH_TOKEN_STORAGE_KEY)
-    return token
-  } catch (e) {
-    console.error('Failed to retrieve push token from storage', e)
-    return null
-  }
+  const token = await AsyncStorage.getItem(EXPO_PUSH_TOKEN_STORAGE_KEY)
+  return token
 }
 
-export async function registerForPushNotificationsAsync() {
+export async function registerForPushNotificationsAsync(triggerSnackbar) {
   try {
     if (!Device.isDevice) {
-      console.warn('Push notifications are not supported on a simulator')
+      // console.warn('Push notifications are not supported on a simulator')
       return null
     }
 
@@ -50,7 +42,7 @@ export async function registerForPushNotificationsAsync() {
     }
 
     if (finalStatus !== 'granted') {
-      console.warn('Push notification permissions not granted')
+      triggerSnackbar('Push notification permissions not granted', 'error')
       return null
     }
 
@@ -61,13 +53,12 @@ export async function registerForPushNotificationsAsync() {
 
     const token = (await Notifications.getExpoPushTokenAsync({ projectId }))
       .data
-    console.log('Expo Push Token:', token)
     await storeExpoPushToken(token)
 
     return token
   } catch (error) {
-    console.error('Error during push notification registration:', error)
-    return null
+    triggerSnackbar('Error during push notification registration', 'error')
+    return error
   }
 }
 
@@ -78,11 +69,12 @@ export function usePushNotifications() {
   const route = useRouteInfo()
   const responseListener = useRef()
   const notificationTriggeredRef = useRef(false)
+  const { triggerSnackbar } = useSnackbar()
 
   useEffect(() => {
     const initPushNotifications = async () => {
       const storedToken = await getStoredExpoPushToken()
-      const newToken = await registerForPushNotificationsAsync()
+      const newToken = await registerForPushNotificationsAsync(triggerSnackbar)
       if (storedToken) {
         setExpoPushToken(storedToken)
       } else {

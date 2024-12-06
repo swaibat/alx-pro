@@ -34,22 +34,18 @@ const AppSnackbar = () => {
 
   useEffect(() => {
     if (visible) {
-      // Fade in animation
       Animated.timing(opacity, {
         toValue: 1,
         duration: 300,
         useNativeDriver: true,
       }).start()
 
-      // Automatically close the snackbar after 3 seconds
       const timeout = setTimeout(() => {
         closeSnackbar()
       }, 1000)
 
-      // Clear timeout if component unmounts or visibility changes
       return () => clearTimeout(timeout)
     } else {
-      // Fade out animation
       Animated.timing(opacity, {
         toValue: 0,
         duration: 300,
@@ -68,10 +64,10 @@ const AppSnackbar = () => {
       style={[
         styles.snackbarContainer,
         {
-          backgroundColor: getColorByType(type), // Set color based on type
+          backgroundColor: getColorByType(type),
           opacity: opacity,
           width: width,
-          top: StatusBar.currentHeight, // Adjust based on status bar height
+          top: StatusBar.currentHeight,
         },
       ]}
     >

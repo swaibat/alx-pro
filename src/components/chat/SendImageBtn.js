@@ -71,13 +71,12 @@ export default function SendImageBtn({ replyingTo, clearReplyingTo, refetch }) {
 
         refetch()
       } catch (uploadError) {
-        console.error('Image upload failed:', uploadError)
-        return
+        // return uploadError
       }
 
       refetch()
     } catch (error) {
-      console.error('Unexpected error:', error)
+      triggerSnackbar('Unexpected error')
     }
   }
   return (

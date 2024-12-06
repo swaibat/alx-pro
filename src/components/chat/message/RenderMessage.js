@@ -29,12 +29,10 @@ const RenderMessage = ({
 
   return (
     <TouchableOpacity
-      style={[
-        {
-          backgroundColor: isLongPressed ? 'red' : 'transparent',
-          marginBottom: 5,
-        },
-      ]}
+      style={{
+        backgroundColor: isLongPressed ? 'red' : 'transparent',
+        marginBottom: 5,
+      }}
       onLongPress={e => handleLongPress(item, e)}
       onPressOut={handlePressOut}
     >

@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import React, { useCallback } from 'react'
 import { StyleSheet, SafeAreaView, View } from 'react-native'
 import { MasonryFlashList } from '@shopify/flash-list'

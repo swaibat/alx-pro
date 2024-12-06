@@ -43,14 +43,14 @@ const QuantityControls = ({ item, editable }) => {
     >
       {editable ? (
         <View style={{ gap: 5 }}>
-          <TouchableOpacity style={[styles.button]} onPress={handleIncrease}>
+          <TouchableOpacity style={styles.button} onPress={handleIncrease}>
             <Plus size={15} />
           </TouchableOpacity>
           <View style={styles.quantityContainer}>
             <Text style={styles.quantity}>{item.quantity || 1}</Text>
           </View>
 
-          <TouchableOpacity style={[styles.button]} onPress={handleDecrease}>
+          <TouchableOpacity style={styles.button} onPress={handleDecrease}>
             <Minus size={15} />
           </TouchableOpacity>
         </View>

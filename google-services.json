@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "169080100237",
+    "project_id": "alxlite-5d4c2",
+    "storage_bucket": "alxlite-5d4c2.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:169080100237:android:79d83b239114f39a4519c4",
+        "android_client_info": {
+          "package_name": "com.swaibu.alxlite"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "169080100237-bpuprjjic0uccgslomnra76mqjmhk50l.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.swaibu.alxlite",
+            "certificate_hash": "3c56f6440f852201077c2f8918159e0c2d6c3ce1"
+          }
+        },
+        {
+          "client_id": "169080100237-h45gsq8vhav1ubokm6q59ucd335fgg71.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDjtFRfwOjUDB2VENWIEqbh-sG0tJoGm8Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "169080100237-h45gsq8vhav1ubokm6q59ucd335fgg71.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

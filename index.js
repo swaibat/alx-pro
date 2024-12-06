@@ -1,28 +1,46 @@
-function wordFrequency(text, n) {
-  // Split text into words, removing punctuation and converting to lowercase
-  const words = text.toLowerCase().match(/\b\w+\b/g)
+// Client ID
+// 1092795515916-mgkor2u2mfedg0ijpm9sjr9f6r3583b2.apps.googleusercontent.com
+// Client secret
+// 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
 
-  // Count the occurrences of each word
-  const wordCounts = {}
-  words.forEach(word => {
-    wordCounts[word] = (wordCounts[word] || 0) + 1
-  })
+// IOS
+// 1092795515916-cr1aic6a5l3cuo4lvdo1s9e26nim9kbl.apps.googleusercontent.com
 
-  // Convert the word counts object into an array of [word, count]
-  const pairs = Object.entries(wordCounts)
+// 1092795515916-5mnrtm7d9mf9e082m8c49h8qn9iol4a3.apps.googleusercontent.com
 
-  // Sort the pairs array by count in descending order
-  pairs.sort((a, b) => b[1] - a[1])
+// import globals from 'globals'
+// import pluginJs from '@eslint/js'
+// import pluginReact from 'eslint-plugin-react'
+// import pluginPrettier from 'eslint-plugin-prettier'
+// // import pluginReactNative from 'eslint-plugin-react-native';
 
-  // Get the top n frequent words
-  const topFrequent = pairs.slice(0, n).map(([word, count]) => {
-    return { word, count }
-  })
-
-  return topFrequent
-}
-
-// Example usage
-const text = 'Lorem ipsum sit dolor amet, consectetur lorem ipsum lorem ipsum.'
-const n = 3
-console.log(wordFrequency(text, n))
+// export default [
+//   {
+//     files: ['src/**/*.{js,mjs,cjs,jsx}'],
+//   },
+//   {
+//     languageOptions: {
+//       globals: globals.node,
+//     },
+//   },
+//   pluginJs.configs.recommended,
+//   pluginReact.configs.flat.recommended,
+//   {
+//     plugins: {
+//       prettier: pluginPrettier,
+//       // 'react-native': pluginReactNative, 
+//     },
+//     // settings: {
+//     //   react: {
+//     //     version: 'detect',
+//     //   },
+//     // },
+//     rules: {
+//       'prettier/prettier': 'error',
+//       'react/react-in-jsx-scope': 'off',
+//       'react/prop-types': 'off',
+//       // "react-native/no-inline-styles": "error",
+//       // 'max-lines': ['error', { max: 250, skipBlankLines: true, skipComments: true }],
+//     },
+//   },
+// ]

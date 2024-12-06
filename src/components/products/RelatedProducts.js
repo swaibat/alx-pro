@@ -116,10 +116,10 @@ const ProductCard = ({ product }) => {
             style={{ flexDirection: 'row', justifyContent: 'space-between' }}
           >
             <View style={styles.priceContainer}>
-              <Text primary style={[styles.productPrice]}>
+              <Text primary style={styles.productPrice}>
                 UGX {formattedPrice?.slice(0, -3)}
               </Text>
-              <Text primary style={[styles.smallPrice]}>
+              <Text primary style={styles.smallPrice}>
                 {formattedPrice?.slice(-3)}
               </Text>
             </View>

@@ -1,4 +1,3 @@
-// hooks/useNetworkStatus.js
 import { useEffect, useState, useCallback } from 'react'
 import NetInfo from '@react-native-community/netinfo'
 import { useRouter } from 'expo-router'
@@ -16,20 +15,18 @@ export const useNetworkStatus = () => {
       return
     }
 
-    // Verify server reachability
     try {
       const response = await fetch(Constants.expoConfig.extra.SERVER_URL, {
         method: 'HEAD',
       })
       setIsOffline(response.status !== 200)
     } catch (error) {
-      console.log('====00====', error)
-      setIsOffline(true)
+      setIsOffline(!!error)
     }
   }, [])
 
   useEffect(() => {
-    checkNetworkStatus() // Initial check
+    checkNetworkStatus()
 
     // Subscribe to network state changes
     const unsubscribe = NetInfo.addEventListener(state => {

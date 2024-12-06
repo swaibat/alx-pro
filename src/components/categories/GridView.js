@@ -15,7 +15,7 @@ const PlaceholderItem = () => {
 }
 
 const GridScreen = () => {
-  const { data, isLoading, error } = useGetCategoriesQuery()
+  const { data, isLoading } = useGetCategoriesQuery()
 
   const router = useRouter()
 

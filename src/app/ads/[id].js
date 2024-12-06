@@ -22,9 +22,11 @@ import { Button } from '@/components/@ui/Button'
 import DeliveryReturnInfo from '@/components/products/productDetails/DeliveryReturnInfo'
 import VariantSelector from '@/components/products/productDetails/VariantSelector'
 import ErrorScreen from '@/components/global/Error'
+import { useSnackbar } from '@/hooks/useSnackbar'
 
 const ProductDetailsScreen = () => {
   const { id } = useLocalSearchParams()
+  const { triggerSnackbar } = useSnackbar()
   const { data, isLoading, isError, refetch } = useGetProductQuery(id, {
     skip: !id,
   })
@@ -48,7 +50,7 @@ const ProductDetailsScreen = () => {
       }
       await Share.share(shareContent)
     } catch (error) {
-      console.error('Error sharing the product:', error)
+      triggerSnackbar('Error sharing the product')
     }
   }
   if (!product || isLoading) return <Loading text={'Loading Ad details'} />
@@ -163,7 +165,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: colors.grey[200],
-    // borderRadius: 5,
     padding: 10,
     gap: 10,
   },

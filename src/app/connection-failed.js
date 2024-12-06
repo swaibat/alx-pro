@@ -1,7 +1,7 @@
 import { Button } from '@/components/@ui/Button'
-import { Text } from '@/components/@ui/Text'
 import { useRouter } from 'expo-router'
 import React from 'react'
+import { Text } from 'react-native'
 import { StyleSheet, Image, View } from 'react-native'
 
 export default function NotFoundScreen() {

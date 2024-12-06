@@ -8,11 +8,13 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from 'react-native'
+import { useSnackbar } from '@/hooks/useSnackbar'
 
 const GooglePlacesAutocomplete = () => {
   const [query, setQuery] = useState('')
   const [predictions, setPredictions] = useState([])
   const [selectedPlace, setSelectedPlace] = useState(null)
+  const { triggerSnackbar } = useSnackbar()
 
   // Replace with your actual Google API key
   const googleApiKey = Constants.expoConfig.extra.GOOGLE_API_KEY
@@ -22,15 +24,13 @@ const GooglePlacesAutocomplete = () => {
       setPredictions([])
       return
     }
-    // https://maps.googleapis.com/maps/api/js?key=AIzaSyAILGVlt-SOiL381JT3TQ9dxxoNIUuxrV8&amp;libraries=places
     const url = `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${input}&key=${googleApiKey}`
-
     try {
       const response = await fetch(url)
       const data = await response.json()
       setPredictions(data.predictions || [])
     } catch (error) {
-      console.error('Error fetching predictions:', error)
+      triggerSnackbar('Error fetching predictions')
     }
   }
 

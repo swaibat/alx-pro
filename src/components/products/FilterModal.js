@@ -117,7 +117,7 @@ const FilterModal = ({ isLoading, isSuccess, data, isFetching }) => {
     })
     router.push({ pathname: 'ads/list', params: filteredParams })
   }
-//TODO:
+  //TODO:
   // if (
   //   !data?.data?.docs?.length &&
   //   !hasFilters() &&
@@ -131,7 +131,7 @@ const FilterModal = ({ isLoading, isSuccess, data, isFetching }) => {
   return (
     <>
       <TouchableOpacity
-        style={[styles.button]}
+        style={styles.button}
         disabled={isLoading || isFetching}
         onPress={toggleFilterModal}
       >

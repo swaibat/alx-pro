@@ -15,6 +15,7 @@ import PlacesAutocomplete from '@/components/address/GoogleAutoComplete'
 import { useSelector } from 'react-redux'
 import { theme } from '@/constants/theme'
 import Divider from '@/components/@ui/Divider'
+import { useSnackbar } from '@/hooks/useSnackbar'
 
 const CreateAddressModal = ({ refetch }) => {
   const [isModalVisible, setModalVisible] = useState(false)
@@ -32,6 +33,7 @@ const CreateAddressModal = ({ refetch }) => {
   const user = useSelector(({ auth }) => auth.user)
 
   const [createAddress, { isLoading }] = useCreateAddressMutation()
+  const { triggerSnackbar } = useSnackbar()
 
   const handleInputChange = (key, value) => {
     setForm({ ...form, [key]: value })
@@ -43,7 +45,7 @@ const CreateAddressModal = ({ refetch }) => {
       refetch()
       setModalVisible(false)
     } catch (error) {
-      console.error('Error creating address:', error)
+      triggerSnackbar('Error creating address')
     }
   }
 

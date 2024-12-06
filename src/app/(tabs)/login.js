@@ -14,6 +14,21 @@ import Divider from '@/components/@ui/Divider'
 import Input from '@/components/@ui/Input'
 import PhoneInput from '@/components/@ui/PhoneInput'
 import { colors } from '@/constants/theme'
+import {
+  GoogleSignin,
+  GoogleSigninButton,
+  statusCodes,
+} from '@react-native-google-signin/google-signin'
+
+GoogleSignin.configure({
+  webClientId:
+    '1092795515916-mgkor2u2mfedg0ijpm9sjr9f6r3583b2.apps.googleusercontent.com',
+  scopes: ['https://www.googleapis.com/auth/drive.readonly'],
+  offlineAccess: true,
+  iosClientId:
+    '1092795515916-5mnrtm7d9mf9e082m8c49h8qn9iol4a3.apps.googleusercontent.com',
+  profileImageSize: 120,
+})
 
 const LoginScreen = () => {
   const router = useRouter()
@@ -26,6 +41,45 @@ const LoginScreen = () => {
   const [login, { isLoading }] = useLoginMutation()
 
   const phoneValidationRegex = /^(75|74|70|78|77|76|3|2)\d{7}$/
+
+  // Google sign-in function
+  const handleGoogleSignIn = async () => {
+    try {
+      await GoogleSignin.hasPlayServices()
+      const response = await GoogleSignin.signIn()
+
+      // Check if Google sign-in response is successful
+      if (response) {
+        const { user } = response
+        const userInfo = {
+          name: user.name,
+          email: user.email,
+          photoUrl: user.photo,
+          googleId: user.id,
+        }
+
+        // Optionally handle storing the user info in AsyncStorage and Redux store
+        await AsyncStorage.setItem('@user', JSON.stringify(userInfo))
+        dispatch(setAuthState({ user: userInfo }))
+
+        triggerSnackbar('Google Sign-In Successful!', 'success')
+
+        if (route.match('login')) {
+          router.push('/')
+        }
+      }
+    } catch (error) {
+      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+        triggerSnackbar('Sign-In was cancelled', 'error')
+      } else if (error.code === statusCodes.IN_PROGRESS) {
+        triggerSnackbar('Sign-In already in progress', 'error')
+      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+        triggerSnackbar('Play Services not available or outdated', 'error')
+      } else {
+        triggerSnackbar('An error occurred during Google Sign-In', 'error')
+      }
+    }
+  }
 
   const handleLogin = async () => {
     if (!phoneNumber || !phoneValidationRegex.test(phoneNumber)) {
@@ -70,81 +124,83 @@ const LoginScreen = () => {
     )
 
   return (
-    <>
-      <View
-        style={{
-          flexGrow: 1,
-          backgroundColor: 'white',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        <View style={styles.container}>
-          <View>
-            <LoginIllustration />
-            <PhoneInput
-              style={styles.input}
-              label="Phone Number"
-              testID="phone"
-              placeholder="Enter phone number"
-              onChangeText={text => setPhoneNumber(text)}
-              accessoryLeft={() => <Text style={styles.countryCode}>+256</Text>}
-              accessoryRight={renderPhoneAccessoryRight}
-              keyboardType="numeric"
-            />
-            <Input
-              style={styles.input}
-              label="Password"
-              testID="password"
-              placeholder="Enter password"
-              value={password}
-              onChangeText={setPassword}
-              secureTextEntry={!showPassword}
-              accessoryRight={() => (
-                <TouchableOpacity
-                  onPress={() => setShowPassword(prev => !prev)}
-                >
-                  {showPassword ? <Eye size={24} /> : <EyeClosed size={24} />}
-                </TouchableOpacity>
-              )}
-            />
-            <TouchableOpacity
-              testID="forgot-btn"
-              onPress={() => router.push('/forgot_password')}
-            >
-              <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
-            </TouchableOpacity>
+    <View
+      style={{
+        flexGrow: 1,
+        backgroundColor: 'white',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+    >
+      <View style={styles.container}>
+        <View>
+          <LoginIllustration />
+          <PhoneInput
+            style={styles.input}
+            label="Phone Number"
+            testID="phone"
+            placeholder="Enter phone number"
+            onChangeText={text => setPhoneNumber(text)}
+            accessoryLeft={() => <Text style={styles.countryCode}>+256</Text>}
+            accessoryRight={renderPhoneAccessoryRight}
+            keyboardType="numeric"
+          />
+          <Input
+            style={styles.input}
+            label="Password"
+            testID="password"
+            placeholder="Enter password"
+            value={password}
+            onChangeText={setPassword}
+            secureTextEntry={!showPassword}
+            accessoryRight={() => (
+              <TouchableOpacity onPress={() => setShowPassword(prev => !prev)}>
+                {showPassword ? <Eye size={24} /> : <EyeClosed size={24} />}
+              </TouchableOpacity>
+            )}
+          />
+          <TouchableOpacity
+            testID="forgot-btn"
+            onPress={() => router.push('/forgot_password')}
+          >
+            <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
+          </TouchableOpacity>
 
-            <Button
-              style={styles.button}
-              testID="login-btn"
-              mode="contained"
-              onPress={handleLogin}
-              isLoading={isLoading}
-              title={'Login'}
-              isDisabled={isLoading || !isFormFilled || !isPhoneNumberValid}
-            />
+          <Button
+            style={styles.button}
+            testID="login-btn"
+            mode="contained"
+            onPress={handleLogin}
+            isLoading={isLoading}
+            title={'Login'}
+            isDisabled={isLoading || !isFormFilled || !isPhoneNumberValid}
+          />
 
-            <Divider
-              type="horizontal"
-              color="gray"
-              dashed
-              align="center"
-              fontSize={14}
-              style={{ marginVertical: 25 }}
-            >
-              Don’t have an account?
-            </Divider>
-            <Button
-              outline
-              testID="register-btn"
-              onPress={() => router.push('/register')}
-              title="Register"
-            />
-          </View>
+          {/* Google Sign-In Button */}
+          <GoogleSigninButton
+            onPress={handleGoogleSignIn}
+            style={styles.googleButton}
+          />
+
+          <Divider
+            type="horizontal"
+            color="gray"
+            dashed
+            align="center"
+            fontSize={14}
+            style={{ marginVertical: 25 }}
+          >
+            Don’t have an account?
+          </Divider>
+          <Button
+            outline
+            testID="register-btn"
+            onPress={() => router.push('/register')}
+            title="Register"
+          />
         </View>
       </View>
-    </>
+    </View>
   )
 }
 
@@ -155,6 +211,11 @@ const styles = StyleSheet.create({
     marginTop: 50,
     width: '80%',
     maxWidth: 400,
+  },
+  googleButton: {
+    width: '100%',
+    height: 48,
+    marginVertical: 15,
   },
   title: {
     marginBottom: 10,

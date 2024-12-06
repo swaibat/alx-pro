@@ -36,7 +36,6 @@ const OtpRegisterScreen = () => {
   const { triggerSnackbar } = useSnackbar()
   const { step: initialStep, phoneNumber: initialPhoneNumber } =
     useLocalSearchParams()
-  const [canResend, setCanResend] = useState(false)
   const { time: timer, isRunning, startTimer } = useTimer(30)
 
   const [step, setStep] = useState(Number(initialStep) || 1)
@@ -62,7 +61,6 @@ const OtpRegisterScreen = () => {
     setFullName('')
     setPassword('')
     setEmail('')
-    setCanResend(false)
   }
 
   const handleOtpRequest = async () => {
@@ -88,7 +86,6 @@ const OtpRegisterScreen = () => {
         error?.data?.message || 'Failed to send OTP. Please try again.',
         'error'
       )
-      console.error('Send OTP Error:', error)
     }
   }
 
@@ -117,7 +114,6 @@ const OtpRegisterScreen = () => {
         error?.data?.message || 'Failed to verify OTP. Please check your code.',
         'error'
       )
-      console.error('Verify OTP Error:', error)
     }
   }
 
@@ -170,8 +166,7 @@ const OtpRegisterScreen = () => {
         triggerSnackbar('Registration failed. Please try again.', 'error')
       }
     } catch (error) {
-      triggerSnackbar('Registration failed. Please try again.', 'error')
-      console.error('Registration Error:', error)
+      triggerSnackbar('Registration failed. Please try again.', error)
     }
   }
 

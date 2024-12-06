@@ -11,6 +11,7 @@ import { TouchableOpacity } from 'react-native'
 import { colors } from '@/constants/theme'
 import { useSocket } from '@/hooks/useSocket'
 import { usePushNotifications } from '@/scripts/NotificationsService'
+import { useSnackbar } from '@/hooks/useSnackbar'
 
 const CustomHeaderTitle = ({ title, onBackPress, isCentered = false }) => {
   return (
@@ -33,6 +34,7 @@ export default function TabLayout() {
   const router = useRouter()
   const dispatch = useDispatch()
   const { user } = useSelector(state => state.auth)
+  const { triggerSnackbar } = useSnackbar()
 
   useEffect(() => {
     const loadUser = async () => {
@@ -42,7 +44,8 @@ export default function TabLayout() {
           dispatch(setAuthState({ user: JSON.parse(data).user }))
         }
       } catch (error) {
-        console.error('Failed to load user from storage', error)
+        triggerSnackbar('Failed to load user from storage')
+        return error
       }
     }
     if (!user) {

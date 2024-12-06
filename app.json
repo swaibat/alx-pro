@@ -27,7 +27,7 @@
         "backgroundColor": "#004F70"
       },
       "package": "com.swaibu.alxlite",
-      "googleServicesFile": "./serviceAccountKey.json",
+      "googleServicesFile": "./google-services.json",
       "permissions": ["ACCESS_FINE_LOCATION", "ACCESS_COARSE_LOCATION"]
     },
     "web": {

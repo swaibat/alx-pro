@@ -97,7 +97,7 @@ const ChatScreen = () => {
       <ImageBackground
         source={{
           uri: 'https://cloud.githubusercontent.com/assets/398893/15136779/4e765036-1639-11e6-9201-67e728e86f39.jpg',
-        }} // Set your background image path here
+        }}
         style={sx.backgroundImage}
       >
         <FlashList

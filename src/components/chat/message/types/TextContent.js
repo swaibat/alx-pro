@@ -21,7 +21,7 @@ const TextContent = ({ type, message, to, replyToMessage }) => {
           </Text>
         </View>
       )}
-      <Text style={[to ? styles.messageText : styles.myMessageText]}>
+      <Text style={to ? styles.messageText : styles.myMessageText}>
         {message}
       </Text>
     </View>

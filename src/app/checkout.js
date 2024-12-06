@@ -5,6 +5,7 @@ import {
   View,
   StyleSheet,
   ActivityIndicator,
+  Text,
 } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { router } from 'expo-router'
@@ -23,13 +24,13 @@ import { clearCart } from '@/store/cartSlice'
 import { PayWithFlutterwave } from 'flutterwave-react-native'
 import { LockSimple } from 'phosphor-react-native'
 import { colors } from '@/constants/theme'
-import { Text } from '@/components/@ui/Text'
 import Section from '@/components/@ui/Section'
 import LoadingOverlay from '@/components/@ui/LoadingOverlay'
+import { useSnackbar } from '@/hooks/useSnackbar'
 
 const CheckoutScreen = () => {
   const [selectedShipping, setSelectedShipping] = useState(null)
-
+  const { triggerSnackbar } = useSnackbar()
   const dispatch = useDispatch()
   const cartItems = useSelector(state => state.cart)
   const selectedAddress = useSelector(state => state?.address?.defaultAddress)
@@ -65,7 +66,7 @@ const CheckoutScreen = () => {
     try {
       await createOrder(orderDetails).unwrap()
     } catch (error) {
-      console.error('Error creating order:', error)
+      triggerSnackbar('Error creating order', 'error')
     }
   }
 
@@ -82,12 +83,10 @@ const CheckoutScreen = () => {
         router.replace('payment_failed')
       }
     } catch (error) {
-      console.error('Error updating order:', error)
       router.push('payment_failed')
     }
   }
 
-  // Render loading indicator while data is being fetched
   if (isFetchingAddress || isLoadingKeys) {
     return (
       <SafeAreaView style={styles.container}>

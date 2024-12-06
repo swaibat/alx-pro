@@ -12,7 +12,7 @@ const ErrorScreen = ({ refetch }) => {
     <View style={styles.errorContainer}>
       <Image
         source={require('@/assets/images/error.png')}
-        style={{ width: 160, height: 160, marginBottom: 10 }}
+        style={styles.errorImg}
       />
       <Text secondary style={styles.errorText}>
         An unknown error occurred. Please try again later.
@@ -42,6 +42,11 @@ const styles = StyleSheet.create({
   },
   retryButton: {
     marginTop: 10,
+  },
+  errorImg: {
+    width: 160,
+    height: 160,
+    marginBottom: 10,
   },
 })
 

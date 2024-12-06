@@ -76,9 +76,6 @@ export const api = createApi({
     getDraftProduct: builder.query({
       query: () => `draft-ad`,
     }),
-    getFlashSales: builder.query({
-      query: () => `flash-Sales`,
-    }),
     uploadFile: builder.mutation({
       query: ({ formData, type }) => ({
         url: `files/?type=${type}`,
@@ -225,6 +222,9 @@ export const api = createApi({
     }),
     getMessages: builder.query({
       query: params => `messages?${new URLSearchParams(params)}`,
+    }),
+    getFlashSales: builder.query({
+      query: () => `flash-sales`,
     }),
     sendMessage: builder.mutation({
       query: newMessage => ({

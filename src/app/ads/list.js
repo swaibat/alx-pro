@@ -1,12 +1,6 @@
 import React from 'react'
 import AdsList from '@/components/products/AdsList'
 
-const Ads = () => {
-  return (
-    <>
-      <AdsList />
-    </>
-  )
-}
+const Ads = () => <AdsList />
 
 export default Ads

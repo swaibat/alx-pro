@@ -5,11 +5,12 @@ import { TrashSimple } from 'phosphor-react-native'
 import { Text } from '@/components/@ui/Text'
 import { Button } from '@/components/@ui/Button'
 import { Modal } from 'react-native'
+import { useSnackbar } from '@/hooks/useSnackbar'
 
 const DeleteConfirmationModal = ({ address, refetch }) => {
   const [isDeleteModalVisible, setDeleteModalVisible] = React.useState(false)
-  const [deleteAddress, { error: deleteError, isLoading: isDeleting }] =
-    useDeleteAddressMutation()
+  const { triggerSnackbar } = useSnackbar()
+  const [deleteAddress, { isLoading: isDeleting }] = useDeleteAddressMutation()
 
   const handleDeleteAddress = async () => {
     try {
@@ -17,7 +18,7 @@ const DeleteConfirmationModal = ({ address, refetch }) => {
       setDeleteModalVisible(false)
       refetch()
     } catch (error) {
-      console.error('Error deleting address:', error, deleteError)
+      triggerSnackbar('Error deleting address', 'error', error)
     }
   }
 

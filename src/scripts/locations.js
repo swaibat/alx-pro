@@ -17,14 +17,14 @@ const ENDPOINTS = {
   GEOCODE: '/geocode/json',
 }
 
-const handleApiError = (error, context = 'API') => {
-  console.error(`[${context}] Error:`, error.message || error)
+const handleApiError = error => {
+  // console.error(`[${context}] Error:`, error.message || error)
   throw error
 }
 
 const validateApiResponse = (response, context) => {
   if (response.data.status !== 'OK') {
-    console.error(`[${context}] API Response Error:`, response.data)
+    // console.error(`[${context}] API Response Error:`, response.data)
     throw new Error(`${context} failed.`)
   }
   return response.data
@@ -82,7 +82,7 @@ export const fetchCurrentLocationAddress = async () => {
 
 export const getLocationInfo = details => {
   if (!details || !details.geometry || !details.address_components) {
-    console.error('Invalid location details provided')
+    // console.error('Invalid location details provided')
     return null
   }
 

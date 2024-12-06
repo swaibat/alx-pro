@@ -30,7 +30,7 @@ const RootLayout = () => {
       try {
         await Font.loadAsync(Entypo.font)
       } catch (e) {
-        console.warn(e)
+        //continue
       } finally {
         SplashScreen.hide()
         setAppIsReady(true)

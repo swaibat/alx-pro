@@ -11,11 +11,10 @@ import {
   fetchPlacePredictions,
 } from '@/scripts/locations'
 import Constants from 'expo-constants'
-import { encodedPinSVG } from './Pin'
 
 const { MAPS_API_URL, GOOGLE_API_KEY } = Constants.expoConfig.extra
 
-const PlacesAutocomplete = ({ onPress, mapHeight }) => {
+const PlacesAutocomplete = ({ onPress }) => {
   const [inputText, setInputText] = useState('')
   const [predictions, setPredictions] = useState([])
   const [details, setDetails] = useState(null)
@@ -54,8 +53,7 @@ const PlacesAutocomplete = ({ onPress, mapHeight }) => {
           setInputText(placeDetails.addressName)
           setLoading(false)
         } catch (error) {
-          console.error('Error loading current location:', error.message)
-          setLoading(false)
+          setLoading(!error)
         }
       }
     }
