@@ -29,26 +29,10 @@ const PriceDisplay = ({ product, size, primary }) => {
       )}
 
       <View style={styles.priceContainer}>
-        <Text
-          style={[
-            styles.productPrice,
-            {
-              color: primary ? colors.primary : '',
-              fontSize: size == 'small' ? 16 : 20,
-            },
-          ]}
-        >
+        <Text style={styles.productPrice(primary, size)}>
           UGX {formattedPrice?.slice(0, -3)}
         </Text>
-        <Text
-          style={[
-            styles.smallPrice,
-            {
-              color: primary ? colors.primary : '',
-              fontSize: size == 'small' ? 12 : 20,
-            },
-          ]}
-        >
+        <Text style={styles.smallPrice(primary, size)}>
           {formattedPrice?.slice(-3)}
         </Text>
       </View>
@@ -86,13 +70,16 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'baseline',
   },
-  productPrice: {
+  productPrice: (primary, size) => ({
     fontWeight: 'bold',
-  },
-  smallPrice: {
-    fontSize: 15,
+    color: primary ? colors.primary : '',
+    fontSize: size == 'small' ? 16 : 20,
+  }),
+  smallPrice: (primary, size) => ({
     fontWeight: 'bold',
-  },
+    color: primary ? colors.primary : '',
+    fontSize: size == 'small' ? 12 : 20,
+  }),
 })
 
 export default PriceDisplay

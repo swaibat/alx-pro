@@ -1,17 +1,11 @@
 import React from 'react'
+import { StyleSheet } from 'react-native'
 import { View } from 'react-native'
 import Svg, { Path } from 'react-native-svg'
 
 const LoginIllustration = () => {
   return (
-    <View
-      style={{
-        marginVertical: 10,
-        borderRadius: 5,
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}
-    >
+    <View style={styles.container}>
       <Svg
         width="140"
         height="140"
@@ -99,3 +93,12 @@ const LoginIllustration = () => {
 }
 
 export default LoginIllustration
+
+const styles = StyleSheet.create({
+  container: {
+    marginVertical: 10,
+    borderRadius: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+})

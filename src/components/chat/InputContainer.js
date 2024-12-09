@@ -39,14 +39,7 @@ const InputContainer = ({
             <ReplyingToText replyingTo={replyingTo} />
             <ReplyingToProduct replyingTo={replyingTo} />
           </View>
-          <View
-            style={{
-              marginLeft: -15,
-              marginTop: -5,
-              justifyContent: 'flex-start',
-              alignItems: 'flex-end',
-            }}
-          >
+          <View style={sx.cancelContainer}>
             <TouchableOpacity
               onPress={clearReplyingTo}
               style={sx.clearReplyButton}
@@ -62,7 +55,7 @@ const InputContainer = ({
           <Divider
             type="vertical"
             color={theme.colors.grey[700]}
-            style={{ height: 20, marginHorizontal: 4 }}
+            style={sx.divider}
           />
 
           <TextInput
@@ -123,10 +116,6 @@ const sx = StyleSheet.create({
     borderRadius: 5,
     borderColor: colors.grey[400],
   },
-  replyingTo: {
-    flex: 1,
-  },
-  replyingToText: { fontSize: 14 },
   clearReplyButton: {
     backgroundColor: theme.colors.grey[700],
     padding: 2,
@@ -148,6 +137,13 @@ const sx = StyleSheet.create({
     paddingHorizontal: 7,
     backgroundColor: '#f0f0f0',
   },
+  cancelContainer: {
+    marginLeft: -15,
+    marginTop: -5,
+    justifyContent: 'flex-start',
+    alignItems: 'flex-end',
+  },
+  divider: { height: 20, marginHorizontal: 4 },
 })
 
 export default InputContainer

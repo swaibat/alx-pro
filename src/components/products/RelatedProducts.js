@@ -1,19 +1,15 @@
 import React from 'react'
-import {
-  View,
-  Image,
-  StyleSheet,
-  TouchableOpacity,
-  Dimensions,
-} from 'react-native'
+import { View, StyleSheet, TouchableOpacity, Dimensions } from 'react-native'
 import { useGetRelatedProductsQuery } from '@/api'
 import Placeholder from '@/assets/Placeholder'
 import { Text } from '@/components/@ui/Text'
 import { useRouter } from 'expo-router'
 import { colors } from '@/constants/theme'
-import { SealCheck, Star, Truck } from 'phosphor-react-native'
-import TextSlider from './TextSlider'
+import { Star } from 'phosphor-react-native'
 import { FlashList } from '@shopify/flash-list'
+import FreeShippingBadge from '../@ui/FreeShippingBadge'
+import RatingChip from '../@ui/RatingChip'
+import AppImg from '../@ui/AppImg'
 
 const ProductCard = ({ product }) => {
   const router = useRouter()
@@ -31,50 +27,22 @@ const ProductCard = ({ product }) => {
         style={styles.cardContent}
         onPress={() => router.push('AdDetails', { id: product._id })}
       >
-        <Image
-          source={
-            product?.thumbnail
-              ? { uri: product.thumbnail }
-              : require('@/assets/placeholder.png')
-          }
-          style={styles.image}
-        />
+        <AppImg src={product?.thumbnail} style={styles.image} />
         {/* <TouchableOpacity
           style={[styles.addToCartButton, { borderColor: colors.grey[600] }]}
           onPress={handleAddToCart}
         >
           <ShoppingCart size={15} weight="regular" color={colors.grey[600]} />
         </TouchableOpacity> */}
-        <View style={{ gap: 3, flex: 1, paddingHorizontal: 5 }}>
-          <Text
-            style={styles.productTitle}
-            numberOfLines={1}
-            ellipsis
-            // ellipsizeMode="tail"
-          >
+        <View style={styles.contentWrapper}>
+          <Text style={styles.productTitle} numberOfLines={1}>
             {product.title}
           </Text>
-          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 3 }}>
-            <SealCheck color="#039be5" size={15} weight="fill" />
-            <Text style={{ fontSize: 12 }} bold>
-              U-Home
-            </Text>
-          </View>
-          {/* Free Shipping Badge */}
-          {product.freeShipping && (
-            <View style={styles.freeShippingBadge}>
-              <View
-                style={{
-                  backgroundColor: colors.green[500],
-                  paddingHorizontal: 5,
-                  paddingVertical: 3,
-                }}
-              >
-                <Truck color={'white'} size={13} weight="fill" />
-              </View>
-              <Text style={styles.freeShippingText}>Free Shipping</Text>
-            </View>
-          )}
+          <FreeShippingBadge small freeShipping={product.freeShipping} />
+          <RatingChip
+            average={product.averageRating}
+            count={product.ratingCount}
+          />
 
           {!!product.ratingCount && (
             <View style={styles.ratingContainer}>
@@ -88,15 +56,9 @@ const ProductCard = ({ product }) => {
             </View>
           )}
 
-          {!!product?.discount?.value && !product?.acceptInstallments && (
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-              }}
-            >
-              <Text bold secondary delete style={{ fontSize: 11 }}>
+          {!!product?.discount?.value && (
+            <View style={styles.discountContainer}>
+              <Text bold secondary delete style={styles.discountedPrice}>
                 UGX{' '}
                 {(
                   product.price +
@@ -112,31 +74,14 @@ const ProductCard = ({ product }) => {
             </View>
           )}
 
-          <View
-            style={{ flexDirection: 'row', justifyContent: 'space-between' }}
-          >
-            <View style={styles.priceContainer}>
-              <Text primary style={styles.productPrice}>
-                UGX {formattedPrice?.slice(0, -3)}
-              </Text>
-              <Text primary style={styles.smallPrice}>
-                {formattedPrice?.slice(-3)}
-              </Text>
-            </View>
-            {product?.acceptInstallments && (
-              <View style={styles.badgeContainer}>
-                <Text style={styles.discountBadge}>1st Pay</Text>
-              </View>
-            )}
+          <View style={styles.priceContainer}>
+            <Text primary style={styles.productPrice}>
+              UGX {formattedPrice?.slice(0, -3)}
+            </Text>
+            <Text primary style={styles.smallPrice}>
+              {formattedPrice?.slice(-3)}
+            </Text>
           </View>
-
-          {/* "Pay in Installments" message for non-discounted products */}
-          {product?.acceptInstallments && (
-            <TextSlider
-              price={product.price}
-              installments={product.installments}
-            />
-          )}
         </View>
       </TouchableOpacity>
     </View>
@@ -178,11 +123,6 @@ const styles = StyleSheet.create({
   relatedProductsContainer: {
     flex: 1,
   },
-  heading: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginBottom: 10,
-  },
   card: {
     // flex: 1,
     borderWidth: 1,
@@ -212,40 +152,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'space-between',
   },
-  price: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: colors.black,
-    marginBottom: 5,
-  },
-  name: {
-    fontSize: 14,
-    color: colors.grey[700],
-    marginBottom: 5,
-  },
-  location: {
-    fontSize: 12,
-    color: colors.grey[500],
-    marginBottom: 5,
-  },
-  freeShippingBadge: {
-    borderWidth: 0.8,
-    height: 20,
-    marginRight: 'auto',
-    color: colors.green[500],
-    borderColor: colors.green[500],
-    flexDirection: 'row',
-    alignItems: 'center',
-    borderRadius: 3,
-    marginVertical: 3,
-  },
-  freeShippingText: {
-    color: colors.green[500],
-    paddingRight: 6,
-    paddingVertical: 1,
-    fontSize: 10,
-    marginLeft: 4,
-  },
   imagePlaceholder: {
     height: 120,
     width: 120,
@@ -265,25 +171,6 @@ const styles = StyleSheet.create({
   },
   textShort: {
     width: '30%',
-  },
-  roductImageContainer: {
-    position: 'relative',
-    height: 180,
-    backgroundColor: '#f1f1f1',
-  },
-  productImage: {
-    width: '100%',
-    height: 180,
-    borderRadius: 5,
-    marginBottom: 10,
-  },
-  addToCartButton: {
-    borderWidth: 1,
-    top: 12,
-    right: 12,
-    position: 'absolute',
-    padding: 5,
-    borderRadius: 10,
   },
   productTitle: {
     fontSize: 14,
@@ -328,6 +215,15 @@ const styles = StyleSheet.create({
     color: '#757575',
     marginLeft: 2,
   },
+  discountContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  discountedPrice: {
+    fontSize: 11,
+  },
+  contentWrapper: { gap: 3, flex: 1, paddingHorizontal: 5 },
 })
 
 export default RelatedProducts

@@ -5,13 +5,14 @@ import { StyleSheet, Image, View, Text } from 'react-native'
 
 export default function NotFoundScreen() {
   const router = useRouter()
+
   return (
-    <View style={{ backgroundColor: 'white', flex: 1 }}>
+    <View style={styles.root}>
       <View style={styles.container}>
-        <View style={{ marginTop: -150, alignItems: 'center' }}>
+        <View style={styles.innerContainer}>
           <Image
             source={require('@/assets/images/space.png')}
-            style={{ height: 150, width: 150 }}
+            style={styles.image}
           />
           <Text style={styles.title}>This screen doesn&rsquo;t exist.</Text>
           <Button
@@ -26,6 +27,10 @@ export default function NotFoundScreen() {
 }
 
 const styles = StyleSheet.create({
+  root: {
+    backgroundColor: 'white',
+    flex: 1,
+  },
   container: {
     flex: 1,
     alignItems: 'center',
@@ -33,8 +38,13 @@ const styles = StyleSheet.create({
     padding: 20,
     backgroundColor: 'white',
   },
-  icon: {
-    marginBottom: 20,
+  innerContainer: {
+    marginTop: -150,
+    alignItems: 'center',
+  },
+  image: {
+    height: 150,
+    width: 150,
   },
   title: {
     marginTop: 16,

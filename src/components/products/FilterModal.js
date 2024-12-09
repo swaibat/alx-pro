@@ -157,14 +157,8 @@ const FilterModal = ({ isLoading, isSuccess, data, isFetching }) => {
             <Divider />
 
             {/* Discount Filter */}
-            <View style={{ paddingVertical: 3 }}>
-              <Text
-                fontWeight="medium"
-                style={{ textTransform: 'uppercase', fontSize: 12 }}
-              >
-                Discount:
-              </Text>
-            </View>
+
+            <Text style={styles.filterSubtitle}>Discount:</Text>
             <ScrollView horizontal contentContainerStyle={styles.optionGroup}>
               {[
                 'All',
@@ -196,14 +190,8 @@ const FilterModal = ({ isLoading, isSuccess, data, isFetching }) => {
             </ScrollView>
 
             {/* Local Store Filter */}
-            <View style={{ paddingVertical: 3 }}>
-              <Text
-                fontWeight="medium"
-                style={{ textTransform: 'uppercase', fontSize: 12 }}
-              >
-                Local Store:
-              </Text>
-            </View>
+
+            <Text style={styles.filterSubtitle}>Local Store:</Text>
             <ScrollView horizontal contentContainerStyle={styles.optionGroup}>
               {['All', 'Local Store', 'From Abroad'].map((label, index) => (
                 <TouchableOpacity
@@ -228,14 +216,8 @@ const FilterModal = ({ isLoading, isSuccess, data, isFetching }) => {
             </ScrollView>
 
             {/* Price Range Filter */}
-            <View style={{ paddingVertical: 3 }}>
-              <Text
-                fontWeight="medium"
-                style={{ textTransform: 'uppercase', fontSize: 12 }}
-              >
-                Price Range:
-              </Text>
-            </View>
+
+            <Text style={styles.filterSubtitle}>Price Range:</Text>
             <View style={styles.priceRangeContainer}>
               <TextInput
                 style={styles.priceInput}
@@ -255,14 +237,8 @@ const FilterModal = ({ isLoading, isSuccess, data, isFetching }) => {
             </View>
 
             {/* Shipping Filter */}
-            <View style={{ paddingVertical: 3 }}>
-              <Text
-                fontWeight="medium"
-                style={{ textTransform: 'uppercase', fontSize: 12 }}
-              >
-                Shipping:
-              </Text>
-            </View>
+
+            <Text style={styles.filterSubtitle}>Shipping:</Text>
             <ScrollView horizontal contentContainerStyle={styles.optionGroup}>
               {['All', 'Free', 'Paid'].map((shippingOption, index) => (
                 <TouchableOpacity
@@ -288,14 +264,8 @@ const FilterModal = ({ isLoading, isSuccess, data, isFetching }) => {
             </ScrollView>
 
             {/* Product Ratings */}
-            <View style={{ paddingVertical: 3, marginBottom: 10 }}>
-              <Text
-                fontWeight="medium"
-                style={{ textTransform: 'uppercase', fontSize: 12 }}
-              >
-                Product Ratings:
-              </Text>
-            </View>
+
+            <Text style={styles.filterSubtitle}>Product Ratings:</Text>
             <ScrollView horizontal contentContainerStyle={styles.optionGroup}>
               {['All', 4, 3, 2, 1].map((ratingOption, index) => (
                 <TouchableOpacity
@@ -351,14 +321,14 @@ const FilterModal = ({ isLoading, isSuccess, data, isFetching }) => {
               <Button
                 title="Clear Filters"
                 secondary
-                style={{ flex: 1 }}
+                style={styles.flex1}
                 onPress={handleClearFilters}
               />
               <Button
                 title="Apply Filter"
                 primary
                 isLoading={data && isFetching}
-                style={{ flex: 1 }}
+                style={styles.flex1}
                 onPress={applyFilter}
                 isDisabled={!hasFilters()}
               />
@@ -457,6 +427,15 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 14,
     textAlign: 'center',
+  },
+  filterSubtitle: {
+    textTransform: 'uppercase',
+    fontSize: 12,
+    fontWeight: '500',
+    paddingVertical: 3,
+  },
+  flex1: {
+    paddingVertical: 3,
   },
 })
 

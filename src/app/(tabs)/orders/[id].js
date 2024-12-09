@@ -27,7 +27,7 @@ const OrderDetailsScreen = () => {
     <SecureRoute>
       <ScrollView
         style={styles.container}
-        contentContainerStyle={{ paddingBottom: 50 }}
+        contentContainerStyle={styles.contentContainerStyle}
       >
         <Section
           title="Activity"
@@ -59,6 +59,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
   },
+  contentContainerStyle: { paddingBottom: 50 },
 })
 
 export default OrderDetailsScreen

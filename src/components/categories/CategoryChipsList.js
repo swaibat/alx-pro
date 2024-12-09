@@ -224,11 +224,6 @@ const styles = StyleSheet.create({
     width: '100%',
     position: 'relative', // Allow positioning of the close button
   },
-  modalTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 15,
-  },
   modalList: {
     minHeight: 200,
     maxHeight: '100%', // Limit the height of the list

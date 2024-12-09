@@ -75,7 +75,7 @@ const PasswordResetScreen = () => {
       setPhoneNumber(res.phoneNumber)
       setStep(2)
       router.push(`/forgot_password?step=2&phoneNumber=${res.phoneNumber}`)
-      setTimer(30) // reset timer when OTP is requested
+      setTimer(30)
       setCanResend(false)
     } catch (error) {
       triggerSnackbar(
@@ -91,7 +91,7 @@ const PasswordResetScreen = () => {
     try {
       await sendOtp({ phoneNumber, type: 'password_reset' }).unwrap()
       triggerSnackbar('OTP has been resent successfully.', 'success')
-      setTimer(30) // reset timer when OTP is resent
+      setTimer(30)
       setCanResend(false)
     } catch (error) {
       triggerSnackbar(
@@ -154,7 +154,7 @@ const PasswordResetScreen = () => {
 
   return (
     <>
-      <View style={{ flex: 1, backgroundColor: 'white' }}>
+      <View style={styles.root}>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <View style={styles.container}>
             {step === 1 && (
@@ -193,12 +193,7 @@ const PasswordResetScreen = () => {
                 </Text>
                 <Input
                   style={styles.otpInput}
-                  textStyle={{
-                    fontSize: 40,
-                    textAlign: 'center',
-                    width: '100%',
-                    letterSpacing: 20,
-                  }}
+                  textStyle={styles.otpText}
                   value={otp}
                   onChangeText={setOtp}
                   keyboardType="numeric"
@@ -218,7 +213,7 @@ const PasswordResetScreen = () => {
                   dashed
                   align="center"
                   fontSize={14}
-                  style={{ marginVertical: 15 }}
+                  style={styles.divider}
                 >
                   {canResend
                     ? 'You can resend the OTP now.'
@@ -237,7 +232,7 @@ const PasswordResetScreen = () => {
                   dashed
                   align="center"
                   fontSize={14}
-                  style={{ marginVertical: 15 }}
+                  style={styles.divider}
                 >
                   Don’t have an account?
                 </Divider>
@@ -295,6 +290,10 @@ const PasswordResetScreen = () => {
 }
 
 const styles = StyleSheet.create({
+  root: {
+    flex: 1,
+    backgroundColor: 'white',
+  },
   container: {
     flex: 1,
     paddingHorizontal: 50,
@@ -320,6 +319,15 @@ const styles = StyleSheet.create({
   },
   button: {
     marginVertical: 20,
+  },
+  otpText: {
+    fontSize: 40,
+    textAlign: 'center',
+    width: '100%',
+    letterSpacing: 20,
+  },
+  divider: {
+    marginVertical: 15,
   },
 })
 

@@ -16,16 +16,10 @@ const renderStars = count =>
 
 const RatingsOverview = ({ reviews }) => {
   if (!reviews?.totalDocs) return
+
   return (
-    <View
-      style={{
-        flexDirection: 'row',
-        backgroundColor: colors.grey[100],
-        borderRadius: 5,
-        padding: 10,
-      }}
-    >
-      <View style={{ flex: 1 }}>
+    <View style={sx.container}>
+      <View style={sx.leftSection}>
         <Text style={sx.averageRating}>
           {reviews.summary.averageRating}
           <Text style={sx.starsText}> stars</Text>
@@ -37,7 +31,7 @@ const RatingsOverview = ({ reviews }) => {
           ({reviews.summary.totalRatings}) reviewers
         </Text>
       </View>
-      <View style={{ width: 140 }}>
+      <View style={sx.rightSection}>
         <VerticalProgressBarGroup
           ratingsDistribution={reviews.summary.ratingsDistribution}
           totalReviews={reviews.summary.totalRatings}
@@ -50,6 +44,15 @@ const RatingsOverview = ({ reviews }) => {
 export default RatingsOverview
 
 const sx = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    backgroundColor: colors.grey[100],
+    borderRadius: 5,
+    padding: 10,
+  },
+  leftSection: {
+    flex: 1,
+  },
   averageRating: {
     color: '#333',
     fontWeight: 'bold',
@@ -65,4 +68,7 @@ const sx = StyleSheet.create({
     marginVertical: 8,
   },
   totalRatings: { fontSize: 12 },
+  rightSection: {
+    width: 140,
+  },
 })

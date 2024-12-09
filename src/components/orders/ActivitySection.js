@@ -10,39 +10,16 @@ const ActivitySection = ({ activities }) => (
       <View key={activity._id} style={styles.activityContainer}>
         <View style={styles.progressBar}>
           <View
-            style={[
-              styles.progressStep,
-              index < activities.length - 1 && styles.progressConnector,
-            ]}
+            style={index < activities.length - 1 && styles.progressConnector}
           />
         </View>
         <View style={styles.activityContent}>
-          <View
-            style={{
-              padding: 1,
-              backgroundColor: 'white',
-              borderWidth: 1,
-              borderColor: 'gainsboro',
-              borderRadius: 50,
-            }}
-          >
+          <View style={styles.iconContainer}>
             {activityTypeEnum[activity.type]?.icon}
           </View>
           <View style={styles.activityTextContainer}>
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-              }}
-            >
-              <Text
-                bold
-                style={{
-                  textTransform: 'capitalize',
-                  marginTop: 15,
-                }}
-              >
+            <View style={styles.headerRow}>
+              <Text bold style={styles.activityType}>
                 {activity.type.replace('_', ' ').toLowerCase()}
               </Text>
               <Text style={styles.timestamp}>
@@ -83,9 +60,25 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
+  iconContainer: {
+    padding: 1,
+    backgroundColor: 'white',
+    borderWidth: 1,
+    borderColor: 'gainsboro',
+    borderRadius: 50,
+  },
   activityTextContainer: {
     marginLeft: 10,
     flex: 1,
+  },
+  headerRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  activityType: {
+    textTransform: 'capitalize',
+    marginTop: 15,
   },
   timestamp: {
     fontSize: 10,

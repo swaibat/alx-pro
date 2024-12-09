@@ -31,7 +31,7 @@ export default function ParallaxScrollView({ children, headerImage }) {
         <Input
           placeholder="Search..."
           onFocus={() => router.push('/search')}
-          textStyle={{ fontSize: 15, color: 'black' }}
+          textStyle={styles.inputText}
           suffix={
             <View style={styles.suffixContainer}>
               <View style={styles.searchButton}>
@@ -39,14 +39,12 @@ export default function ParallaxScrollView({ children, headerImage }) {
               </View>
             </View>
           }
-          style={{ borderColor: 'white' }}
+          style={styles.inputStyle}
         />
       </View>
 
       {/* Scrollable Content */}
-      <ScrollView
-        contentContainerStyle={{ paddingTop: HEADER_HEIGHT, flexGrow: 1 }}
-      >
+      <ScrollView contentContainerStyle={styles.scrollContentContainer}>
         <View style={styles.header}>{headerImage}</View>
         <View style={styles.content}>{children}</View>
       </ScrollView>
@@ -64,7 +62,7 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     right: 0,
-    height: HEADER_HEIGHT, // Fixed height
+    height: HEADER_HEIGHT,
     backgroundColor: colors.orange[500],
     zIndex: 1,
     paddingHorizontal: 15,
@@ -121,22 +119,33 @@ const styles = StyleSheet.create({
   },
   xBackground: {
     position: 'absolute',
-    width: SCREEN_WIDTH * 2, // Extend beyond the screen for visibility
+    width: SCREEN_WIDTH * 2,
     height: HEADER_HEIGHT * 2,
     top: -HEADER_HEIGHT / 2,
-    left: -SCREEN_WIDTH / 5, // Center the "X"
+    left: -SCREEN_WIDTH / 5,
     justifyContent: 'center',
     alignItems: 'center',
-    zIndex: -1, // Ensure it appears above the input container
+    zIndex: -1,
   },
   xDiagonal: {
     position: 'absolute',
     width: '150%',
-    height: 80, // Wide stroke
-    backgroundColor: colors.orange[900], // Translucent white
+    height: 80,
+    backgroundColor: colors.orange[900],
     transform: [{ rotate: '45deg' }],
   },
   xDiagonalReverse: {
     transform: [{ rotate: '-45deg' }],
+  },
+  inputText: {
+    fontSize: 15,
+    color: 'black',
+  },
+  inputStyle: {
+    borderColor: 'white',
+  },
+  scrollContentContainer: {
+    paddingTop: HEADER_HEIGHT,
+    flexGrow: 1,
   },
 })

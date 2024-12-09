@@ -1,8 +1,9 @@
 import React from 'react'
-import { View, Image, StyleSheet } from 'react-native'
+import { View, StyleSheet } from 'react-native'
 import PagerView from 'react-native-pager-view'
 import Placeholder from '@/assets/Placeholder'
 import { colors } from '@/constants/theme'
+import AppImg from '@/components/@ui/AppImg'
 
 const ProductImageCarousel = ({ images = [] }) => {
   const [currentIndex, setCurrentIndex] = React.useState(0)
@@ -32,7 +33,7 @@ const ProductImageCarousel = ({ images = [] }) => {
       >
         {images.map((image, index) => (
           <View key={index} style={styles.imageContainer}>
-            <Image source={{ uri: image }} style={styles.image} />
+            <AppImg src={image} style={styles.image} />
           </View>
         ))}
       </PagerView>
@@ -48,12 +49,13 @@ const ProductImageCarousel = ({ images = [] }) => {
 const styles = StyleSheet.create({
   carouselContainer: {
     position: 'relative',
-    height: 300,
+    // height: 400,
     width: '100%',
   },
   viewPager: {
-    height: 300,
+    height: 400,
     width: '100%',
+    borderBottomWidth: 1,
   },
   imageContainer: {
     flex: 1,
@@ -73,8 +75,16 @@ const styles = StyleSheet.create({
   },
   dotsContainer: {
     position: 'absolute',
-    bottom: 10,
-    width: '100%',
+    backgroundColor: colors.grey[200],
+    borderWidth: 5,
+    borderColor: 'white',
+
+    bottom: -5,
+    left: -5,
+    width: 'auto',
+    padding: 10,
+    // borderRadius: 10,
+    borderTopRightRadius: 10,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',

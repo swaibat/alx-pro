@@ -20,10 +20,8 @@ import { Text } from '@/components/@ui/Text'
 import Divider from '@/components/@ui/Divider'
 import { theme } from '@/constants/theme'
 import { useMakeDefaultAddressMutation } from '@/api'
-import Constants from 'expo-constants'
 import { useSnackbar } from '@/hooks/useSnackbar'
-
-const { MAPS_API_URL, GOOGLE_API_KEY } = Constants.expoConfig.extra
+import { staticMapUri } from '@/scripts/locations'
 
 const AddressItem = ({
   address,
@@ -64,9 +62,7 @@ const AddressItem = ({
     <View style={styles.card}>
       {address.geo && (
         <Image
-          source={{
-            uri: `${MAPS_API_URL}/staticmap?key=${GOOGLE_API_KEY}&center=${address.geo[0]},${address.geo[1]}&zoom=15&size=420x70&maptype=roadmap&markers=color:red%7C${address.geo[0]},${address.geo[1]}&sensor=false`,
-          }}
+          source={{ uri: staticMapUri(address.geo) }}
           style={styles.mapImage}
         />
       )}
@@ -143,7 +139,7 @@ const styles = StyleSheet.create({
   },
   mapImage: {
     width: '100%',
-    height: 60,
+    height: 70,
     borderRadius: 5,
     marginBottom: 10,
   },
@@ -191,10 +187,6 @@ const styles = StyleSheet.create({
   actionButtons: {
     flexDirection: 'row',
     alignItems: 'flex-end',
-  },
-  iconButton: {
-    padding: 5,
-    marginLeft: 5,
   },
   divider: {
     marginTop: 5,

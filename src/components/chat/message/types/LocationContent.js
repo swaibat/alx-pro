@@ -16,6 +16,8 @@ const LocationContent = ({ to, message, replyToMessage }) => {
     return null
   }
 
+  const locationTextColor = to ? colors.grey[900] : colors.grey[400]
+
   return (
     <View>
       {replyToMessage?.type === 'location' ? (
@@ -24,27 +26,15 @@ const LocationContent = ({ to, message, replyToMessage }) => {
             <Text style={styles.replySender}>
               {replyToMessage?.to ? 'Support Team' : 'You'}
             </Text>
-            <View
-              style={{ flexDirection: 'row', gap: 3, alignItems: 'center' }}
-            >
-              <MapPin
-                size={16}
-                color={to ? colors.grey[900] : colors.grey[400]}
-                weight="duotone"
-              />
-              <Text style={{ color: to ? colors.grey[900] : colors.grey[400] }}>
+            <View style={styles.locationInfoContainer}>
+              <MapPin size={16} color={locationTextColor} weight="duotone" />
+              <Text style={[styles.locationText, { color: locationTextColor }]}>
                 Location
               </Text>
             </View>
           </View>
-          <View style={[styles.locationContainer, { width: 40, height: 40 }]}>
-            <AppImg
-              src={replyToMessage.message}
-              style={[
-                styles.locationImage,
-                { borderRadius: 7, width: 40, height: 40 },
-              ]}
-            />
+          <View style={styles.locationContainer}>
+            <AppImg src={replyToMessage.message} style={styles.locationImage} />
           </View>
         </View>
       ) : (
@@ -71,12 +61,12 @@ const styles = StyleSheet.create({
     height: 100,
     borderRadius: 15,
   },
-  messageText: {
-    color: 'black',
-    fontSize: 14,
+  locationInfoContainer: {
+    flexDirection: 'row',
+    gap: 3,
+    alignItems: 'center',
   },
-  myMessageText: {
-    color: 'grey',
+  locationText: {
     fontSize: 14,
   },
   replySender: {

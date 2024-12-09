@@ -20,7 +20,6 @@ const Divider = ({
 }) => {
   const isHorizontal = type === 'horizontal'
 
-  // Line style with optional dashed effect
   const lineStyle = [
     isHorizontal
       ? {
@@ -37,10 +36,20 @@ const Divider = ({
         },
   ]
 
-  // Container for dividing lines and text
   const containerStyle = [
     isHorizontal ? styles.horizontalContainer : styles.verticalContainer,
     style,
+  ]
+
+  const textContainerStyle = [
+    styles.textContainer,
+    { paddingHorizontal: padding },
+  ]
+
+  const textStyleCombined = [
+    styles.text,
+    { fontSize, color: fontColor, fontWeight },
+    textStyle,
   ]
 
   return (
@@ -48,29 +57,21 @@ const Divider = ({
       {/* Left/Top Line */}
       {(align === 'center' || align === 'left' || align === 'top') && (
         <View
-          style={[lineStyle, isHorizontal ? { flex: 1 } : { height: '40%' }]}
+          style={[lineStyle, isHorizontal ? styles.flex : styles.height40]}
         />
       )}
 
       {/* Text Content */}
       {children && (
-        <View style={[styles.textContainer, { paddingHorizontal: padding }]}>
-          <Text
-            style={[
-              styles.text,
-              { fontSize, color: fontColor, fontWeight },
-              textStyle,
-            ]}
-          >
-            {children}
-          </Text>
+        <View style={textContainerStyle}>
+          <Text style={textStyleCombined}>{children}</Text>
         </View>
       )}
 
       {/* Right/Bottom Line */}
       {(align === 'center' || align === 'right' || align === 'bottom') && (
         <View
-          style={[lineStyle, isHorizontal ? { flex: 1 } : { height: '40%' }]}
+          style={[lineStyle, isHorizontal ? styles.flex : styles.height40]}
         />
       )}
     </View>
@@ -96,6 +97,12 @@ const styles = StyleSheet.create({
   },
   text: {
     color: '#000',
+  },
+  flex: {
+    flex: 1,
+  },
+  height40: {
+    height: '40%',
   },
 })
 

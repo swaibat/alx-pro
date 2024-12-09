@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import { View, Image, Keyboard } from 'react-native'
+import { View, StyleSheet, Keyboard } from 'react-native'
 import { Text } from '@/components/@ui/Text'
 import Input from './Input'
+import AppImg from './AppImg'
 
 const PhoneInput = ({
   label,
@@ -35,36 +36,66 @@ const PhoneInput = ({
   }
 
   return (
-    <View style={{ width: '100%' }}>
+    <View style={styles.container}>
       {label && (
-        <Text bold style={{ fontSize: 14 }}>
+        <Text bold style={styles.label}>
           {label}
         </Text>
       )}
       <Input
         style={style}
         prefix={
-          <View style={{ flexDirection: 'row', gap: 5, width: 45 }}>
-            <View style={{ height: 20, width: 30, alignItems: 'center' }}>
-              <Image
-                source={require('@/assets/images/ug_flag.png')}
+          <View style={styles.prefixContainer}>
+            <View style={styles.flagContainer}>
+              <AppImg
+                src={require('@/assets/images/ug_flag.png')}
                 resizeMode="cover"
-                style={{ width: '100%', height: '100%' }}
+                style={styles.flagImage}
               />
             </View>
-            <Text bold style={{ fontSize: 14, marginTop: -2 }}>
+            <Text bold style={styles.countryCode}>
               +256
             </Text>
           </View>
         }
         placeholder={placeholder}
         value={inputValue}
-        textStyle={{ fontSize: 14 }}
+        textStyle={styles.inputText}
         onChangeText={handleChange}
         keyboardType="phone-pad"
       />
     </View>
   )
 }
+
+const styles = StyleSheet.create({
+  container: {
+    width: '100%',
+  },
+  label: {
+    fontSize: 14,
+  },
+  prefixContainer: {
+    flexDirection: 'row',
+    gap: 5,
+    width: 45,
+  },
+  flagContainer: {
+    height: 20,
+    width: 30,
+    alignItems: 'center',
+  },
+  flagImage: {
+    width: '100%',
+    height: '100%',
+  },
+  countryCode: {
+    fontSize: 14,
+    marginTop: -2,
+  },
+  inputText: {
+    fontSize: 14,
+  },
+})
 
 export default PhoneInput

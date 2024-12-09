@@ -214,16 +214,6 @@ const styles = StyleSheet.create({
     height: 48,
     marginVertical: 15,
   },
-  title: {
-    marginBottom: 10,
-    textAlign: 'center',
-    fontSize: 17,
-  },
-  label: {
-    marginBottom: 5,
-    fontWeight: 'bold',
-    textAlign: 'left',
-  },
   countryCode: {
     marginRight: 10,
     fontWeight: 'bold',
@@ -235,15 +225,6 @@ const styles = StyleSheet.create({
     textAlign: 'right',
     color: colors.orange[300],
     marginBottom: 15,
-    textDecorationLine: 'underline',
-  },
-  registerText: {
-    textAlign: 'center',
-    fontSize: 14,
-    marginHorizontal: 5,
-  },
-  linkText: {
-    color: colors.orange[300],
     textDecorationLine: 'underline',
   },
   divider: { marginVertical: 25 },

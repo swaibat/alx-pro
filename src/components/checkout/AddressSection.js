@@ -23,7 +23,7 @@ const ShippingAddress = ({ selectedAddress }) => {
               {selectedAddress.addressLabel || 'Home'}
             </Text>
           </View>
-          <Divider style={{ marginVertical: 5 }} />
+          <Divider style={styles.divider} />
           <View style={styles.namePhoneRow}>
             <View style={styles.rowItem}>
               <User size={20} />
@@ -55,15 +55,6 @@ const ShippingAddress = ({ selectedAddress }) => {
 }
 
 const styles = StyleSheet.create({
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 15,
-    backgroundColor: '#E4E9F2',
-    paddingHorizontal: 20,
-    paddingVertical: 3,
-  },
   card: {
     padding: 10,
     borderRadius: 5,
@@ -97,12 +88,7 @@ const styles = StyleSheet.create({
   },
   infoText: { marginLeft: 10, fontSize: 14, textTransform: 'capitalize' },
   addAddressButton: { marginTop: 16 },
-  loadingPlaceholder: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingVertical: 20,
-    paddingHorizontal: 20,
-  },
+  divider: { marginVertical: 5 },
 })
 
 export default ShippingAddress

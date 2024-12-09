@@ -36,7 +36,7 @@ const AdCard = ({ product }) => {
         <AppImg src={product?.thumbnail} style={styles.productImage} />
       </View>
       <TouchableOpacity
-        style={[styles.addToCartButton]}
+        style={styles.addToCartButton}
         onPress={handleAddToCart}
       >
         <ShoppingCartSimple size={15} color={colors.grey[600]} />
@@ -91,34 +91,6 @@ const styles = StyleSheet.create({
   },
   productTitle: {
     fontSize: 14,
-  },
-  priceContainer: {
-    flexDirection: 'row',
-    alignItems: 'baseline',
-  },
-  productPrice: {
-    fontSize: 14,
-    fontWeight: 'bold',
-  },
-  smallPrice: {
-    fontSize: 10,
-    fontWeight: 'bold',
-    lineHeight: 14,
-  },
-
-  ratingContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginLeft: 5,
-  },
-  ratingText: {
-    fontSize: 11,
-    marginLeft: 2,
-  },
-  ratingCount: {
-    fontSize: 11,
-    color: '#757575',
-    marginLeft: 2,
   },
 })
 

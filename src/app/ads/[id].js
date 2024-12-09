@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { StyleSheet, View, ScrollView, Share, Image } from 'react-native'
+import { StyleSheet, View, ScrollView, Share } from 'react-native'
 import { useGetProductQuery } from '@/api'
 import { SealCheck, ShareFat } from 'phosphor-react-native'
 import { useLocalSearchParams } from 'expo-router'
@@ -8,7 +8,6 @@ import ReviewsScreen from '@/components/products/reviews/ReviewsOverView'
 import { Text } from '@/components/@ui/Text'
 import ProductSpecifications from '@/components/products/ProductSpecs'
 import { colors } from '@/constants/theme'
-import { theme } from '@/constants/theme'
 import Loading from '@/components/global/Loading'
 import ProductImageCarousel from '@/components/products/productDetails/ProductImageCarousel'
 import Section from '@/components/@ui/Section'
@@ -23,6 +22,7 @@ import DeliveryReturnInfo from '@/components/products/productDetails/DeliveryRet
 import VariantSelector from '@/components/products/productDetails/VariantSelector'
 import ErrorScreen from '@/components/global/Error'
 import { useSnackbar } from '@/hooks/useSnackbar'
+import AppImg from '@/components/@ui/AppImg'
 
 const ProductDetailsScreen = () => {
   const { id } = useLocalSearchParams()
@@ -53,6 +53,14 @@ const ProductDetailsScreen = () => {
       triggerSnackbar('Error sharing the product')
     }
   }
+
+  const ensureHttps = url => {
+    if (!url.startsWith('https://')) {
+      return `https://${url}`
+    }
+    return url
+  }
+
   if (!product || isLoading) return <Loading text={'Loading Ad details'} />
   if (isError) return <ErrorScreen refetch={refetch} />
 
@@ -92,16 +100,10 @@ const ProductDetailsScreen = () => {
                 </View>
                 <RatingChip reviews={product?.reviews} />
                 <View style={styles.sealContainer}>
-                  <Image
-                    source={{ uri: `https://${product.store.logo}` }}
+                  <AppImg
+                    src={ensureHttps(product.store.logo)}
                     resizeMode="contain"
-                    style={{
-                      borderRadius: 7,
-                      width: 30,
-                      height: 30,
-                      borderWidth: 0.8,
-                      borderColor: colors.grey[300],
-                    }}
+                    style={styles.logoImg}
                   />
                   <SealCheck color={colors.blue[500]} size={15} weight="fill" />
                   <Text style={styles.sealText} bold>
@@ -168,40 +170,12 @@ const styles = StyleSheet.create({
     padding: 10,
     gap: 10,
   },
-  badgeContainer: {
-    borderColor: colors.orange[200],
-    backgroundColor: colors.orange[50],
-    borderWidth: 0.7,
-    paddingVertical: 2,
-    paddingHorizontal: 5,
-    marginBottom: 5,
-  },
-  discountBadge: {
-    color: colors.orange[600],
-    fontSize: 8,
-  },
   productTitleContainer: {
     flexDirection: 'row',
     gap: 10,
   },
   productTitle: {
     flex: 1,
-  },
-  iconButton: {
-    backgroundColor: 'white',
-    borderWidth: 0.8,
-    borderColor: theme.colors.grey[400],
-    width: 40,
-    height: 40,
-    borderRadius: 25,
-    padding: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-    elevation: 5,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 4,
   },
   sealContainer: {
     flexDirection: 'row',
@@ -216,13 +190,15 @@ const styles = StyleSheet.create({
   sealText: {
     fontSize: 12,
   },
-  ratingContainer: {
-    flexDirection: 'row',
-    marginVertical: 10,
-    gap: 5,
-  },
   productDescription: {
     fontSize: 12,
+  },
+  logoImg: {
+    borderRadius: 7,
+    width: 30,
+    height: 30,
+    borderWidth: 0.8,
+    borderColor: colors.grey[300],
   },
 })
 

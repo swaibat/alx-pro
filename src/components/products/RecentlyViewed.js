@@ -63,7 +63,7 @@ const RecentlyViewed = ({ showAll }) => {
   const renderSkeleton = () => {
     const skeletonCount = Math.floor(Dimensions.get('window').width / 115) + 1
     return (
-      <View style={{ flexDirection: 'row' }}>
+      <View style={styles.row}>
         {Array.from({ length: skeletonCount }).map((_, index) => (
           <ProductSkeleton key={index} />
         ))}
@@ -83,17 +83,6 @@ const RecentlyViewed = ({ showAll }) => {
 }
 
 const styles = StyleSheet.create({
-  layout: {
-    marginVertical: 1,
-  },
-  header: {
-    marginBottom: 10,
-  },
-  recentlyViewedTitle: {
-    fontSize: 16,
-    marginLeft: 10,
-    fontWeight: 'bold',
-  },
   productContainer: {
     width: 115,
     paddingVertical: 0,
@@ -123,10 +112,7 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     verticalAlign: 'top',
   },
-  productSold: {
-    fontSize: 10,
-    color: '#555',
-  },
+  row: { flexDirection: 'row' },
 })
 
 export default React.memo(RecentlyViewed)

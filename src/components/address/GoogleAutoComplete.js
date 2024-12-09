@@ -14,7 +14,7 @@ import Constants from 'expo-constants'
 
 const { MAPS_API_URL, GOOGLE_API_KEY } = Constants.expoConfig.extra
 
-const PlacesAutocomplete = ({ onPress }) => {
+const PlacesAutocomplete = ({ onPress, showMap = true }) => {
   const [inputText, setInputText] = useState('')
   const [predictions, setPredictions] = useState([])
   const [details, setDetails] = useState(null)
@@ -76,22 +76,24 @@ const PlacesAutocomplete = ({ onPress }) => {
 
   return (
     <View>
-      <View style={[styles.mapContainer, { height: 100 }]}>
-        {!details?.geo && loading ? ( // Display loading text if loading is true
-          <Text style={styles.loadingText}>Loading...</Text>
-        ) : (
-          <Image
-            source={
-              details?.geo
-                ? {
-                    uri: `${MAPS_API_URL}/staticmap?key=${GOOGLE_API_KEY}&center=${details.geo[0]},${details.geo[1]}&zoom=15&size=370x100&maptype=roadmap&&markers=${details.geo[0]},${details.geo[1]}&sensor=false&style=feature:all|element:geometry|color:0xf2e5d4&style=feature:road|element:geometry.stroke|color:0xd0b084&style=feature:road.highway|element:geometry.fill|color:0xfbc590&style=feature:road.local|element:geometry.fill|color:0xffdfa6&style=feature:water|element:geometry.fill|color:0xaadaff&style=feature:landscape|element:geometry.fill|color:0xf5f5f2`,
-                  }
-                : null
-            }
-            style={styles.mapImage}
-          />
-        )}
-      </View>
+      {showMap && (
+        <View style={styles.mapContainer}>
+          {!details?.geo && loading ? ( // Display loading text if loading is true
+            <Text style={styles.loadingText}>Loading...</Text>
+          ) : (
+            <Image
+              source={
+                details?.geo
+                  ? {
+                      uri: `${MAPS_API_URL}/staticmap?key=${GOOGLE_API_KEY}&center=${details.geo[0]},${details.geo[1]}&zoom=15&size=370x100&maptype=roadmap&&markers=${details.geo[0]},${details.geo[1]}&sensor=false&style=feature:all|element:geometry|color:0xf2e5d4&style=feature:road|element:geometry.stroke|color:0xd0b084&style=feature:road.highway|element:geometry.fill|color:0xfbc590&style=feature:road.local|element:geometry.fill|color:0xffdfa6&style=feature:water|element:geometry.fill|color:0xaadaff&style=feature:landscape|element:geometry.fill|color:0xf5f5f2`,
+                    }
+                  : null
+              }
+              style={styles.mapImage}
+            />
+          )}
+        </View>
+      )}
       <Input
         value={inputText}
         onChangeText={handleTextChange}
@@ -134,10 +136,6 @@ const styles = StyleSheet.create({
     borderBottomColor: '#ddd',
     shadowRadius: 5,
   },
-  listItemContent: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
   listItemText: {
     fontSize: 14,
   },
@@ -146,6 +144,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#e0e0e0',
     justifyContent: 'center',
     alignItems: 'center',
+    height: 100,
   },
   mapImage: {
     width: '100%',

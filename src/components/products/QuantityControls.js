@@ -38,18 +38,17 @@ const QuantityControls = ({ item, editable }) => {
     <View
       style={[
         styles.container,
-        editable ? { marginBottom: 'auto' } : { marginTop: 'auto' },
+        editable ? styles.editable : styles.nonEditable,
       ]}
     >
       {editable ? (
-        <View style={{ gap: 5 }}>
+        <View style={styles.editableControls}>
           <TouchableOpacity style={styles.button} onPress={handleIncrease}>
             <Plus size={15} />
           </TouchableOpacity>
           <View style={styles.quantityContainer}>
             <Text style={styles.quantity}>{item.quantity || 1}</Text>
           </View>
-
           <TouchableOpacity style={styles.button} onPress={handleDecrease}>
             <Minus size={15} />
           </TouchableOpacity>
@@ -70,6 +69,15 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     paddingHorizontal: 5,
     borderRadius: 5,
+  },
+  editable: {
+    marginBottom: 'auto',
+  },
+  nonEditable: {
+    marginTop: 'auto',
+  },
+  editableControls: {
+    gap: 5,
   },
   button: {
     width: 25,

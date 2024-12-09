@@ -49,15 +49,7 @@ const OrderCard = ({ order }) => {
           }
         />
         <View style={styles.cardDetails}>
-          <View
-            style={[
-              styles.detailRow,
-              {
-                justifyContent: 'space-between',
-                flex: 1,
-              },
-            ]}
-          >
+          <View style={[styles.detailRow, styles.detailRowAdon]}>
             <View style={styles.detailRow}>
               <Text> Items:</Text>
               <Text style={styles.boldText}>{totalQuantity}</Text>
@@ -68,15 +60,7 @@ const OrderCard = ({ order }) => {
             <Text> Total:</Text>
             <Text style={styles.boldText}>{order.total} UGX</Text>
           </View>
-          <View
-            style={[
-              styles.detailRow,
-              {
-                justifyContent: 'space-between',
-                flex: 1,
-              },
-            ]}
-          >
+          <View style={[styles.detailRow, styles.detailRowAdon]}>
             <View style={styles.detailRow}>
               <Text> Mode:</Text>
               <Text style={styles.boldText}>{order.paymentType}</Text>
@@ -161,6 +145,10 @@ const styles = StyleSheet.create({
   status: {
     marginLeft: 5,
     fontSize: 10,
+  },
+  detailRowAdon: {
+    justifyContent: 'space-between',
+    flex: 1,
   },
 })
 

@@ -11,15 +11,7 @@ const OrderFailedScreen = () => {
   return (
     <>
       <View style={styles.container}>
-        <View
-          style={{
-            width: '100%',
-            justifyContent: 'center',
-            alignItems: 'center',
-            marginTop: -100,
-            paddingHorizontal: 30,
-          }}
-        >
+        <View style={styles.infoWrapper}>
           <XCircle size={80} color="gray" weight="fill" />
           <Text style={styles.title}>Payment Failed</Text>
           <Text secondary style={styles.description}>
@@ -49,6 +41,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 16,
+  },
+  infoWrapper: {
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: -100,
+    paddingHorizontal: 30,
   },
   title: {
     fontSize: 24,

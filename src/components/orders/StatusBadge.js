@@ -7,6 +7,7 @@ import {
   ClockCountdown,
 } from 'phosphor-react-native'
 import { Text } from '@/components/@ui/Text'
+import { StyleSheet } from 'react-native'
 
 const StatusBadge = ({ type, size = 14 }) => {
   const icons = {
@@ -55,26 +56,30 @@ const StatusBadge = ({ type, size = 14 }) => {
   const status = icons[type] || { icon: null, color: 'gray' }
 
   return (
-    <View
-      style={{
-        alignItems: 'center',
-        gap: 3,
-        paddingHorizontal: 10,
-        paddingVertical: 4,
-        flexDirection: 'row',
-        fontSize: 8,
-        whiteSpace: 'nowrap',
-        borderWidth: 1,
-        borderRadius: 5,
-        borderColor: status.color,
-      }}
-    >
+    <View style={styles.badgeContainer(status)}>
       {status.icon}
-      <Text style={{ fontSize: 10, color: status.color }}>
-        {type.replace('_', ' ')}
-      </Text>
+      <Text style={styles.badgeText(status)}>{type.replace('_', ' ')}</Text>
     </View>
   )
 }
 
 export default StatusBadge
+
+const styles = StyleSheet.create({
+  badgeContainer: status => ({
+    alignItems: 'center',
+    gap: 3,
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    flexDirection: 'row',
+    fontSize: 8,
+    whiteSpace: 'nowrap',
+    borderWidth: 1,
+    borderRadius: 5,
+    borderColor: status.color,
+  }),
+  badgeText: status => ({
+    fontSize: 10,
+    color: status.color,
+  }),
+})

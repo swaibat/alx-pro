@@ -92,7 +92,7 @@ const CheckoutScreen = () => {
       <SafeAreaView style={styles.container}>
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="small" color={colors.orange[500]} />
-          <Text style={{ fontSizes: 11 }}>Wait a moment ...</Text>
+          <Text style={styles.loadingText}>Wait a moment ...</Text>
         </View>
       </SafeAreaView>
     )
@@ -173,7 +173,7 @@ const CheckoutScreen = () => {
                 props.disabled ||
                 isUpdating
               }
-              textStyle={{ marginRight: 'auto' }}
+              textStyle={styles.payBtnTextStyle}
               style={styles.checkoutButton}
               onPress={async () => {
                 if (!orderData?.data?._id) {
@@ -184,11 +184,7 @@ const CheckoutScreen = () => {
               disabled={props.disabled || isCreating}
               title={`Pay ${(totalPrice + (selectedShipping?.price || 0)).toLocaleString()} /-`}
               iconLeft={
-                <LockSimple
-                  style={{ marginLeft: 'auto' }}
-                  size={17}
-                  color="white"
-                />
+                <LockSimple style={styles.lockIcon} size={17} color="white" />
               }
             />
           )}
@@ -224,6 +220,9 @@ const styles = StyleSheet.create({
   contentContainerStyle: {
     paddingBottom: 120,
   },
+  lockIcon: { marginLeft: 'auto' },
+  payBtnTextStyle: { marginRight: 'auto' },
+  loadingText: { fontSizes: 11 },
 })
 
 export default CheckoutScreen

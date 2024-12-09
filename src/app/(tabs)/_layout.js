@@ -203,34 +203,4 @@ const styles = StyleSheet.create({
   categoryHeaderStyle: {
     backgroundColor: colors.grey[200],
   },
-  headerIconBackground: {
-    position: 'absolute',
-    top: 0,
-    // left: 0,
-    // right: 0,
-    bottom: 0,
-    justifyContent: 'center',
-    alignItems: 'center',
-    opacity: 0.1,
-    overflow: 'hidden',
-  },
-  badge: {
-    position: 'absolute',
-    right: -10,
-    top: -3,
-    backgroundColor: colors.primary,
-    borderRadius: 10,
-    width: 18,
-    height: 18,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  badgeText: {
-    color: 'white',
-    fontSize: 10,
-    fontWeight: 'bold',
-  },
-  capitalizeHeaderTitle: {
-    textTransform: 'capitalize',
-  },
 })

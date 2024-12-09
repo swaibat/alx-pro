@@ -12,7 +12,7 @@ const ProductContent = ({ replyToProductDetails }) => {
           src={replyToProductDetails?.thumbnail}
           style={styles.replyPreviewImage}
         />
-        <View style={{ gap: 4, flex: 1 }}>
+        <View style={styles.replyTo}>
           <Text numberOfLines={1} style={styles.replyTitle}>
             {replyToProductDetails.title}
           </Text>
@@ -34,10 +34,6 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: colors.grey[300],
   },
-  replyDetails: {
-    gap: 4,
-    flex: 1,
-  },
   replyContainer: {
     flexWrap: 'nowrap',
     padding: 7,
@@ -48,18 +44,11 @@ const styles = StyleSheet.create({
     minWidth: 250,
     gap: 10,
   },
-  messageText: {
-    color: 'black',
-    fontSize: 14,
-  },
-  myMessageText: {
-    color: colors.grey[300],
-    fontSize: 14,
-  },
   replyPreviewImage: {
     width: 45,
     height: 45,
     borderRadius: 10,
     resizeMode: 'cover',
   },
+  replyTo: { gap: 4, flex: 1 },
 })

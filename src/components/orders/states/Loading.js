@@ -7,7 +7,7 @@ const getRandomWidth = () => {
 
 const SkeletonLoader = () => {
   return (
-    <View style={{ flex: 1 }}>
+    <View style={styles.flex1}>
       {Array.from({ length: 4 }).map((_, index) => (
         <View key={index} style={styles.card}>
           <View style={styles.cardHeader}>
@@ -17,7 +17,7 @@ const SkeletonLoader = () => {
           <View style={styles.divider} />
           <View style={styles.cardBody}>
             <View style={styles.skeletonImage} />
-            <View style={[styles.cardDetails, { flex: 1 }]}>
+            <View style={[styles.cardDetails, styles.flex1]}>
               <View
                 style={[styles.skeletonText, { width: getRandomWidth() }]}
               />
@@ -109,6 +109,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#e0e0e0',
     borderRadius: 5,
   },
+  flex1: { flex: 1 },
 })
 
 export default SkeletonLoader

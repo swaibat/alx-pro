@@ -98,7 +98,7 @@ const FlashSale = () => {
   }
 
   const renderSkeleton = () => (
-    <View style={{ flexDirection: 'row' }}>
+    <View style={styles.skeletonContainer}>
       <ProductSkeleton />
       <ProductSkeleton />
       <ProductSkeleton />
@@ -112,15 +112,7 @@ const FlashSale = () => {
   }
 
   return (
-    <View
-      style={{
-        borderBottomWidth: 10,
-        paddingLeft: 7,
-        paddingHorizontal: 15,
-        paddingBottom: 15,
-        borderColor: colors.grey[200],
-      }}
-    >
+    <View style={styles.flashSaleContainer}>
       <View style={styles.layout}>
         <View style={styles.header}>
           <View style={styles.headerLeft}>
@@ -134,7 +126,6 @@ const FlashSale = () => {
             </View>
             <View>
               <Text style={styles.flashSaleTitle}>Flash Sale</Text>
-              {/* <Text style={styles.flashSaleSubtitle}>Limited time offer.</Text> */}
             </View>
           </View>
           <View style={styles.countdown}>
@@ -159,6 +150,14 @@ const FlashSale = () => {
 }
 
 const styles = StyleSheet.create({
+  flashSaleContainer: {
+    borderBottomWidth: 10,
+    paddingLeft: 7,
+    paddingHorizontal: 15,
+    paddingBottom: 15,
+    borderColor: colors.grey[200],
+  },
+  skeletonContainer: { flexDirection: 'row' },
   layout: {
     marginVertical: 1,
   },

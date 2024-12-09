@@ -6,7 +6,6 @@ import { logout } from '@/store/authSlice'
 import { useRouter } from 'expo-router'
 import { Text } from '@/components/@ui/Text'
 import { Button } from '@/components/@ui/Button'
-import { colors } from '@/constants/theme'
 
 export default function LogoutModal({ isModalVisible, closeModal }) {
   const dispatch = useDispatch()
@@ -35,19 +34,16 @@ export default function LogoutModal({ isModalVisible, closeModal }) {
           </Text>
           <Text style={styles.modalText}>Are you sure you want to logout?</Text>
           <View style={styles.buttonContainer}>
-            <View style={{ width: '100%', gap: 10, flexDirection: 'row' }}>
+            <View style={styles.actionBtns}>
               <Button
                 title="Cancel"
-                style={{
-                  flex: 1,
-                  backgroundColor: colors.orange[50],
-                }}
-                ghost
+                secondary
+                style={styles.cancelButton}
                 onPress={closeModal}
               />
               <Button
                 title="Logout"
-                style={{ flex: 1 }}
+                style={styles.logoutButton}
                 onPress={handleLogout}
               />
             </View>
@@ -84,6 +80,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     gap: 10,
   },
+  actionBtns: { width: '100%', gap: 10, flexDirection: 'row' },
   cancelButton: {
     flex: 1,
   },

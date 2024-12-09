@@ -37,15 +37,7 @@ const VariantSelector = ({ variants, selectedOptions, setSelectedOptions }) => {
         )
         .map(variant => (
           <View key={variant.name} style={styles.variantSection}>
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                width: '100%',
-                alignItems: 'center',
-                paddingTop: 10,
-              }}
-            >
+            <View style={styles.variantHeader}>
               <View style={styles.optionsContainer}>
                 {variant.options.slice(0, 4).map((option, index) => (
                   <TouchableOpacity
@@ -147,6 +139,13 @@ const styles = StyleSheet.create({
   variantSection: {
     marginBottom: 15,
   },
+  variantHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
+    alignItems: 'center',
+    paddingTop: 10,
+  },
   variantName: {
     fontSize: 14,
     fontWeight: '500',
@@ -174,19 +173,6 @@ const styles = StyleSheet.create({
     height: 40,
     borderRadius: 5,
   },
-  seeMoreButton: {
-    backgroundColor: colors.primary,
-    borderRadius: 6,
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  seeMoreText: {
-    color: '#fff',
-    fontSize: 12,
-    fontWeight: 'bold',
-  },
   modalContainer: {
     flex: 1,
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
@@ -205,10 +191,7 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   modalOptionsContainer: {
-    // flexDirection: 'row',
-    // flexWrap: 'wrap',
     gap: 10,
-    // justifyContent: 'center',
   },
   modalOptions: {
     flexDirection: 'row',

@@ -188,7 +188,7 @@ const OtpRegisterScreen = () => {
 
   return (
     <>
-      <View style={{ flex: 1, backgroundColor: 'white', alignItems: 'center' }}>
+      <View style={styles.wrapper}>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <View style={styles.container}>
             {step === 1 && (
@@ -227,7 +227,7 @@ const OtpRegisterScreen = () => {
                   dashed
                   align="center"
                   fontSize={14}
-                  style={{ marginVertical: 25 }}
+                  style={styles.divider}
                 >
                   Have an account?
                 </Divider>
@@ -252,12 +252,7 @@ const OtpRegisterScreen = () => {
                 </Text>
                 <Input
                   style={styles.otpInput}
-                  textStyle={{
-                    fontSize: 40,
-                    textAlign: 'center',
-                    width: '100%',
-                    letterSpacing: 20,
-                  }}
+                  textStyle={styles.otpTextStyle}
                   value={otp}
                   size="large"
                   onChangeText={handleChangeOtp}
@@ -267,13 +262,7 @@ const OtpRegisterScreen = () => {
                   placeholder="XXXX"
                   testID="otpInput"
                 />
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    marginTop: 10,
-                    marginHorizontal: 'auto',
-                  }}
-                >
+                <View style={styles.resendContainer}>
                   <Text style={styles.description} testID="resendOtpText">
                     Didn’t receive the OTP?
                   </Text>
@@ -297,20 +286,8 @@ const OtpRegisterScreen = () => {
                   testID="verifyOtpButton"
                   title="Verify OTP"
                 />
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    marginTop: 10,
-                    marginHorizontal: 'auto',
-                  }}
-                >
-                  <Text
-                    style={[
-                      styles.registerText,
-                      { marginBottom: 15, marginTop: 0, marginRight: 10 },
-                    ]}
-                    testID="wrongNumberText"
-                  >
+                <View style={styles.wrongNumberContainer}>
+                  <Text style={styles.registerText} testID="wrongNumberText">
                     Wrong Number?
                   </Text>
                   <TouchableOpacity onPress={handleWrongNumber}>
@@ -338,7 +315,7 @@ const OtpRegisterScreen = () => {
                   style={styles.input}
                   accessoryLeft={<Phone size={20} />}
                   readOnly
-                  label="phone Number"
+                  label="Phone Number"
                   value={phoneNumber}
                   testID="phoneNumberInput"
                 />
@@ -391,6 +368,11 @@ const OtpRegisterScreen = () => {
 }
 
 const styles = StyleSheet.create({
+  wrapper: {
+    flex: 1,
+    backgroundColor: 'white',
+    alignItems: 'center',
+  },
   container: {
     flex: 1,
     padding: 20,
@@ -413,6 +395,12 @@ const styles = StyleSheet.create({
   otpInput: {
     marginBottom: 10,
   },
+  otpTextStyle: {
+    fontSize: 40,
+    textAlign: 'center',
+    width: '100%',
+    letterSpacing: 20,
+  },
   button: {
     marginTop: 10,
   },
@@ -427,6 +415,19 @@ const styles = StyleSheet.create({
   },
   link: {
     color: colors.orange[300],
+  },
+  resendContainer: {
+    flexDirection: 'row',
+    marginTop: 10,
+    marginHorizontal: 'auto',
+  },
+  wrongNumberContainer: {
+    flexDirection: 'row',
+    marginTop: 10,
+    marginHorizontal: 'auto',
+  },
+  divider: {
+    marginVertical: 25,
   },
 })
 

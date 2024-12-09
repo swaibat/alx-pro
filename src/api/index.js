@@ -9,7 +9,7 @@ import axios from 'axios'
 import Constants from 'expo-constants'
 
 export const apiClient = axios.create({
-  baseURL: Constants.expoConfig.extra.SERVER_URL,
+  baseURL: Constants.expoConfig.extra.SERVER_URL1,
   headers: {
     'Content-Type': 'application/json',
   },

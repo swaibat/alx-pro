@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-unused-styles */
 import { colors as color } from '@/constants/theme'
 import React from 'react'
 import {
@@ -190,8 +191,5 @@ const styles = StyleSheet.create({
   },
   textLight: {
     color: '#fff',
-  },
-  textDark: {
-    color: '#007bff',
   },
 })

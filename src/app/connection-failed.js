@@ -7,12 +7,12 @@ import { StyleSheet, Image, View } from 'react-native'
 export default function NotFoundScreen() {
   const router = useRouter()
   return (
-    <View style={{ backgroundColor: 'white', padding: 30, flex: 1 }}>
+    <View style={styles.wrapper}>
       <View style={styles.container}>
-        <View style={{ marginTop: -100, alignItems: 'center' }}>
+        <View style={styles.innerContent}>
           <Image
             source={require('@/assets/images/error.png')}
-            style={{ height: 150, width: 150 }}
+            style={styles.image}
           />
           <Text style={styles.title}>
             Connection failed. Please check your network and try again.
@@ -29,15 +29,17 @@ export default function NotFoundScreen() {
 }
 
 const styles = StyleSheet.create({
+  wrapper: {
+    backgroundColor: 'white',
+    padding: 30,
+    flex: 1,
+  },
   container: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
     padding: 20,
     backgroundColor: 'white',
-  },
-  icon: {
-    marginBottom: 20,
   },
   title: {
     marginTop: 16,
@@ -49,5 +51,10 @@ const styles = StyleSheet.create({
   },
   button: {
     marginTop: 15,
+  },
+  image: { height: 150, width: 150 },
+  innerContent: {
+    marginTop: -100,
+    alignItems: 'center',
   },
 })

@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, FlatList, RefreshControl } from 'react-native'
+import { FlatList, RefreshControl } from 'react-native'
 import { useGetOrdersQuery } from '@/api'
 import OrderCard from '@/components/orders/OrderCard'
 import ordersStateLayout from '@/components/orders/states/handleStates'
@@ -26,19 +26,11 @@ const OrdersScreen = () => {
           data={orders}
           keyExtractor={item => item._id}
           renderItem={({ item }) => <OrderCard key={item._id} order={item} />}
-          contentContainerStyle={styles.container}
           refreshControl={<RefreshControl refreshing={isFetching} />}
         />
       )}
     </SecureRoute>
   )
 }
-
-const styles = StyleSheet.create({
-  noOrdersText: {
-    textAlign: 'center',
-    marginTop: 20,
-  },
-})
 
 export default OrdersScreen

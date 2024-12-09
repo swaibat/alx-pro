@@ -39,11 +39,12 @@ const ShowSuggestions = ({
       )
     )
   }
+
   return (
     <Section>
       <FlatList
         data={searchSuggestions}
-        contentContainerStyle={{ paddingBottom: 20, maxHeight: 400 }}
+        contentContainerStyle={styles.flatListContainer}
         keyExtractor={item => item?._id?.toString()}
         renderItem={({ item }) => (
           <View style={styles.itemRow}>
@@ -52,7 +53,7 @@ const ShowSuggestions = ({
               onPress={() => handleSearch(item)}
             >
               <MagnifyingGlass size={20} />
-              <View style={{ paddingHorizontal: 10 }}>
+              <View style={styles.itemTextContainer}>
                 <Text style={styles.itemText}>
                   {highlightMatch(item.title)}
                 </Text>
@@ -75,6 +76,7 @@ const ShowSuggestions = ({
 
 const styles = StyleSheet.create({
   list: { backgroundColor: 'white', borderRadius: 8, padding: 10 },
+  flatListContainer: { paddingBottom: 20, maxHeight: 400 },
   highlight: {
     fontWeight: 'bold',
     color: '#FF6B00',
@@ -84,8 +86,10 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     flex: 1,
   },
-  itemText: {
+  itemTextContainer: {
     paddingHorizontal: 10,
+  },
+  itemText: {
     fontSize: 13,
     flexShrink: 1,
     flexGrow: 1,
@@ -96,11 +100,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     padding: 10,
-  },
-  iconContainer: {
-    padding: 5,
-    marginRight: 10,
-    borderRadius: 5,
   },
   categoryRow: { flexDirection: 'row', alignItems: 'center' },
   categoryText: { fontStyle: 'italic', fontSize: 11, color: colors.grey[600] },

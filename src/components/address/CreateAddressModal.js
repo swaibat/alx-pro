@@ -81,10 +81,8 @@ const CreateAddressModal = ({ refetch }) => {
       >
         <ScrollView contentContainerStyle={styles.modalContent}>
           <View>
-            <Text style={{ fontSize: 17, fontWeight: 'bold', marginBottom: 2 }}>
-              Create Address
-            </Text>
-            <Text style={{ fontSize: 12 }}>
+            <Text style={styles.createText}>Create Address</Text>
+            <Text style={styles.descriptionText}>
               Your address has been pre-filled. Feel free to update.
             </Text>
           </View>
@@ -109,12 +107,7 @@ const CreateAddressModal = ({ refetch }) => {
               <Text
                 style={[
                   styles.checkboxLabel,
-                  {
-                    color:
-                      form.addressLabel === 'Home'
-                        ? theme.colors.orange[500]
-                        : '#000',
-                  },
+                  styles.selected(form.addressLabel === 'Home'),
                 ]}
               >
                 Home
@@ -138,12 +131,7 @@ const CreateAddressModal = ({ refetch }) => {
               <Text
                 style={[
                   styles.checkboxLabel,
-                  {
-                    color:
-                      form.addressLabel === 'Office'
-                        ? theme.colors.orange[500]
-                        : '#000',
-                  },
+                  styles.selected(form.addressLabel === 'Office'),
                 ]}
               >
                 Office
@@ -179,10 +167,7 @@ const CreateAddressModal = ({ refetch }) => {
                 color={form.isDefault ? theme.colors.orange[500] : '#000'}
               />
               <Text
-                style={[
-                  styles.checkboxLabel,
-                  { color: form.isDefault ? theme.colors.orange[500] : '#000' },
-                ]}
+                style={[styles.checkboxLabel, styles.selected(form.isDefault)]}
               >
                 Set as Default
               </Text>
@@ -191,7 +176,7 @@ const CreateAddressModal = ({ refetch }) => {
 
           <View style={styles.buttonContainer}>
             <Button
-              style={{ flex: 1 }}
+              style={styles.flex1}
               isDisabled={isLoading}
               isLoading={isLoading}
               onPress={handleCreateAddress}
@@ -241,6 +226,9 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     fontSize: 14,
   },
+  selected: yes => ({
+    color: yes ? theme.colors.orange[500] : '#000',
+  }),
   buttonContainer: {
     marginTop: 20,
     flexDirection: 'row',
@@ -260,6 +248,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     elevation: 8,
+  },
+  createText: { fontSize: 17, fontWeight: 'bold', marginBottom: 2 },
+  descriptionText: { fontSize: 12 },
+  flex1: {
+    flex: 1,
   },
 })
 
