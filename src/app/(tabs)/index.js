@@ -1,5 +1,5 @@
 import React from 'react'
-import { View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import CategoryGridView from '@/components/categories/GridView'
 import FlashSale from '@/components/products/FlashSale'
 import RecentlyViewed from '@/components/products/RecentlyViewed'
@@ -13,19 +13,10 @@ const HomeScreen = () => {
   return (
     <>
       <ParallaxScrollView headerImage={<AppBanner />}>
-        <View
-          style={{
-            borderBottomWidth: 10,
-            backgroundColor: 'white',
-            paddingHorizontal: 15,
-            borderColor: colors.grey[300],
-          }}
-        >
+        <View style={styles.categoryContainer}>
           <CategoryGridView />
         </View>
-
         <FlashSale />
-
         <Section large title="Recently Viewed">
           <RecentlyViewed />
         </Section>
@@ -38,3 +29,12 @@ const HomeScreen = () => {
 }
 
 export default HomeScreen
+
+const styles = StyleSheet.create({
+  categoryContainer: {
+    borderBottomWidth: 10,
+    backgroundColor: 'white',
+    paddingHorizontal: 15,
+    borderColor: colors.grey[300],
+  },
+})

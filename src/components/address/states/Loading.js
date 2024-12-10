@@ -63,7 +63,7 @@ const AddressItemsLoader = () => {
           />
         </View>
       </View>
-      <Divider style={{ marginTop: 5 }} />
+      <Divider style={styles.divider} />
       <View style={styles.actionRow}>
         <View>
           <View style={styles.infoRow}>
@@ -188,6 +188,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255,255,255,0.4)',
     opacity: 0.7,
   },
+  divider: { marginTop: 5 },
 })
 
 export default AddressItemsLoader

@@ -145,7 +145,6 @@ const sx = StyleSheet.create({
   container: { flex: 1, backgroundColor: 'white' },
   header: { position: 'absolute', top: 0, width: '100%', zIndex: 1 },
   footer: { position: 'absolute', bottom: 0, width: '100%', zIndex: 1 },
-  messageText: { color: 'black' },
   dateContainer: {
     marginVertical: 10,
     padding: 5,
@@ -166,12 +165,6 @@ const sx = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
     transform: [{ rotate: '180deg' }],
-  },
-  backgroundImage: {
-    flex: 1,
-    justifyContent: 'center',
-    width: '100%',
-    height: '100%',
   },
 })
 

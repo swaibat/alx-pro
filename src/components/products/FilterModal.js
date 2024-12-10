@@ -363,11 +363,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     // marginBottom: 15,
   },
-  modalText: {
-    fontSize: 15,
-    alignSelf: 'flex-start',
-    marginVertical: 5,
-  },
   optionGroup: {
     flexDirection: 'row',
     paddingVertical: 5,

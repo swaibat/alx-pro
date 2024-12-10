@@ -37,7 +37,7 @@ const AdsList = () => {
         <CategoryChipsList />
         <MasonryFlashList
           ListHeaderComponent={
-            <View style={{ paddingHorizontal: 5 }}>
+            <View style={styles.subHeader}>
               <View style={styles.buttonGroup}>
                 <FilterBtn
                   isSuccess={isSuccess}
@@ -58,7 +58,7 @@ const AdsList = () => {
           data={data?.data?.docs}
           disableAutoLayout={true}
           renderItem={({ item }) => <AdCard product={item} />}
-          ListFooterComponentStyle={{ paddingVertical: 10, marginBottom: 10 }}
+          ListFooterComponentStyle={styles.listFooter}
           keyExtractor={item => item?._id}
           ListEmptyComponent={!isLoading && <EmptyAdsScreen />}
           estimatedItemSize={250}
@@ -81,6 +81,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
   },
+  subHeader: { paddingHorizontal: 5 },
   container: {
     flex: 1,
     backgroundColor: 'white',
@@ -101,6 +102,7 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.grey[400],
     marginHorizontal: 10,
   },
+  listFooter: { paddingVertical: 10, marginBottom: 10 },
   masonryContent: {
     paddingBottom: 10,
   },

@@ -20,7 +20,7 @@ const VerticalProgressBarGroup = ({ ratingsDistribution, totalReviews }) => {
           key={index}
           label={
             <View style={styles.labelContainer}>
-              <Text bold style={{ fontSize: 12, color: colors.grey[700] }}>
+              <Text bold style={styles.barLabel}>
                 {bar.label}
               </Text>
               <Star size={12} color={colors.grey[700]} />
@@ -43,6 +43,10 @@ const styles = StyleSheet.create({
   labelContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  barLabel: {
+    fontSize: 12,
+    color: colors.grey[700],
   },
 })
 

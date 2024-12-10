@@ -50,11 +50,6 @@ const styles = StyleSheet.create({
     paddingVertical: 3,
     backgroundColor: colors.grey[100],
   },
-  container: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginVertical: 8,
-  },
   variantItem: {
     flexDirection: 'row',
     alignItems: 'center',

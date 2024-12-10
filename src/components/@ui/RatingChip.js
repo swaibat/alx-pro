@@ -48,7 +48,7 @@ const RatingChip = ({ reviews, average, count }) => {
           <Star key={index} size={average ? 12 : 16} color={colors.grey[400]} />
         )
       })}
-      <Text style={[styles.ratingText, { fontSize: average ? 12 : 13 }]}>
+      <Text style={styles.ratingText(average)}>
         {averageRating.toFixed(1)} ({totalReviews}) {!average && 'Rating(s)'}
       </Text>
     </View>
@@ -62,10 +62,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 5,
   },
-  ratingText: {
+  ratingText: average => ({
     color: colors.grey[800],
-    fontSize: 13,
-  },
+    fontSize: average ? 12 : 13,
+  }),
 })
 
 export default RatingChip

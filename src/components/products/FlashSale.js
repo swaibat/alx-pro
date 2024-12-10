@@ -181,10 +181,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
   },
-  flashSaleSubtitle: {
-    fontSize: 14,
-    color: '#555',
-  },
   countdown: {
     flexDirection: 'row',
     alignItems: 'center',

@@ -1,7 +1,6 @@
 import React from 'react'
 import { View, StyleSheet, FlatList } from 'react-native'
 import { useSelector } from 'react-redux'
-import { colors } from '@/constants/theme'
 import CartItemCard from '@/components/products/CartItemCard'
 import EmptyCart from '@/components/cart/EmptyCart'
 import CartFooter from '@/components/cart/CartFooter'
@@ -41,20 +40,6 @@ const sx = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
-  },
-  footer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingVertical: 5,
-    paddingHorizontal: 15,
-    borderTopWidth: 0.8,
-    borderTopColor: colors.grey[300],
-    backgroundColor: colors.grey[200],
-    elevation: 3,
-  },
-  checkoutButton: {
-    width: 120,
   },
   content: { paddingBottom: 20, gap: 5 },
 })

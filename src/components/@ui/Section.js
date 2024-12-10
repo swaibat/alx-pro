@@ -13,16 +13,8 @@ const Section = ({
   paddingHorizontal,
 }) => {
   return (
-    <View
-      style={[
-        styles.container,
-        {
-          borderBottomWidth: borderBottom ? 10 : 0,
-          borderTopWidth: borderTop ? 10 : 0,
-        },
-      ]}
-    >
-      <View style={[styles.header, { minHeight: title ? 26 : 0 }]}>
+    <View style={styles.container({ borderBottom, borderTop })}>
+      <View style={styles.header(title)}>
         <Text
           style={[
             styles.headerText,
@@ -43,12 +35,15 @@ const Section = ({
 }
 
 const styles = StyleSheet.create({
-  container: {
+  container: ({ borderBottom, borderTop }) => ({
     borderBottomColor: colors.grey[200],
     borderTopColor: colors.grey[200],
     paddingVertical: 7,
-  },
-  header: {
+
+    borderBottomWidth: borderBottom ? 10 : 0,
+    borderTopWidth: borderTop ? 10 : 0,
+  }),
+  header: title => ({
     flex: 1,
     width: '100%',
     paddingHorizontal: 20,
@@ -58,8 +53,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'flex-end',
-    minHeight: 26,
-  },
+    minHeight: title ? 26 : 0,
+  }),
   headerText: {
     textTransform: 'capitalize',
     fontSize: 13,

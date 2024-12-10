@@ -13,7 +13,7 @@ const CartItemCard = ({ item, editable }) => {
       <View style={styles.cartItem}>
         <AppImg src={item.thumbnail} style={styles.productImage} />
         <View style={styles.productInfo}>
-          <Text style={{ fontSize: 14, flexGrow: 1 }} numberOfLines={1}>
+          <Text style={styles.title} numberOfLines={1}>
             {item.title}
           </Text>
           <SelectedVariantsRow selectedVariants={item.variants} />
@@ -38,10 +38,7 @@ const styles = StyleSheet.create({
     padding: 0,
     gap: 10,
   },
-  removeIcon: {
-    // marginLeft: 10,
-    zIndex: 1,
-  },
+  title: { fontSize: 14, flexGrow: 1 },
   productImage: {
     width: 90,
     height: 90,

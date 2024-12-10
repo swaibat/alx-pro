@@ -1,5 +1,5 @@
 import React from 'react'
-import { View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import Svg, { Path } from 'react-native-svg'
 import Animated, {
   useSharedValue,
@@ -46,7 +46,7 @@ const BouncingSVG = () => {
   }))
 
   return (
-    <View style={{ width: 70, height: 30 }}>
+    <View style={styles.container}>
       <Svg width="100%" height="100%" viewBox="0 0 915 476" fill="none">
         {/* Path 1 */}
         <AnimatedPath
@@ -79,3 +79,7 @@ const BouncingSVG = () => {
 }
 
 export default BouncingSVG
+
+const styles = StyleSheet.create({
+  container: { width: 70, height: 30 },
+})

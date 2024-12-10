@@ -22,20 +22,17 @@ const TabBarButton = props => {
           </View>
         )}
       </View>
-      <Text
-        style={{
-          color,
-          fontSize: 11,
-          opacity: isFocused ? 0.8 : 1,
-        }}
-      >
-        {label}
-      </Text>
+      <Text style={styles.label(color, isFocused)}>{label}</Text>
     </Pressable>
   )
 }
 
 const styles = StyleSheet.create({
+  label: (color, isFocused) => ({
+    color,
+    fontSize: 11,
+    opacity: isFocused ? 0.8 : 1,
+  }),
   container: {
     flex: 1,
     justifyContent: 'center',

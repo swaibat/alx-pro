@@ -21,12 +21,41 @@ import { useLocalSearchParams, useRouter } from 'expo-router'
 import Divider from '@/components/@ui/Divider'
 import { colors, theme } from '@/constants/theme'
 
+const SORT_OPTIONS = [
+  {
+    label: 'Highest Price',
+    key: 'price',
+    value: 'desc',
+    icon: <SortDescending size={20} color="#333" />,
+  },
+  {
+    label: 'Lowest Price',
+    key: 'price',
+    value: 'asc',
+    icon: <SortAscending size={20} color="#333" />,
+  },
+  {
+    label: 'Best Rating',
+    key: 'rating',
+    value: 'desc',
+    icon: <SortDescending size={20} color="#333" />,
+  },
+  {
+    label: 'Best Discounts',
+    key: 'discount',
+    value: 'desc',
+    icon: <SortDescending size={20} color="#333" />,
+  },
+]
+
 const SortModal = ({ isLoading, isSuccess, data, isFetching }) => {
   const [isSortModalVisible, setSortModalVisible] = useState(false)
-  const toggleSortModal = () => setSortModalVisible(!isSortModalVisible)
   const [selectedSort, setSelectedSort] = useState({})
   const params = useLocalSearchParams()
   const router = useRouter()
+  const prevDataRef = useRef(data)
+
+  const toggleSortModal = () => setSortModalVisible(!isSortModalVisible)
 
   useEffect(() => {
     if (isSortModalVisible) {
@@ -43,9 +72,7 @@ const SortModal = ({ isLoading, isSuccess, data, isFetching }) => {
         setSelectedSort({})
       }
     }
-  }, [isSortModalVisible])
-
-  const prevDataRef = useRef(data)
+  }, [isSortModalVisible, params])
 
   useEffect(() => {
     if (
@@ -57,7 +84,7 @@ const SortModal = ({ isLoading, isSuccess, data, isFetching }) => {
       toggleSortModal()
     }
     prevDataRef.current = data
-  }, [data, isSuccess, isSortModalVisible, selectedSort, toggleSortModal])
+  }, [data, isSuccess, isSortModalVisible, selectedSort])
 
   const handleSortSelection = option => {
     setSelectedSort({ [`sort[${option.key}]`]: option.value })
@@ -103,7 +130,6 @@ const SortModal = ({ isLoading, isSuccess, data, isFetching }) => {
         <View style={styles.modalBackground}>
           <View style={styles.modalContainer}>
             <Text style={styles.modalTitle}>Sorting</Text>
-            {/* Close Icon Button */}
             <TouchableOpacity
               style={styles.closeIconButton}
               onPress={toggleSortModal}
@@ -111,35 +137,9 @@ const SortModal = ({ isLoading, isSuccess, data, isFetching }) => {
               <X size={24} color="#333" />
             </TouchableOpacity>
 
-            {/* Sort Options */}
             <Divider />
             <ScrollView contentContainerStyle={styles.optionGroup}>
-              {[
-                {
-                  label: 'Highest Price',
-                  key: 'price',
-                  value: 'desc',
-                  icon: <SortDescending size={20} color="#333" />,
-                },
-                {
-                  label: 'Lowest Price',
-                  key: 'price',
-                  value: 'asc',
-                  icon: <SortAscending size={20} color="#333" />,
-                },
-                {
-                  label: 'Best Rating',
-                  key: 'rating',
-                  value: 'desc',
-                  icon: <SortDescending size={20} color="#333" />,
-                },
-                {
-                  label: 'Best Discounts',
-                  key: 'discount',
-                  value: 'desc',
-                  icon: <SortDescending size={20} color="#333" />,
-                },
-              ].map((option, index) => (
+              {SORT_OPTIONS.map((option, index) => (
                 <TouchableOpacity
                   key={index}
                   style={styles.optionButton}
@@ -175,12 +175,13 @@ const SortModal = ({ isLoading, isSuccess, data, isFetching }) => {
               <Button
                 title="Clear Sort"
                 secondary
+                style={styles.bottomBtn}
                 appearance="secondary"
                 onPress={handleClearSort}
               />
               <Button
                 title="Apply Sort"
-                style={{ flex: 1 }}
+                style={styles.bottomBtn}
                 isLoading={isFetching}
                 onPress={handleApplySort}
               />
@@ -256,6 +257,7 @@ const styles = StyleSheet.create({
     flex: 1,
     gap: 5,
   },
+  bottomBtn: { flex: 1 },
 })
 
 export default React.memo(SortModal)

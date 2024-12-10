@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { View, Dimensions } from 'react-native'
+import { View, Dimensions, StyleSheet } from 'react-native'
 import Svg, { Rect } from 'react-native-svg'
 import Animated, {
   useSharedValue,
@@ -13,7 +13,7 @@ import { colors } from '@/constants/theme'
 const AnimatedRect = Animated.createAnimatedComponent(Rect)
 
 const ProgressBar = () => {
-  const { width } = Dimensions.get('window') // Get screen width dynamically
+  const { width } = Dimensions.get('window')
   const progressWidth = useSharedValue(0)
 
   useEffect(() => {
@@ -33,14 +33,9 @@ const ProgressBar = () => {
   }))
 
   return (
-    <View
-      style={{
-        height: 35,
-      }}
-    >
+    <View style={styles.container}>
       <Svg width={width} height="40" viewBox={`0 0 ${width} 40`}>
         <Rect x="0" y="15" width={width} height="20" fill="#003F5F" />
-
         <AnimatedRect
           x="0"
           y="15"
@@ -54,3 +49,9 @@ const ProgressBar = () => {
 }
 
 export default ProgressBar
+
+const styles = StyleSheet.create({
+  container: {
+    height: 35,
+  },
+})

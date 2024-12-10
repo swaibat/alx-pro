@@ -7,7 +7,7 @@ const TermsOfService = () => {
     <>
       <ScrollView
         style={styles.container}
-        contentContainerStyle={{ paddingBottom: 30 }}
+        contentContainerStyle={styles.contentContainerStyle}
       >
         {/* Introduction */}
         <Text style={styles.subheading}>1. Introduction</Text>
@@ -109,9 +109,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     flex: 1,
   },
-  heading: {
-    marginBottom: 20,
-  },
   subheading: {
     marginTop: 20,
     marginBottom: 10,
@@ -125,6 +122,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     color: '#888',
   },
+  contentContainerStyle: { paddingBottom: 30 },
 })
 
 export default TermsOfService

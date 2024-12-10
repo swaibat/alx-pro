@@ -64,7 +64,7 @@ const Input = ({
   }
 
   return (
-    <View style={[{ marginVertical: 7 }, style]}>
+    <View style={[styles.inputContainer, style]}>
       {label && (
         <Text bold style={styles.label}>
           {label}
@@ -86,8 +86,8 @@ const Input = ({
           ref={inputRef}
           style={[
             styles.input,
-            prefix && { paddingLeft: 40 },
-            (suffix || (clearable && value)) && { paddingRight: 40 },
+            prefix && styles.paddingLeft40,
+            (suffix || (clearable && value)) && styles.paddingLeft40,
             styles.mediumInput,
             size === 'large' && styles.largeInput,
             size === 'small' && styles.smallInput,
@@ -164,6 +164,8 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: 10,
   },
+  paddingLeft40: { paddingLeft: 40 },
+  inputContainer: { marginVertical: 7 },
 })
 
 export default Input

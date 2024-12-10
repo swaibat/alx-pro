@@ -11,15 +11,12 @@ const EmptyAddressScreen = () => {
       <View style={styles.content}>
         <Image
           source={require('@/assets/images/empty.png')}
-          style={{ width: 160, height: 160, marginBottom: 10 }}
+          style={styles.image}
         />
-        <Text
-          fontWeight="bold"
-          style={{ textAlign: 'center', marginVertical: 10, fontSize: 16 }}
-        >
+        <Text fontWeight="bold" style={styles.noAddressesText}>
           No Addresses Found
         </Text>
-        <Text secondary style={{ textAlign: 'center' }}>
+        <Text secondary style={styles.addAddressText}>
           Press the Plus button at the bottom right to add Address
         </Text>
       </View>
@@ -41,9 +38,18 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
   },
-  text: {
-    // fontSize: 18,
-    fontWeight: 'bold',
+  image: {
+    width: 160,
+    height: 160,
+    marginBottom: 10,
+  },
+  noAddressesText: {
+    textAlign: 'center',
+    marginVertical: 10,
+    fontSize: 16,
+  },
+  addAddressText: {
+    textAlign: 'center',
   },
 })
 

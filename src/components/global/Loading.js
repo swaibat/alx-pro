@@ -28,9 +28,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 12,
   },
-  retryButton: {
-    marginTop: 10,
-  },
 })
 
 export default Loading

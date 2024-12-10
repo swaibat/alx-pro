@@ -29,10 +29,7 @@ const RenderMessage = ({
 
   return (
     <TouchableOpacity
-      style={{
-        backgroundColor: isLongPressed ? 'red' : 'transparent',
-        marginBottom: 5,
-      }}
+      style={sx.touchableContainer(isLongPressed)}
       onLongPress={e => handleLongPress(item, e)}
       onPressOut={handlePressOut}
     >
@@ -62,6 +59,10 @@ const RenderMessage = ({
 export default RenderMessage
 
 export const sx = StyleSheet.create({
+  touchableContainer: isLongPressed => ({
+    backgroundColor: isLongPressed ? 'red' : 'transparent',
+    marginBottom: 5,
+  }),
   messageContainer: {
     marginVertical: 5,
     padding: 7,

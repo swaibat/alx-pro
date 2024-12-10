@@ -8,7 +8,7 @@ const EmptyCategoryScreen = () => {
       <View style={styles.content}>
         <Image
           source={require('@/assets/images/empty.png')}
-          style={{ width: 160, height: 160, marginBottom: 10 }}
+          style={styles.img}
         />
         <Text secondary>No categories Found</Text>
       </View>
@@ -29,10 +29,7 @@ const styles = StyleSheet.create({
     height: '100%',
     marginTop: -100,
   },
-  text: {
-    // fontSize: 18,
-    fontWeight: 'bold',
-  },
+  img: { width: 160, height: 160, marginBottom: 10 },
 })
 
 export default EmptyCategoryScreen

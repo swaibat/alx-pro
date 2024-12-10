@@ -133,12 +133,6 @@ const sx = StyleSheet.create({
     borderBottomWidth: 0.8,
     borderBottomColor: colors.borderColor,
   },
-  backButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 10,
-    paddingLeft: 16,
-  },
   selectedCategory: {
     backgroundColor: '#f0f0f0',
   },

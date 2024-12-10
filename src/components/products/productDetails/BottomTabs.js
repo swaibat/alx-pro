@@ -56,7 +56,7 @@ const BottomTabs = ({ product, selectedOptions }) => {
           handleAddToCart(true)
           router.push('/checkout')
         }}
-        style={{ flex: 1 }}
+        style={styles.buyNow}
         title="Buy Now"
       />
     </View>
@@ -76,6 +76,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     padding: 10,
   },
+  buyNow: { flex: 1 },
 })
 
 export default BottomTabs

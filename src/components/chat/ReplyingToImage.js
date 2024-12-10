@@ -20,7 +20,7 @@ const ReplyingToImage = ({ replyingTo }) => {
         </View>
       </View>
 
-      <View style={{ flexDirection: 'row', gap: 3 }}>
+      <View style={sx.replyingContainer}>
         {replyingTo.message.map((url, index) => (
           <AppImg key={index} src={url} style={sx.replyPreviewImage} />
         ))}
@@ -50,4 +50,5 @@ const sx = StyleSheet.create({
     padding: 7,
     borderRadius: 5,
   },
+  replyingContainer: { flexDirection: 'row', gap: 3 },
 })

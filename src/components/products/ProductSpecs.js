@@ -27,9 +27,6 @@ const ProductSpecifications = ({ specs = {} }) => {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    borderRadius: 5,
-  },
   specification: {
     borderWidth: 0.5,
     borderBottomColor: colors.grey[400],

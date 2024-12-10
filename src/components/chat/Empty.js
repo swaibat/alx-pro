@@ -41,9 +41,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 10,
   },
-  actionButton: {
-    marginTop: 20,
-  },
 })
 
 export default EmptyChatScreen

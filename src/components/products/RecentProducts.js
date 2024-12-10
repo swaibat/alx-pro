@@ -1,6 +1,6 @@
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
-import { MasonryFlashList } from '@shopify/flash-list' // Import MasonryFlashList
+import { MasonryFlashList } from '@shopify/flash-list'
 import { useGetProductsQuery } from '@/api'
 import productsStateLayout from './states/handleStates'
 import AdCard from './AdCard'
@@ -40,7 +40,7 @@ const RecentProducts = () => {
           <View style={styles.loadMoreButtonContainer}>
             <Button
               secondary
-              style={{ flex: 1, width: '100%' }}
+              style={styles.loadMoreBtn}
               onPress={() => router.push('/ads/list')}
               title="Load More"
             />
@@ -65,6 +65,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 15,
   },
+  loadMoreBtn: { flex: 1, width: '100%' },
 })
 
 export default RecentProducts

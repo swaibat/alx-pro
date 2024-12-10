@@ -45,15 +45,7 @@ const CustomPopover = ({ visible, onClose, options, anchorPosition }) => {
                 onClose()
               }}
             >
-              <View
-                style={{
-                  padding: 8,
-                  borderRadius: 50,
-                  backgroundColor: 'gainsboro',
-                }}
-              >
-                {option.icon}
-              </View>
+              <View style={styles.popoverIcon}>{option.icon}</View>
               <Text style={styles.popoverText}>{option.label}</Text>
             </TouchableOpacity>
           ))}
@@ -80,7 +72,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
   },
   popoverIcon: {
-    marginRight: 8,
+    padding: 8,
+    borderRadius: 50,
+    backgroundColor: 'gainsboro',
   },
   popoverText: {
     fontSize: 11,

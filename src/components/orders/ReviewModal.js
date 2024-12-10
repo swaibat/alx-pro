@@ -57,7 +57,7 @@ const ReviewModal = ({ order }) => {
       {showReviewButton && (
         <Button
           title="Add Review"
-          style={{ borderRadius: 0 }}
+          style={styles.reviewBtn}
           onPress={() => setVisible(true)}
         />
       )}
@@ -196,6 +196,7 @@ const styles = StyleSheet.create({
   submitButton: {
     flex: 1,
   },
+  reviewBtn: { borderRadius: 0 },
 })
 
 export default ReviewModal

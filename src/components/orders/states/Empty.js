@@ -13,7 +13,7 @@ const EmptyOrderScreen = () => {
       <View style={styles.content}>
         <Image
           source={require('@/assets/images/empty.png')}
-          style={{ width: 160, height: 160, marginBottom: 10 }}
+          style={styles.illustration}
         />
         <Text secondary italic>
           No Orders Found
@@ -30,6 +30,11 @@ const EmptyOrderScreen = () => {
 }
 
 const styles = StyleSheet.create({
+  illustration: {
+    width: 160,
+    height: 160,
+    marginBottom: 10,
+  },
   container: {
     flex: 1,
     backgroundColor: 'white',

@@ -101,7 +101,7 @@ export const Button = ({
 
   return Platform.OS === 'android' ? (
     <Pressable
-      style={[buttonStyle, isDisabled || isLoading ? { opacity: 0.5 } : {}]}
+      style={[buttonStyle, isDisabled || isLoading ? styles.light : {}]}
       onPress={onPress}
       disabled={isDisabled || isLoading}
       android_ripple={{ color: '#ddd' }}
@@ -192,4 +192,5 @@ const styles = StyleSheet.create({
   textLight: {
     color: '#fff',
   },
+  light: { opacity: 0.5 },
 })

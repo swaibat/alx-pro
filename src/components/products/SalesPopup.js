@@ -93,7 +93,7 @@ const SalesPopup = () => {
         }}
         style={styles.productImage}
       />
-      <View style={{ flex: 1 }}>
+      <View style={styles.content}>
         <View style={styles.text}>
           <Text style={styles.userName} numberOfLines={1}>
             {currentProduct.userName} from {currentProduct.location} just bought
@@ -142,6 +142,7 @@ const styles = StyleSheet.create({
     fontStyle: 'italic',
     fontSize: 10,
   },
+  content: { flex: 1 },
 })
 
 export default SalesPopup

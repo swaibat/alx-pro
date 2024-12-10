@@ -52,7 +52,7 @@ const HelpCenterScreen = () => {
   const renderContactItem = ({ label, number, email }) => (
     <View key={label} style={styles.contactItemCard}>
       <View style={styles.contactItem}>
-        <View style={{ flexDirection: 'row' }}>
+        <View style={styles.flexRow}>
           <View style={styles.iconTextRow}>
             <Phone size={20} color="#007bff" weight="fill" />
           </View>
@@ -63,7 +63,7 @@ const HelpCenterScreen = () => {
             {number}
           </Text>
         </View>
-        <View style={{ flexDirection: 'row' }}>
+        <View style={styles.flexRow}>
           <View style={styles.iconTextRow}>
             <Envelope size={20} color="#007bff" weight="fill" />
           </View>
@@ -175,11 +175,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 4,
   },
-  contactText: {
-    fontSize: 16,
-    color: '#333',
-    marginLeft: 6,
-  },
   contactNumber: {
     fontSize: 15,
     color: '#007bff',
@@ -195,6 +190,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#E0E0E0',
     marginVertical: 8,
   },
+  flexRow: { flexDirection: 'row' },
 })
 
 export default HelpCenterScreen

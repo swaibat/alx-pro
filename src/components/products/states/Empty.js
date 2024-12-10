@@ -3,7 +3,6 @@ import { View, StyleSheet, Image, Dimensions } from 'react-native'
 import { Text } from '@/components/@ui/Text'
 
 const EmptyCategoryScreen = () => {
-  // Get the screen height and subtract 250px
   const screenHeight = Dimensions.get('window').height
   const adjustedHeight = screenHeight - 250
 
@@ -12,7 +11,7 @@ const EmptyCategoryScreen = () => {
       <View>
         <Image
           source={require('@/assets/images/empty.png')}
-          style={{ width: 160, height: 160, marginBottom: 10 }}
+          style={styles.img}
         />
         <Text secondary italic>
           No Products Found
@@ -31,6 +30,7 @@ const styles = StyleSheet.create({
     width: '100%',
     marginTop: 'auto',
   },
+  img: { width: 160, height: 160, marginBottom: 10 },
 })
 
 export default EmptyCategoryScreen
