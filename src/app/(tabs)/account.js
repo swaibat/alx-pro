@@ -82,6 +82,9 @@ export default function Component() {
             <Text style={{ color: colors.grey[700] }}>
               {user?.phoneNumber || 'Guest'}
             </Text>
+            <Text style={{ color: colors.grey[700] }}>
+              {user?.email || 'Guest'}
+            </Text>
           </View>
         </View>
 

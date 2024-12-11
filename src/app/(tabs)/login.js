@@ -14,84 +14,42 @@ import Divider from '@/components/@ui/Divider'
 import Input from '@/components/@ui/Input'
 import PhoneInput from '@/components/@ui/PhoneInput'
 import { colors } from '@/constants/theme'
-import {
-  GoogleSignin,
-  GoogleSigninButton,
-  statusCodes,
-} from '@react-native-google-signin/google-signin'
-
-GoogleSignin.configure({
-  webClientId:
-    '1092795515916-mgkor2u2mfedg0ijpm9sjr9f6r3583b2.apps.googleusercontent.com',
-  scopes: ['https://www.googleapis.com/auth/drive.readonly'],
-  offlineAccess: true,
-  iosClientId:
-    '1092795515916-5mnrtm7d9mf9e082m8c49h8qn9iol4a3.apps.googleusercontent.com',
-  profileImageSize: 120,
-})
 
 const LoginScreen = () => {
   const router = useRouter()
   const route = usePathname()
   const dispatch = useDispatch()
   const { triggerSnackbar } = useSnackbar()
+  const [activeTab, setActiveTab] = useState('phone')
   const [phoneNumber, setPhoneNumber] = useState('')
+  const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [login, { isLoading }] = useLoginMutation()
 
   const phoneValidationRegex = /^(75|74|70|78|77|76|3|2)\d{7}$/
-
-  // Google sign-in function
-  const handleGoogleSignIn = async () => {
-    try {
-      await GoogleSignin.hasPlayServices()
-      const response = await GoogleSignin.signIn()
-
-      // Check if Google sign-in response is successful
-      if (response) {
-        const { user } = response
-        const userInfo = {
-          name: user.name,
-          email: user.email,
-          photoUrl: user.photo,
-          googleId: user.id,
-        }
-
-        // Optionally handle storing the user info in AsyncStorage and Redux store
-        await AsyncStorage.setItem('@user', JSON.stringify(userInfo))
-        dispatch(setAuthState({ user: userInfo }))
-
-        triggerSnackbar('Google Sign-In Successful!', 'success')
-
-        if (route.match('login')) {
-          router.push('/')
-        }
-      }
-    } catch (error) {
-      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
-        triggerSnackbar('Sign-In was cancelled', 'error')
-      } else if (error.code === statusCodes.IN_PROGRESS) {
-        triggerSnackbar('Sign-In already in progress', 'error')
-      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-        triggerSnackbar('Play Services not available or outdated', 'error')
-      } else {
-        triggerSnackbar('An error occurred during Google Sign-In', 'error')
-      }
-    }
-  }
+  const emailValidationRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
   const handleLogin = async () => {
-    if (!phoneNumber || !phoneValidationRegex.test(phoneNumber)) {
-      triggerSnackbar('Please enter a valid phone number', 'error')
-      return
+    if (activeTab === 'phone') {
+      if (!phoneNumber || !phoneValidationRegex.test(phoneNumber)) {
+        triggerSnackbar('Please enter a valid phone number', 'error')
+        return
+      }
+    } else {
+      if (!email || !emailValidationRegex.test(email)) {
+        triggerSnackbar('Please enter a valid email address', 'error')
+        return
+      }
     }
     if (!password) {
       triggerSnackbar('Please enter your password', 'error')
       return
     }
     try {
-      const response = await login({ phoneNumber, password }).unwrap()
+      const credentials =
+        activeTab === 'phone' ? { phoneNumber, password } : { email, password }
+      const response = await login(credentials).unwrap()
       if (response.status === 200) {
         await AsyncStorage.setItem('@user', JSON.stringify(response.data))
         dispatch(setAuthState({ user: response?.data.user }))
@@ -114,10 +72,21 @@ const LoginScreen = () => {
   }
 
   const isPhoneNumberValid = phoneValidationRegex.test(phoneNumber)
-  const isFormFilled = phoneNumber.length > 0 && password.length > 0 // Check if both fields are filled
+  const isEmailValid = emailValidationRegex.test(email)
+  const isFormFilled =
+    activeTab === 'phone'
+      ? phoneNumber.length > 0 && password.length > 0
+      : email.length > 0 && password.length > 0
 
   const renderPhoneAccessoryRight = () =>
     isPhoneNumberValid ? (
+      <CheckCircle size={24} weight="fill" />
+    ) : (
+      <Question size={24} weight="fill" />
+    )
+
+  const renderEmailAccessoryRight = () =>
+    isEmailValid ? (
       <CheckCircle size={24} weight="fill" />
     ) : (
       <Question size={24} weight="fill" />
@@ -128,15 +97,45 @@ const LoginScreen = () => {
       <View style={styles.container}>
         <View>
           <LoginIllustration />
-          <PhoneInput
-            label="Phone Number"
-            testID="phone"
-            placeholder="Enter phone number"
-            onChangeText={text => setPhoneNumber(text)}
-            accessoryLeft={() => <Text style={styles.countryCode}>+256</Text>}
-            accessoryRight={renderPhoneAccessoryRight}
-            keyboardType="numeric"
-          />
+          <View style={styles.tabsContainer}>
+            <TouchableOpacity
+              style={
+                activeTab === 'phone' ? styles.activeTab : styles.inactiveTab
+              }
+              onPress={() => setActiveTab('phone')}
+            >
+              <Text style={styles.tabText}>Phone</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={
+                activeTab === 'email' ? styles.activeTab : styles.inactiveTab
+              }
+              onPress={() => setActiveTab('email')}
+            >
+              <Text style={styles.tabText}>Email</Text>
+            </TouchableOpacity>
+          </View>
+          {activeTab === 'phone' ? (
+            <PhoneInput
+              label="Phone Number"
+              testID="phone"
+              placeholder="Enter phone number"
+              onChangeText={text => setPhoneNumber(text)}
+              accessoryLeft={() => <Text style={styles.countryCode}>+256</Text>}
+              accessoryRight={renderPhoneAccessoryRight}
+              keyboardType="numeric"
+            />
+          ) : (
+            <Input
+              label="Email"
+              testID="email"
+              placeholder="Enter email"
+              value={email}
+              onChangeText={setEmail}
+              accessoryRight={renderEmailAccessoryRight}
+              keyboardType="email-address"
+            />
+          )}
           <Input
             label="Password"
             testID="password"
@@ -164,13 +163,12 @@ const LoginScreen = () => {
             onPress={handleLogin}
             isLoading={isLoading}
             title={'Login'}
-            isDisabled={isLoading || !isFormFilled || !isPhoneNumberValid}
-          />
-
-          {/* Google Sign-In Button */}
-          <GoogleSigninButton
-            onPress={handleGoogleSignIn}
-            style={styles.googleButton}
+            isDisabled={
+              isLoading ||
+              !isFormFilled ||
+              (activeTab === 'phone' && !isPhoneNumberValid) ||
+              (activeTab === 'email' && !isEmailValid)
+            }
           />
 
           <Divider
@@ -209,11 +207,6 @@ const styles = StyleSheet.create({
     width: '80%',
     maxWidth: 400,
   },
-  googleButton: {
-    width: '100%',
-    height: 48,
-    marginVertical: 15,
-  },
   countryCode: {
     marginRight: 10,
     fontWeight: 'bold',
@@ -228,6 +221,27 @@ const styles = StyleSheet.create({
     textDecorationLine: 'underline',
   },
   divider: { marginVertical: 25 },
+  tabsContainer: {
+    flexDirection: 'row',
+    marginBottom: 20,
+  },
+  activeTab: {
+    flex: 1,
+    padding: 10,
+    borderBottomWidth: 2,
+    borderBottomColor: colors.orange[300],
+    alignItems: 'center',
+  },
+  inactiveTab: {
+    flex: 1,
+    padding: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: 'gray',
+    alignItems: 'center',
+  },
+  tabText: {
+    fontWeight: 'bold',
+  },
 })
 
 export default LoginScreen

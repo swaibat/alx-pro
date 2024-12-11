@@ -105,10 +105,10 @@ export const api = createApi({
       }),
     }),
     login: builder.mutation({
-      query: ({ phoneNumber, password }) => ({
+      query: payload => ({
         url: 'auth/login',
         method: 'POST',
-        body: { phoneNumber, password },
+        body: payload,
       }),
     }),
     getAddress: builder.query({
@@ -154,8 +154,8 @@ export const api = createApi({
         `/reviews/product/${productId}?limit=${limit}`,
     }),
     sendOtp: builder.mutation({
-      query: ({ phoneNumber, type }) => ({
-        url: `/sms/otp/send/${phoneNumber}?type=${type}`,
+      query: ({ payload, type }) => ({
+        url: `/sms/otp/send/${payload}?type=${type}`,
         method: 'POST',
       }),
     }),

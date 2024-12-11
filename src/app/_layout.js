@@ -9,7 +9,7 @@ import { HeaderRight } from '@/components/@ui/HeaderRight'
 import * as Font from 'expo-font'
 import Entypo from '@expo/vector-icons/Entypo'
 import SplashScreenComponent from '@/components/global/SplashScreenComponent'
-// import SalesPopup from '@/components/products/SalesPopup'
+import SalesPopup from '@/components/products/SalesPopup'
 
 SplashScreen.preventAutoHideAsync()
 
@@ -142,7 +142,7 @@ const RootLayout = () => {
       </Stack>
       <StatusBar style="auto" />
       <AppSnackbar />
-      {/* <SalesPopup /> */}
+      <SalesPopup />
     </Provider>
   )
 }

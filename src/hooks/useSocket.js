@@ -5,61 +5,47 @@ import { useGetMessagesQuery } from '@/api'
 import { useSelector } from 'react-redux'
 
 export const useSocket = () => {
-  const [sockets, setSockets] = useState([])
+  const [socket, setSocket] = useState(null) // Use a single socket connection
   const { refetch } = useGetMessagesQuery(undefined, {
-    skip: sockets.length === 0,
+    skip: !socket, // Skip the query if socket isn't initialized
   })
   const { user } = useSelector(state => state.auth)
 
   useEffect(() => {
     if (!user?._id) return
 
-    // List of server URLs
-    const serverUrls = [
-      Constants.expoConfig.extra.SERVER_URL,
-      Constants.expoConfig.extra.SERVER_URL_1,
-      Constants.expoConfig.extra.SERVER_URL_2,
-      // Add more server URLs here
-    ]
+    // Use only SERVER_URL_1 for the socket connection
+    const serverUrl = Constants.expoConfig.extra.SERVER_URL_1
 
-    // Initialize connections to multiple servers
-    const newSockets = serverUrls.map(url =>
-      io(url, {
-        transports: ['websocket'],
-        auth: {
-          userID: user?._id,
-          name: user?.name,
-        },
-        autoConnect: true,
-        reconnection: true,
-      })
-    )
+    // Initialize connection to the server
+    const newSocket = io(serverUrl, {
+      transports: ['websocket'],
+      auth: {
+        userID: user?._id,
+        name: user?.name,
+      },
+      autoConnect: true,
+      reconnection: true,
+    })
 
-    setSockets(newSockets)
+    setSocket(newSocket)
 
-    // Clean up connections on unmount
     return () => {
-      newSockets.forEach(socket => socket.disconnect())
+      newSocket.disconnect()
     }
   }, [user])
 
   useEffect(() => {
-    if (sockets.length > 0 && user?._id) {
+    if (socket && user?._id) {
       const event = `PC_${user?._id}`
-
-      sockets.forEach(socket => {
-        socket.on(event, () => {
-          refetch()
-        })
+      socket.on(event, () => {
+        refetch()
       })
-
       return () => {
-        sockets.forEach(socket => {
-          socket.off(event)
-        })
+        socket.off(event)
       }
     }
-  }, [sockets, user])
+  }, [socket, user, refetch])
 
-  return { sockets } // Return all socket instances if needed
+  return { socket }
 }

@@ -39,12 +39,12 @@ const OtpRegisterScreen = () => {
   const { time: timer, isRunning, startTimer } = useTimer(30)
 
   const [step, setStep] = useState(Number(initialStep) || 1)
+  const [tab, setTab] = useState('phoneNumber') // Added for tab control
   const [phoneNumber, setPhoneNumber] = useState(initialPhoneNumber || '')
   const [otp, setOtp] = useState('')
   const [fullName, setFullName] = useState('')
   const [password, setPassword] = useState('')
   const [email, setEmail] = useState('')
-
   const [showPassword, setShowPassword] = useState(false)
 
   const phoneValidationRegex = /^(75|74|70|78|77|76|3|2)\d{7}$/
@@ -56,6 +56,7 @@ const OtpRegisterScreen = () => {
 
   const resetFields = () => {
     setStep(Number(initialStep) || 1)
+    setTab('phoneNumber') // Reset to default tab
     setPhoneNumber(initialPhoneNumber || '')
     setOtp('')
     setFullName('')
@@ -64,28 +65,50 @@ const OtpRegisterScreen = () => {
   }
 
   const handleOtpRequest = async () => {
-    if (!phoneNumber || !phoneValidationRegex.test(phoneNumber)) {
-      triggerSnackbar(
-        'Please enter a valid phone number (format: 75XXXXXXX, 74XXXXXXX, etc.)',
-        'error'
-      )
-      return
-    }
-    try {
-      const res = await sendOtp({
-        phoneNumber: phoneNumber,
-        type: 'register',
-      }).unwrap()
-      setPhoneNumber(res.phoneNumber)
-      triggerSnackbar(res.message, 'success')
-      setStep(2)
-      router.push(`/register?step=2&phoneNumber=${res.phoneNumber}`)
-      startTimer()
-    } catch (error) {
-      triggerSnackbar(
-        error?.data?.message || 'Failed to send OTP. Please try again.',
-        'error'
-      )
+    if (tab === 'phoneNumber') {
+      if (!phoneNumber || !phoneValidationRegex.test(phoneNumber)) {
+        triggerSnackbar(
+          'Please enter a valid phone number (format: 75XXXXXXX, 74XXXXXXX, etc.)',
+          'error'
+        )
+        return
+      }
+      try {
+        const res = await sendOtp({
+          payload: phoneNumber,
+          type: 'register',
+        }).unwrap()
+        setPhoneNumber(res.phoneNumber)
+        triggerSnackbar(res.message, 'success')
+        setStep(2)
+        router.push(`/register?step=2&phoneNumber=${res.phoneNumber}`)
+        startTimer()
+      } catch (error) {
+        triggerSnackbar(
+          error?.data?.message || 'Failed to send OTP. Please try again.',
+          'error'
+        )
+      }
+    } else if (tab === 'email') {
+      if (!email || !emailValidationRegex.test(email)) {
+        triggerSnackbar('Please enter a valid email address.', 'error')
+        return
+      }
+      try {
+        const res = await sendOtp({
+          payload: email,
+          type: 'register',
+        }).unwrap()
+        triggerSnackbar(res.message, 'success')
+        setStep(2)
+        router.push(`/register?step=2&email=${res.email}`)
+        startTimer()
+      } catch (error) {
+        triggerSnackbar(
+          error?.data?.message || 'Failed to send OTP. Please try again.',
+          'error'
+        )
+      }
     }
   }
 
@@ -96,7 +119,7 @@ const OtpRegisterScreen = () => {
     }
     try {
       const response = await verifyOtp({
-        phoneNumber: phoneNumber,
+        authId: tab === 'email' ? email : phoneNumber,
         code: otp,
       }).unwrap()
       if (response.status === 200) {
@@ -183,7 +206,7 @@ const OtpRegisterScreen = () => {
 
   const handleWrongNumber = () => {
     setStep(1)
-    router.replace(`/register?step=1`)
+    router.replace('/register?step=1')
   }
 
   return (
@@ -194,33 +217,85 @@ const OtpRegisterScreen = () => {
             {step === 1 && (
               <>
                 <LoginIllustration />
-                <Text bold style={styles.title} testID="title">
-                  Enter Phone Number
-                </Text>
-                <Text style={styles.description} testID="description">
-                  We will send you a one-time password to your mobile number.
-                </Text>
-                <PhoneInput
-                  style={styles.input}
-                  placeholder="Phone Number"
-                  dismissIfValid
-                  value={phoneNumber}
-                  onChangeText={handleChangePhoneNumber}
-                  testID="phoneInput"
-                />
-                <Button
-                  style={styles.button}
-                  mode="contained"
-                  onPress={handleOtpRequest}
-                  isDisabled={
-                    !phoneNumber ||
-                    !phoneValidationRegex.test(phoneNumber) ||
-                    isSendingOtp
-                  }
-                  isLoading={isSendingOtp}
-                  testID="sendOtpButton"
-                  title="Send OTP"
-                />
+
+                <View style={styles.tabContainer}>
+                  <TouchableOpacity
+                    style={
+                      tab === 'phoneNumber' ? styles.activeTab : styles.tab
+                    }
+                    onPress={() => setTab('phoneNumber')}
+                  >
+                    <Text style={styles.tabText}>Phone</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={tab === 'email' ? styles.activeTab : styles.tab}
+                    onPress={() => setTab('email')}
+                  >
+                    <Text style={styles.tabText}>Email</Text>
+                  </TouchableOpacity>
+                </View>
+
+                {tab === 'phoneNumber' && (
+                  <>
+                    <Text bold style={styles.title} testID="title">
+                      Enter Phone Number
+                    </Text>
+                    <Text style={styles.description} testID="description">
+                      We will send you a one-time password to your mobile
+                      number.
+                    </Text>
+                    <PhoneInput
+                      style={styles.input}
+                      placeholder="Phone Number"
+                      dismissIfValid
+                      value={phoneNumber}
+                      onChangeText={handleChangePhoneNumber}
+                      testID="phoneInput"
+                    />
+                    <Button
+                      style={styles.button}
+                      mode="contained"
+                      onPress={handleOtpRequest}
+                      isDisabled={
+                        !phoneNumber ||
+                        !phoneValidationRegex.test(phoneNumber) ||
+                        isSendingOtp
+                      }
+                      isLoading={isSendingOtp}
+                      testID="sendOtpButton"
+                      title="Send OTP"
+                    />
+                  </>
+                )}
+
+                {tab === 'email' && (
+                  <>
+                    <Text bold style={styles.title} testID="title">
+                      Enter Email Address
+                    </Text>
+                    <Text style={styles.description} testID="description">
+                      We will send you a one-time password to your email
+                      address.
+                    </Text>
+                    <Input
+                      style={styles.input}
+                      placeholder="Email Address"
+                      value={email}
+                      onChangeText={setEmail}
+                      keyboardType="email-address"
+                      testID="emailInput"
+                    />
+                    <Button
+                      style={styles.button}
+                      mode="contained"
+                      onPress={handleOtpRequest}
+                      isDisabled={!email || isSendingOtp}
+                      isLoading={isSendingOtp}
+                      testID="sendOtpButton"
+                      title="Send OTP"
+                    />
+                  </>
+                )}
                 <Divider
                   type="horizontal"
                   color="gray"
@@ -428,6 +503,31 @@ const styles = StyleSheet.create({
   },
   divider: {
     marginVertical: 25,
+  },
+  tabContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 20,
+  },
+  tab: {
+    flex: 1,
+    alignItems: 'center',
+    paddingVertical: 7,
+    marginHorizontal: 5,
+    backgroundColor: '#f0f0f0',
+    borderRadius: 5,
+  },
+  activeTab: {
+    flex: 1,
+    alignItems: 'center',
+    paddingVertical: 7,
+    marginHorizontal: 5,
+    backgroundColor: colors.orange[300],
+    borderRadius: 5,
+  },
+  tabText: {
+    color: 'black',
+    fontWeight: 'bold',
   },
 })
 

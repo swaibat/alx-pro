@@ -1,105 +1,59 @@
 import { colors } from '@/constants/theme'
+import { useSocket } from '@/hooks/useSocket'
 import React, { useState, useEffect } from 'react'
-import { View, Text, Image, StyleSheet, Animated } from 'react-native'
-
-const dummyProducts = [
-  {
-    productName: 'Wireless Headphones',
-    price: '$49.99',
-    userName: 'J***D',
-    userAvatar: 'https://randomuser.me/api/portraits/men/1.jpg',
-    productImage: 'https://via.placeholder.com/100', // Dummy product image
-    location: 'Kampala',
-    timestamp: '3 minutes ago',
-  },
-  {
-    productName: 'Smartphone',
-    price: '$299.99',
-    userName: 'J***D',
-    userAvatar: 'https://randomuser.me/api/portraits/women/1.jpg',
-    productImage: 'https://via.placeholder.com/100', // Dummy product image
-    location: 'Entebbe',
-    timestamp: '5 minutes ago',
-  },
-  {
-    productName: 'Gaming Laptop',
-    price: '$899.99',
-    userName: 'C***R',
-    userAvatar: 'https://randomuser.me/api/portraits/men/2.jpg',
-    productImage: 'https://via.placeholder.com/100', // Dummy product image
-    location: 'Kampala',
-    timestamp: '2 minutes ago',
-  },
-  {
-    productName: 'Bluetooth Speaker',
-    price: '$59.99',
-    userName: 'M***G',
-    userAvatar: 'https://randomuser.me/api/portraits/women/2.jpg',
-    productImage: 'https://via.placeholder.com/100', // Dummy product image
-    location: 'Mbarara',
-    timestamp: '10 minutes ago',
-  },
-  {
-    productName: 'Fitness Tracker',
-    price: '$99.99',
-    userName: 'M***L',
-    userAvatar: 'https://randomuser.me/api/portraits/men/3.jpg',
-    productImage: 'https://via.placeholder.com/100', // Dummy product image
-    location: 'Gulu',
-    timestamp: '1 minute ago',
-  },
-]
+import { View, Text, StyleSheet, Animated } from 'react-native'
+import AppImg from '../@ui/AppImg'
 
 const SalesPopup = () => {
   const [visible, setVisible] = useState(false)
   const [currentProduct, setCurrentProduct] = useState({})
   const [opacity] = useState(new Animated.Value(0))
+  const { socket } = useSocket()
 
   useEffect(() => {
-    const timer = setInterval(
-      () => {
-        const randomProduct =
-          dummyProducts[Math.floor(Math.random() * dummyProducts.length)]
-        setCurrentProduct(randomProduct)
-        setVisible(true)
+    // Listen for the latest product event from the server
+    socket?.on('latestProduct', product => {
+      if (product) {
+        setCurrentProduct(product) // Set the received product
+        setVisible(true) // Show the popup
+
+        // Animate the opacity to make it fade in
         Animated.timing(opacity, {
           toValue: 1,
           duration: 500,
           useNativeDriver: true,
         }).start()
 
+        // Hide the popup after 5 seconds
         setTimeout(() => {
           Animated.timing(opacity, {
             toValue: 0,
             duration: 500,
             useNativeDriver: true,
           }).start()
-          setTimeout(() => setVisible(false), 500)
+          setTimeout(() => setVisible(false), 500) // Hide after fade-out
         }, 5000)
-      },
-      Math.random() * 100000 + 3000
-    )
+      }
+    })
 
-    return () => clearInterval(timer)
-  }, [opacity])
+    // Cleanup the event listener when component unmounts
+    return () => {
+      socket?.off('latestProduct') // Correct event name in cleanup
+    }
+  }, [socket, opacity])
 
   if (!visible) return null
 
   return (
     <Animated.View style={[styles.notification, { opacity }]}>
-      <Image
-        source={{
-          uri: 'https://sc04.alicdn.com/kf/Hd706b9ff3e6241fcab2bbc18804adc5cF.jpg_100x100.jpg',
-        }}
-        style={styles.productImage}
-      />
+      <AppImg src={currentProduct?.thumbnail} style={styles.productImage} />
       <View style={styles.content}>
         <View style={styles.text}>
           <Text style={styles.userName} numberOfLines={1}>
-            {currentProduct.userName} from {currentProduct.location} just bought
+            {currentProduct.username} from {currentProduct.address} just bought
           </Text>
           <Text style={styles.productName} numberOfLines={1}>
-            {currentProduct.productName}
+            {currentProduct.title}
           </Text>
         </View>
         <Text style={styles.timestamp}>{currentProduct.timestamp}</Text>
