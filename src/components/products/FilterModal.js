@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React from 'react'
 import {
   Modal,
   View,
@@ -15,118 +15,26 @@ import {
   Star,
   X,
 } from 'phosphor-react-native'
-import { useLocalSearchParams, useRouter } from 'expo-router'
 import Divider from '@/components/@ui/Divider'
 import { Button } from '@/components/@ui/Button'
 import { colors } from '@/constants/theme'
-
-const ITEMS_PER_PAGE = 50
+import useFilter from '@/hooks/useFilter'
 
 const FilterModal = ({ isLoading, isSuccess, data, isFetching }) => {
-  const [visible, setFilterModalVisible] = useState(false)
-  const router = useRouter()
-  const params = useLocalSearchParams()
-  const [filterState, setFilterState] = useState({
-    discount: 'All',
-    minPrice: '',
-    maxPrice: '',
-    shipping: 'All',
-    rating: 'All',
-    isLocalStore: 'All',
-  })
-
-  const toggleFilterModal = () => setFilterModalVisible(!visible)
-
-  const handleDiscountSelect = label => {
-    setFilterState(prev => ({ ...prev, discount: label }))
-  }
-
-  const handleLocalStoreSelect = label => {
-    setFilterState(prev => ({ ...prev, isLocalStore: label }))
-  }
-
-  const handlePriceChange = (type, value) => {
-    setFilterState(prev => ({ ...prev, [type]: value }))
-  }
-
-  const handleShippingSelect = selectedShipping => {
-    setFilterState(prev => ({ ...prev, shipping: selectedShipping }))
-  }
-
-  const handleRatingSelect = selectedRating => {
-    setFilterState(prev => ({ ...prev, rating: selectedRating }))
-  }
-
-  const hasFilters = () => {
-    return (
-      filterState.discount !== 'All' ||
-      filterState.minPrice ||
-      filterState.maxPrice ||
-      filterState.shipping !== 'All' ||
-      filterState.rating !== 'All' ||
-      filterState.isLocalStore !== 'All'
-    )
-  }
-
-  const prevDataRef = useRef(data)
-
-  useEffect(() => {
-    if (isSuccess && visible && prevDataRef.current !== data && hasFilters()) {
-      toggleFilterModal()
-    }
-    prevDataRef.current = data
-  }, [data, isSuccess, visible, filterState, toggleFilterModal])
-
-  const applyFilter = () => {
-    const paramsData = {
-      ...params,
-      ...filterState,
-      limit: ITEMS_PER_PAGE,
-    }
-    Object.keys(paramsData).forEach(key => {
-      if (!paramsData[key] || paramsData[key] === 'All') {
-        delete paramsData[key]
-      }
-    })
-    router.push({
-      pathname: 'ads/list',
-      params: paramsData,
-    })
-  }
-
-  const handleClearFilters = () => {
-    const filterKeys = [
-      'discount',
-      'minPrice',
-      'maxPrice',
-      'shipping',
-      'rating',
-      'isLocalStore',
-    ]
-    const filteredParams = Object.fromEntries(
-      Object.entries(params).filter(([key]) => !filterKeys.includes(key))
-    )
-
-    setFilterState({
-      discount: 'All',
-      minPrice: '',
-      maxPrice: '',
-      shipping: 'All',
-      rating: null,
-      isLocalStore: 'All',
-    })
-    router.push({ pathname: 'ads/list', params: filteredParams })
-  }
-  //TODO:
-  // if (
-  //   !data?.data?.docs?.length &&
-  //   !hasFilters() &&
-  //   params.categoryId &&
-  //   !isLoading &&
-  //   !isFetching
-  // ) {
-  //   return null
-  // }
+  const {
+    visible,
+    // setFilterModalVisible,
+    filterState,
+    toggleFilterModal,
+    handleDiscountSelect,
+    handleLocalStoreSelect,
+    handlePriceChange,
+    handleShippingSelect,
+    handleRatingSelect,
+    applyFilter,
+    handleClearFilters,
+    hasFilters,
+  } = useFilter(isLoading, isSuccess, data, isFetching)
 
   return (
     <>

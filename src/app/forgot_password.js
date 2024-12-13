@@ -69,7 +69,7 @@ const PasswordResetScreen = () => {
 
     try {
       const res = await sendOtp({
-        payload: phoneNumber,
+        authId: phoneNumber,
         type: 'password_reset',
       }).unwrap()
       setPhoneNumber(res.phoneNumber)
@@ -89,7 +89,7 @@ const PasswordResetScreen = () => {
     if (!phoneNumber) return
 
     try {
-      await sendOtp({ payload:phoneNumber, type: 'password_reset' }).unwrap()
+      await sendOtp({ payload: phoneNumber, type: 'password_reset' }).unwrap()
       triggerSnackbar('OTP has been resent successfully.', 'success')
       setTimer(30)
       setCanResend(false)

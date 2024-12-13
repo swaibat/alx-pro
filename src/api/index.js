@@ -154,8 +154,8 @@ export const api = createApi({
         `/reviews/product/${productId}?limit=${limit}`,
     }),
     sendOtp: builder.mutation({
-      query: ({ payload, type }) => ({
-        url: `/sms/otp/send/${payload}?type=${type}`,
+      query: ({ authId, type }) => ({
+        url: `/sms/otp/send/${authId}?type=${type}`,
         method: 'POST',
       }),
     }),

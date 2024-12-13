@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Tabs, useRouter } from 'expo-router'
+import { Tabs, usePathname, useRouter } from 'expo-router'
 import { View, StyleSheet } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { setAuthState } from '@/store/authSlice'
@@ -12,6 +12,7 @@ import { colors } from '@/constants/theme'
 import { useSocket } from '@/hooks/useSocket'
 import { usePushNotifications } from '@/scripts/NotificationsService'
 import { useSnackbar } from '@/hooks/useSnackbar'
+import { StatusBar } from 'expo-status-bar'
 
 const CustomHeaderTitle = ({ title, onBackPress, isCentered = false }) => {
   return (
@@ -35,6 +36,7 @@ export default function TabLayout() {
   const dispatch = useDispatch()
   const { user } = useSelector(state => state.auth)
   const { triggerSnackbar } = useSnackbar()
+  const pathname = usePathname()
 
   useEffect(() => {
     const loadUser = async () => {
@@ -54,119 +56,99 @@ export default function TabLayout() {
   }, [user, dispatch])
 
   return (
-    <Tabs tabBar={props => <TabBar {...props} />}>
-      <Tabs.Screen
-        name="index"
-        options={{ title: 'Home', headerShown: false }}
-      />
-      <Tabs.Screen
-        name="cart"
-        options={{
-          headerStyle: styles.headerStyle,
-          headerShadowVisible: false,
-          headerTitle: () => <Text style={styles.cartHeaderTitle}>Cart</Text>,
-          headerRight: () => (
-            <View style={styles.headerRightContainer}>
-              <TouchableOpacity onPress={() => router.push('/search')}>
-                <MagnifyingGlass size={24} />
-              </TouchableOpacity>
-            </View>
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="category"
-        options={{
-          title: 'Categories',
-          headerStyle: styles.categoryHeaderStyle,
-          headerShadowVisible: false,
-          headerRight: () => (
-            <View style={styles.headerRightContainer}>
-              <TouchableOpacity onPress={() => router.push('/search')}>
-                <MagnifyingGlass size={24} />
-              </TouchableOpacity>
-            </View>
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="chat"
-        options={{
-          title: 'Chat',
-          headerShown: false,
-          headerShadowVisible: false,
-        }}
-      />
-      <Tabs.Screen
-        name="account"
-        options={{
-          headerTitle: () => (
-            <CustomHeaderTitle
-              title="Account"
-              onBackPress={() => router.push('/account')}
-            />
-          ),
-          headerShadowVisible: false,
-        }}
-      />
-      <Tabs.Screen
-        name="orders/index"
-        options={{
-          title: '',
-          headerShown: true,
-          headerShadowVisible: false,
-          headerTitle: () => (
-            <CustomHeaderTitle
-              title="My Orders"
-              onBackPress={() => router.push('/account')}
-            />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="register"
-        options={{
-          title: 'Register',
-          headerShadowVisible: false,
-        }}
-      />
-      <Tabs.Screen
-        name="search"
-        options={{
-          title: 'Search',
-          headerShadowVisible: false,
-        }}
-      />
-      <Tabs.Screen
-        name="login"
-        options={{
-          title: 'Login',
-          headerShadowVisible: false,
-        }}
-      />
-      <Tabs.Screen
-        name="orders/[id]"
-        options={{
-          title: '',
-          headerShown: true,
-          headerShadowVisible: false,
-          headerTitle: () => (
-            <CustomHeaderTitle
-              title="Order Details"
-              onBackPress={() => router.push('/orders')}
-            />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="address/index"
-        options={{
-          title: 'Address Book',
-          headerShown: true,
-          headerShadowVisible: false,
-        }}
-      />
-    </Tabs>
+    <>
+      <StatusBar style={pathname === '/' ? 'inverted' : 'dark'} />
+      <Tabs tabBar={props => <TabBar {...props} />}>
+        <Tabs.Screen
+          name="index"
+          options={{ title: 'Home', headerShown: false }}
+        />
+        <Tabs.Screen
+          name="cart"
+          options={{
+            headerStyle: styles.headerStyle,
+            headerShadowVisible: false,
+            headerTitle: () => <Text style={styles.cartHeaderTitle}>Cart</Text>,
+            headerRight: () => (
+              <View style={styles.headerRightContainer}>
+                <TouchableOpacity onPress={() => router.push('/search')}>
+                  <MagnifyingGlass size={24} />
+                </TouchableOpacity>
+              </View>
+            ),
+          }}
+        />
+        <Tabs.Screen
+          name="category"
+          options={{
+            title: 'Categories',
+            headerStyle: styles.categoryHeaderStyle,
+            headerShadowVisible: false,
+            headerRight: () => (
+              <View style={styles.headerRightContainer}>
+                <TouchableOpacity onPress={() => router.push('/search')}>
+                  <MagnifyingGlass size={24} />
+                </TouchableOpacity>
+              </View>
+            ),
+          }}
+        />
+        <Tabs.Screen
+          name="chat"
+          options={{
+            title: 'Chat',
+            headerShown: false,
+            headerShadowVisible: false,
+          }}
+        />
+        <Tabs.Screen name="account" options={{ headerShown: false }} />
+        <Tabs.Screen
+          name="orders/index"
+          options={{
+            title: '',
+            headerShown: true,
+            headerShadowVisible: false,
+            headerTitle: () => (
+              <CustomHeaderTitle
+                title="My Orders"
+                onBackPress={() => router.push('/account')}
+              />
+            ),
+          }}
+        />
+        <Tabs.Screen name="register" options={{ headerShown: false }} />
+        <Tabs.Screen
+          name="search"
+          options={{
+            title: 'Search',
+            headerShadowVisible: false,
+          }}
+        />
+        <Tabs.Screen name="login" options={{ headerShown: false }} />
+        <Tabs.Screen
+          name="orders/[id]"
+          options={{
+            title: '',
+            headerShown: true,
+            headerShadowVisible: false,
+            headerTitle: () => (
+              <CustomHeaderTitle
+                title="Order Details"
+                onBackPress={() => router.push('/orders')}
+              />
+            ),
+          }}
+        />
+        <Tabs.Screen
+          name="address/index"
+          options={{
+            title: 'Address Book',
+            headerShown: true,
+            headerShadowVisible: false,
+          }}
+        />
+      </Tabs>
+    </>
   )
 }
 

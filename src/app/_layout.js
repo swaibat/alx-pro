@@ -4,7 +4,6 @@ import * as SplashScreen from 'expo-splash-screen'
 import { Provider } from 'react-redux'
 import { store } from '@/store'
 import AppSnackbar from '@/components/global/AppSnackbar'
-import { StatusBar } from 'expo-status-bar'
 import { HeaderRight } from '@/components/@ui/HeaderRight'
 import * as Font from 'expo-font'
 import Entypo from '@expo/vector-icons/Entypo'
@@ -55,23 +54,10 @@ const RootLayout = () => {
         <Stack.Screen
           name="ads/[id]"
           options={{
-            title: '',
-            headerShadowVisible: false,
-            headerRight: () => (
-              <HeaderRight buttons={[{ name: 'search' }, { name: 'cart' }]} />
-            ),
-            headerTitleStyle,
+            headerShown: false,
           }}
         />
-        <Stack.Screen
-          name="checkout"
-          options={{
-            title: 'Checkout',
-            headerShown: true,
-            headerShadowVisible: false,
-            headerTitleStyle,
-          }}
-        />
+        <Stack.Screen name="checkout" options={{ headerShown: false }} />
         <Stack.Screen name="+not-found" options={{ headerShown: false }} />
         <Stack.Screen
           name="privacy_policy"
@@ -140,7 +126,6 @@ const RootLayout = () => {
           }}
         />
       </Stack>
-      <StatusBar style="auto" />
       <AppSnackbar />
       <SalesPopup />
     </Provider>

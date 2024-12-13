@@ -16,6 +16,7 @@ import SecureRoute from '@/components/global/SecureRoute'
 import { Text } from '@/components/@ui/Text'
 import LogoutModal from '@/components/account/LogoutModal'
 import { colors } from '@/constants/theme'
+import TopNav from '@/components/@ui/TopNav'
 
 export default function Component() {
   const router = useRouter()
@@ -72,6 +73,7 @@ export default function Component() {
 
   return (
     <SecureRoute>
+      <TopNav title={'Account'} />
       <ScrollView style={styles.container}>
         <View style={styles.headerContainer}>
           <View style={styles.avatar}>

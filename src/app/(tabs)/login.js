@@ -10,10 +10,10 @@ import { useDispatch } from 'react-redux'
 import { setAuthState } from '@/store/authSlice'
 import { Text } from '@/components/@ui/Text'
 import { Button } from '@/components/@ui/Button'
-import Divider from '@/components/@ui/Divider'
 import Input from '@/components/@ui/Input'
 import PhoneInput from '@/components/@ui/PhoneInput'
 import { colors } from '@/constants/theme'
+import TopNav from '@/components/@ui/TopNav'
 
 const LoginScreen = () => {
   const router = useRouter()
@@ -93,103 +93,94 @@ const LoginScreen = () => {
     )
 
   return (
-    <View style={styles.loginContainer}>
-      <View style={styles.container}>
-        <View>
-          <LoginIllustration />
-          <View style={styles.tabsContainer}>
-            <TouchableOpacity
-              style={
-                activeTab === 'phone' ? styles.activeTab : styles.inactiveTab
-              }
-              onPress={() => setActiveTab('phone')}
-            >
-              <Text style={styles.tabText}>Phone</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={
-                activeTab === 'email' ? styles.activeTab : styles.inactiveTab
-              }
-              onPress={() => setActiveTab('email')}
-            >
-              <Text style={styles.tabText}>Email</Text>
-            </TouchableOpacity>
-          </View>
-          {activeTab === 'phone' ? (
-            <PhoneInput
-              label="Phone Number"
-              testID="phone"
-              placeholder="Enter phone number"
-              onChangeText={text => setPhoneNumber(text)}
-              accessoryLeft={() => <Text style={styles.countryCode}>+256</Text>}
-              accessoryRight={renderPhoneAccessoryRight}
-              keyboardType="numeric"
-            />
-          ) : (
-            <Input
-              label="Email"
-              testID="email"
-              placeholder="Enter email"
-              value={email}
-              onChangeText={setEmail}
-              accessoryRight={renderEmailAccessoryRight}
-              keyboardType="email-address"
-            />
-          )}
-          <Input
-            label="Password"
-            testID="password"
-            placeholder="Enter password"
-            value={password}
-            onChangeText={setPassword}
-            secureTextEntry={!showPassword}
-            accessoryRight={() => (
-              <TouchableOpacity onPress={() => setShowPassword(prev => !prev)}>
-                {showPassword ? <Eye size={24} /> : <EyeClosed size={24} />}
+    <>
+      <TopNav />
+      <View style={styles.loginContainer}>
+        <View style={styles.container}>
+          <View>
+            <LoginIllustration />
+            <View style={styles.tabsContainer}>
+              <TouchableOpacity
+                style={
+                  activeTab === 'phone' ? styles.activeTab : styles.inactiveTab
+                }
+                onPress={() => setActiveTab('phone')}
+              >
+                <Text style={styles.tabText}>Phone</Text>
               </TouchableOpacity>
+              <TouchableOpacity
+                style={
+                  activeTab === 'email' ? styles.activeTab : styles.inactiveTab
+                }
+                onPress={() => setActiveTab('email')}
+              >
+                <Text style={styles.tabText}>Email</Text>
+              </TouchableOpacity>
+            </View>
+            {activeTab === 'phone' ? (
+              <PhoneInput
+                label="Phone Number"
+                testID="phone"
+                placeholder="Enter phone number"
+                onChangeText={text => setPhoneNumber(text)}
+                accessoryLeft={() => (
+                  <Text style={styles.countryCode}>+256</Text>
+                )}
+                accessoryRight={renderPhoneAccessoryRight}
+                keyboardType="numeric"
+              />
+            ) : (
+              <Input
+                label="Email"
+                testID="email"
+                placeholder="Enter email"
+                value={email}
+                onChangeText={setEmail}
+                accessoryRight={renderEmailAccessoryRight}
+                keyboardType="email-address"
+              />
             )}
-          />
-          <TouchableOpacity
-            testID="forgot-btn"
-            onPress={() => router.push('/forgot_password')}
-          >
-            <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
-          </TouchableOpacity>
+            <Input
+              label="Password"
+              testID="password"
+              placeholder="Enter password"
+              value={password}
+              onChangeText={setPassword}
+              secureTextEntry={!showPassword}
+              accessoryRight={() => (
+                <TouchableOpacity
+                  onPress={() => setShowPassword(prev => !prev)}
+                >
+                  {showPassword ? <Eye size={24} /> : <EyeClosed size={24} />}
+                </TouchableOpacity>
+              )}
+            />
+            <TouchableOpacity onPress={() => router.push('/forgot_password')}>
+              <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
+            </TouchableOpacity>
 
-          <Button
-            style={styles.button}
-            testID="login-btn"
-            mode="contained"
-            onPress={handleLogin}
-            isLoading={isLoading}
-            title={'Login'}
-            isDisabled={
-              isLoading ||
-              !isFormFilled ||
-              (activeTab === 'phone' && !isPhoneNumberValid) ||
-              (activeTab === 'email' && !isEmailValid)
-            }
-          />
-
-          <Divider
-            type="horizontal"
-            color="gray"
-            dashed
-            align="center"
-            fontSize={14}
-            style={styles.divider}
-          >
-            Don’t have an account?
-          </Divider>
-          <Button
-            outline
-            testID="register-btn"
-            onPress={() => router.push('/register')}
-            title="Register"
-          />
+            <Button
+              style={styles.button}
+              onPress={handleLogin}
+              isLoading={isLoading}
+              title={'Login'}
+              isDisabled={
+                isLoading ||
+                !isFormFilled ||
+                (activeTab === 'phone' && !isPhoneNumberValid) ||
+                (activeTab === 'email' && !isEmailValid)
+              }
+            />
+            <Text style={styles.accountStatusWrapper}>
+              Don’t have an account?
+              <TouchableOpacity onPress={() => router.push('/register')}>
+                <Text style={styles.accountStatus}>Register</Text>
+              </TouchableOpacity>
+            </Text>
+          </View>
         </View>
       </View>
-    </View>
+    </>
   )
 }
 
@@ -211,8 +202,16 @@ const styles = StyleSheet.create({
     marginRight: 10,
     fontWeight: 'bold',
   },
-  button: {
-    marginVertical: 10,
+  // button: {
+  //   marginVertical: 10,
+  // },
+  accountStatusWrapper: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    textAlign: 'center',
+    paddingVertical: 15,
   },
   forgotPasswordText: {
     textAlign: 'right',
@@ -220,7 +219,12 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     textDecorationLine: 'underline',
   },
-  divider: { marginVertical: 25 },
+  accountStatus: {
+    color: colors.orange[300],
+    textDecorationLine: 'underline',
+    marginBottom: -5,
+    marginLeft: 5,
+  },
   tabsContainer: {
     flexDirection: 'row',
     marginBottom: 20,

@@ -6,6 +6,7 @@ import { colors } from '@/constants/theme'
 const TabBar = ({ state, descriptors, navigation }) => {
   // Check if the active route is 'chat', if so return null immediately
   if (state.routes[state.index]?.name === 'chat') return null
+  if (state.routes[state.index]?.name === 'register') return null
 
   return (
     <View style={styles.tabbar}>
@@ -70,7 +71,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     backgroundColor: 'white',
-    paddingVertical: 15,
+    paddingTop: 10,
+    paddingBottom: 25,
     borderRadius: 0,
     borderCurve: 'continuous',
     shadowColor: 'black',

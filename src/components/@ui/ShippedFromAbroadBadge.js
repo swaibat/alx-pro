@@ -2,9 +2,38 @@ import React from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 import { AirplaneTilt } from 'phosphor-react-native'
 import { colors } from '@/constants/theme'
+import MaterialIcons from '@expo/vector-icons/MaterialIcons'
 
 const ShippedFromAbroadBadge = ({ isLocalStore, small }) => {
-  if (isLocalStore) return null
+  if (isLocalStore)
+    return (
+      <View
+        style={[
+          styles.shippedBadge,
+          small ? styles.smallBadge : styles.largeBadge,
+        ]}
+      >
+        <View style={small ? styles.smallIconContainer : styles.iconContainer}>
+          <MaterialIcons
+            name="store-mall-directory"
+            size={13}
+            color={small ? colors.grey[500] : colors.blue[500]}
+          />
+        </View>
+        <View
+          style={[
+            styles.textContainer,
+            small ? styles.smallTextContainer : styles.largeTextContainer,
+          ]}
+        >
+          <Text
+            style={[styles.text, small ? styles.smallText : styles.largeText]}
+          >
+            Local
+          </Text>
+        </View>
+      </View>
+    )
 
   return (
     <View
@@ -29,7 +58,7 @@ const ShippedFromAbroadBadge = ({ isLocalStore, small }) => {
         <Text
           style={[styles.text, small ? styles.smallText : styles.largeText]}
         >
-          Shipped From Abroad
+          From Abroad
         </Text>
       </View>
     </View>
@@ -80,7 +109,8 @@ const styles = StyleSheet.create({
     marginLeft: 4,
   },
   smallText: {
-    fontSize: 7,
+    fontSize: 8,
+    fontWeight: '500',
     color: 'black',
   },
   largeText: {

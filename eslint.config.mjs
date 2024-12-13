@@ -36,6 +36,15 @@ export default [
       'react-native/no-inline-styles': 'error',
       'react-native/no-single-element-style-arrays': 'error',
       'no-console': 'error',
+      'no-undef': 'error',
+      'max-lines': [
+        'error',
+        {
+          max: 350,
+          skipBlankLines: true,
+          skipComments: true,
+        },
+      ],
       'no-unused-vars': [
         'error',
         {

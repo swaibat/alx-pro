@@ -14,7 +14,7 @@ import Loading from '@/components/global/Loading'
 import EmptyChatScreen from '@/components/chat/Empty'
 import { useLocalSearchParams } from 'expo-router'
 import RenderMessage from '@/components/chat/message/RenderMessage'
-// import SecureRoute from '@/components/global/SecureRoute'
+import SecureRoute from '@/components/global/SecureRoute'
 
 const ITEMS_PER_PAGE = 200
 
@@ -78,66 +78,67 @@ const ChatScreen = () => {
   }, [messages, isFetching, refetch])
 
   return (
-    // <SecureRoute>
-    <SafeAreaView style={sx.container}>
-      <View style={sx.header}>
-        <TopToolbar />
-      </View>
-      <FlashList
-        ref={flatListRef}
-        data={messages?.docs}
-        renderItem={({ item }) => (
-          <View key={item.date}>
-            {renderDate(item.date)}
-            {item.messages.map(msg => (
-              <View key={msg._id}>
-                <RenderMessage
-                  item={msg}
-                  setSelectedMessage={setSelectedMessage}
-                  setPopoverPosition={setPopoverPosition}
-                  setPopoverVisible={setPopoverVisible}
-                />
-              </View>
-            ))}
-          </View>
-        )}
-        inverted
-        estimatedItemSize={100}
-        contentContainerStyle={sx.listContent}
-        onEndReached={loadMoreMessages}
-        onEndReachedThreshold={0.5}
-        ListEmptyComponent={
-          !isLoading && (
-            <View style={sx.emptyWrapper}>
-              <EmptyChatScreen />
+    <SecureRoute>
+      <SafeAreaView style={sx.container}>
+        <View style={sx.header}>
+          <TopToolbar />
+        </View>
+        <FlashList
+          ref={flatListRef}
+          data={messages?.docs}
+          renderItem={({ item }) => (
+            <View key={item.date}>
+              {renderDate(item.date)}
+              {item.messages.map(msg => (
+                <View key={msg._id}>
+                  <RenderMessage
+                    item={msg}
+                    setSelectedMessage={setSelectedMessage}
+                    setPopoverPosition={setPopoverPosition}
+                    setPopoverVisible={setPopoverVisible}
+                  />
+                </View>
+              ))}
             </View>
-          )
-        }
-        ListFooterComponent={
-          isLoading && <Loading text={'Loading Conversation...'} />
-        }
-      />
-      <View style={sx.footer}>
-        <InputContainer
-          replyingTo={replyingTo}
-          clearReplyingTo={clearReplyingTo}
-          setNewMessage={setNewMessage}
-          newMessage={newMessage}
-          setReplyingTo={setReplyingTo}
-          refetch={refetch}
+          )}
+          inverted
+          estimatedItemSize={100}
+          contentContainerStyle={sx.listContent}
+          onEndReached={loadMoreMessages}
+          onEndReachedThreshold={0.5}
+          ListEmptyComponent={
+            !isLoading && (
+              <View style={sx.emptyWrapper}>
+                <EmptyChatScreen />
+              </View>
+            )
+          }
+          ListFooterComponent={
+            isLoading && <Loading text={'Loading Conversation...'} />
+          }
         />
-      </View>
-      <CustomPopover
-        visible={popoverVisible}
-        onClose={() => setPopoverVisible(false)}
-        anchorPosition={popoverPosition}
-        options={[
-          { label: 'Reply', action: handleReply, icon: <ArrowElbowUpLeft /> },
-          { label: 'Copy', action: handleCopy, icon: <Copy /> },
-          { label: 'Delete', action: handleDelete, icon: <TrashSimple /> },
-        ]}
-      />
-    </SafeAreaView>
+        <View style={sx.footer}>
+          <InputContainer
+            replyingTo={replyingTo}
+            clearReplyingTo={clearReplyingTo}
+            setNewMessage={setNewMessage}
+            newMessage={newMessage}
+            setReplyingTo={setReplyingTo}
+            refetch={refetch}
+          />
+        </View>
+        <CustomPopover
+          visible={popoverVisible}
+          onClose={() => setPopoverVisible(false)}
+          anchorPosition={popoverPosition}
+          options={[
+            { label: 'Reply', action: handleReply, icon: <ArrowElbowUpLeft /> },
+            { label: 'Copy', action: handleCopy, icon: <Copy /> },
+            { label: 'Delete', action: handleDelete, icon: <TrashSimple /> },
+          ]}
+        />
+      </SafeAreaView>
+    </SecureRoute>
   )
 }
 

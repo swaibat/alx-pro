@@ -10,6 +10,7 @@ import { FlashList } from '@shopify/flash-list'
 import FreeShippingBadge from '../@ui/FreeShippingBadge'
 import RatingChip from '../@ui/RatingChip'
 import AppImg from '../@ui/AppImg'
+import ShippedFromAbroadBadge from '../@ui/ShippedFromAbroadBadge'
 
 const ProductCard = ({ product }) => {
   const router = useRouter()
@@ -25,37 +26,19 @@ const ProductCard = ({ product }) => {
     <View style={styles.card}>
       <TouchableOpacity
         style={styles.cardContent}
-        onPress={() => router.push('AdDetails', { id: product._id })}
+        onPress={() => router.replace(`/ads/${product._id}`)}
       >
         <AppImg src={product?.thumbnail} style={styles.image} />
-        {/* <TouchableOpacity
-          style={[styles.addToCartButton, { borderColor: colors.grey[600] }]}
-          onPress={handleAddToCart}
-        >
-          <ShoppingCart size={15} weight="regular" color={colors.grey[600]} />
-        </TouchableOpacity> */}
         <View style={styles.contentWrapper}>
           <Text style={styles.productTitle} numberOfLines={1}>
             {product.title}
           </Text>
           <FreeShippingBadge small freeShipping={product.freeShipping} />
-          <RatingChip
+          <ShippedFromAbroadBadge small isLocalStore={product.isLocalStore} />
+          {/* <RatingChip
             average={product.averageRating}
             count={product.ratingCount}
-          />
-
-          {!!product.ratingCount && (
-            <View style={styles.ratingContainer}>
-              <Star color="#FFC107" size={12} weight="fill" />
-              <Text style={styles.ratingText}>
-                {product.averageRating || 0}
-              </Text>
-              <Text style={styles.ratingCount}>
-                ({product.ratingCount || 0})
-              </Text>
-            </View>
-          )}
-
+          /> */}
           {!!product?.discount?.value && (
             <View style={styles.discountContainer}>
               <Text bold secondary delete style={styles.discountedPrice}>
@@ -124,13 +107,10 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   card: {
-    // flex: 1,
     borderWidth: 1,
     borderColor: colors.grey[200],
     marginRight: 15,
-    // width: 320,
     width: Dimensions.get('window').width * 0.9,
-    // height: 150,
     backgroundColor: '#fff',
     borderRadius: 5,
     overflow: 'hidden',
@@ -138,7 +118,6 @@ const styles = StyleSheet.create({
   },
   cardContent: {
     flexDirection: 'row',
-    // width: '70%',
     justifyContent: 'space-between',
   },
   image: {
@@ -200,20 +179,6 @@ const styles = StyleSheet.create({
   discountBadge: {
     color: colors.orange[600],
     fontSize: 8,
-  },
-  ratingContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginLeft: 5,
-  },
-  ratingText: {
-    fontSize: 11,
-    marginLeft: 2,
-  },
-  ratingCount: {
-    fontSize: 11,
-    color: '#757575',
-    marginLeft: 2,
   },
   discountContainer: {
     flexDirection: 'row',

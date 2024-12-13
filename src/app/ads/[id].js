@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { StyleSheet, View, ScrollView, Share } from 'react-native'
 import { useGetProductQuery } from '@/api'
-import { SealCheck, ShareFat } from 'phosphor-react-native'
+import { ShareFat } from 'phosphor-react-native'
 import { useLocalSearchParams } from 'expo-router'
 import RelatedProducts from '@/components/products/RelatedProducts'
 import ReviewsScreen from '@/components/products/reviews/ReviewsOverView'
@@ -22,7 +22,7 @@ import DeliveryReturnInfo from '@/components/products/productDetails/DeliveryRet
 import VariantSelector from '@/components/products/productDetails/VariantSelector'
 import ErrorScreen from '@/components/global/Error'
 import { useSnackbar } from '@/hooks/useSnackbar'
-import AppImg from '@/components/@ui/AppImg'
+import TopNavFloat from '@/components/products/productDetails/TopNavFloat'
 
 const ProductDetailsScreen = () => {
   const { id } = useLocalSearchParams()
@@ -54,13 +54,6 @@ const ProductDetailsScreen = () => {
     }
   }
 
-  const ensureHttps = url => {
-    if (!url.startsWith('https://')) {
-      return `https://${url}`
-    }
-    return url
-  }
-
   if (!product || isLoading) return <Loading text={'Loading Ad details'} />
   if (isError) return <ErrorScreen refetch={refetch} />
 
@@ -71,6 +64,7 @@ const ProductDetailsScreen = () => {
         contentContainerStyle={styles.contentContainer}
       >
         <View style={styles.content}>
+          <TopNavFloat />
           <ProductImageCarousel images={product?.files} />
           <VariantSelector
             variants={product?.variants}
@@ -99,17 +93,6 @@ const ProductDetailsScreen = () => {
                   />
                 </View>
                 <RatingChip reviews={product?.reviews} />
-                <View style={styles.sealContainer}>
-                  <AppImg
-                    src={ensureHttps(product.store.logo)}
-                    resizeMode="contain"
-                    style={styles.logoImg}
-                  />
-                  <SealCheck color={colors.blue[500]} size={15} weight="fill" />
-                  <Text style={styles.sealText} bold>
-                    {product.store.name}
-                  </Text>
-                </View>
                 <PaymentPlanInfo product={product} />
                 <FreeShippingBadge freeShipping={product?.freeShipping} />
               </View>

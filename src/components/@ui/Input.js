@@ -11,7 +11,7 @@ const Input = ({
   prefix,
   suffix,
   onChangeText = () => {},
-  value = '',
+  value,
   clearable = false,
   style,
   onFocus = () => {},
@@ -87,7 +87,7 @@ const Input = ({
           style={[
             styles.input,
             prefix && styles.paddingLeft40,
-            (suffix || (clearable && value)) && styles.paddingLeft40,
+            // (suffix || (clearable && value)) && styles.paddingLeft40,
             styles.mediumInput,
             size === 'large' && styles.largeInput,
             size === 'small' && styles.smallInput,
