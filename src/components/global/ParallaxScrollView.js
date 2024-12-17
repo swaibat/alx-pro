@@ -5,12 +5,14 @@ import { useRouter } from 'expo-router'
 import Logo from '@/assets/Logo'
 import { Text } from '@/components/@ui/Text'
 import { colors, theme } from '@/constants/theme'
+import useLocationData from '@/hooks/useLocationData'
 
 const HEADER_HEIGHT = 150
 const SCREEN_WIDTH = Dimensions.get('window').width
 
 export default function ParallaxScrollView({ children, headerImage }) {
   const router = useRouter()
+  const localeData = useLocationData()
 
   return (
     <View style={styles.container}>
@@ -24,9 +26,12 @@ export default function ParallaxScrollView({ children, headerImage }) {
           <View style={styles.logoContainer}>
             <Logo />
           </View>
-          <View style={styles.location}>
-            <Text style={styles.locationText}>uganda</Text>
-          </View>
+          {localeData && (
+            <View style={styles.location}>
+              <Text style={styles.emoji}>{localeData?.emoji}</Text>
+              <Text style={styles.locationText}>{localeData?.name}</Text>
+            </View>
+          )}
         </View>
         <Input
           placeholder="Search..."
@@ -83,13 +88,18 @@ const styles = StyleSheet.create({
   location: {
     backgroundColor: colors.orange[400],
     paddingHorizontal: theme.spacing.md,
-    paddingVertical: 5,
+    paddingVertical: 3,
+    borderWidth: 0.9,
+    borderColor: colors.orange[700],
+    gap: 5,
+    flexDirection: 'row',
+    alignItems: 'center',
     justifyContent: 'center',
     borderRadius: theme.borderRadius.sm,
   },
   locationText: {
     color: colors.grey[200],
-    lineHeight: 14,
+    // lineHeight: 14,
   },
   suffixContainer: {
     flexDirection: 'row',

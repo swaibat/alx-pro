@@ -5,10 +5,9 @@ import { Provider } from 'react-redux'
 import { store } from '@/store'
 import AppSnackbar from '@/components/global/AppSnackbar'
 import { HeaderRight } from '@/components/@ui/HeaderRight'
-import * as Font from 'expo-font'
-import Entypo from '@expo/vector-icons/Entypo'
 import SplashScreenComponent from '@/components/global/SplashScreenComponent'
 import SalesPopup from '@/components/products/SalesPopup'
+import getLocale from '@/hooks/getLocale'
 
 SplashScreen.preventAutoHideAsync()
 
@@ -26,16 +25,10 @@ const RootLayout = () => {
 
   useEffect(() => {
     async function prepare() {
-      try {
-        await Font.loadAsync(Entypo.font)
-      } catch (e) {
-        //continue
-      } finally {
-        SplashScreen.hide()
-        setAppIsReady(true)
-      }
+      await getLocale()
+      SplashScreen.hide()
+      setAppIsReady(true)
     }
-
     prepare()
   }, [])
 

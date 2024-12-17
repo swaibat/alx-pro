@@ -5,21 +5,12 @@ import { convertTo12HourFormat } from '@/scripts/Time'
 import { colors } from '@/constants/theme'
 import { Chat } from 'phosphor-react-native'
 
-const RenderMessage = ({
-  item,
-  setSelectedMessage,
-  setPopoverPosition,
-  setPopoverVisible,
-}) => {
+const RenderMessage = ({ item, setSelectedMessage, setPopoverVisible }) => {
   const [isLongPressed, setIsLongPressed] = useState(false)
 
-  const handleLongPress = (message, event) => {
+  const handleLongPress = message => {
     setIsLongPressed(true)
     setSelectedMessage(message)
-    setPopoverPosition({
-      x: event.nativeEvent.pageX,
-      y: event.nativeEvent.pageY,
-    })
     setPopoverVisible(true)
   }
 
@@ -32,6 +23,7 @@ const RenderMessage = ({
       style={sx.touchableContainer(isLongPressed)}
       onLongPress={e => handleLongPress(item, e)}
       onPressOut={handlePressOut}
+      delayLongPress={200}
     >
       <View
         style={[

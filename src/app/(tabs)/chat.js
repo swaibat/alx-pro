@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react'
-import { View, StyleSheet, Alert } from 'react-native'
+import { View, StyleSheet, Alert, FlatList } from 'react-native'
 import { SafeAreaView } from 'react-native'
 import { ArrowElbowUpLeft, Copy, TrashSimple } from 'phosphor-react-native'
 import { useGetMessagesQuery } from '@/api'
@@ -7,7 +7,6 @@ import { useSelector } from 'react-redux'
 import { Text } from '@/components/@ui/Text'
 import TopToolbar from '@/components/chat/TopToolbar'
 import Clipboard from '@react-native-clipboard/clipboard'
-import { FlashList } from '@shopify/flash-list'
 import CustomPopover from '@/components/chat/Popover'
 import InputContainer from '@/components/chat/InputContainer'
 import Loading from '@/components/global/Loading'
@@ -60,7 +59,6 @@ const ChatScreen = () => {
 
   const handleCopy = () => {
     Clipboard.setString(selectedMessage.message)
-    Alert.alert('Copied', 'Message copied to clipboard.')
     setPopoverVisible(false)
   }
 
@@ -83,7 +81,7 @@ const ChatScreen = () => {
         <View style={sx.header}>
           <TopToolbar />
         </View>
-        <FlashList
+        <FlatList
           ref={flatListRef}
           data={messages?.docs}
           renderItem={({ item }) => (
@@ -130,11 +128,18 @@ const ChatScreen = () => {
         <CustomPopover
           visible={popoverVisible}
           onClose={() => setPopoverVisible(false)}
-          anchorPosition={popoverPosition}
           options={[
-            { label: 'Reply', action: handleReply, icon: <ArrowElbowUpLeft /> },
-            { label: 'Copy', action: handleCopy, icon: <Copy /> },
-            { label: 'Delete', action: handleDelete, icon: <TrashSimple /> },
+            {
+              label: 'Reply',
+              action: handleReply,
+              icon: <ArrowElbowUpLeft size={16} />,
+            },
+            { label: 'Copy', action: handleCopy, icon: <Copy size={16} /> },
+            {
+              label: 'Delete',
+              action: handleDelete,
+              icon: <TrashSimple size={16} />,
+            },
           ]}
         />
       </SafeAreaView>
@@ -159,6 +164,7 @@ const sx = StyleSheet.create({
     paddingBottom: 100,
     paddingHorizontal: 15,
     backgroundColor: 'white',
+    marginTop: 'auto',
   },
   emptyWrapper: {
     flex: 1,

@@ -9,13 +9,13 @@ import { Text } from '@/components/@ui/Text'
 const LocationContent = ({ to, message, replyToMessage }) => {
   if (
     !(
-      replyToMessage?.message?.startsWith('https') ||
-      message?.startsWith('https')
-    )
+      typeof replyToMessage?.message === 'string' &&
+      replyToMessage.message.startsWith('https')
+    ) &&
+    !(typeof message === 'string' && message.startsWith('https'))
   ) {
     return null
   }
-
   const locationTextColor = to ? colors.grey[900] : colors.grey[400]
 
   return (

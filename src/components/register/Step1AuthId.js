@@ -7,7 +7,6 @@ import { colors } from '@/constants/theme'
 import { useSnackbar } from '@/hooks/useSnackbar'
 import { useSendOtpMutation } from '@/api'
 import { useRouter } from 'expo-router'
-import { useAuthIdValidator } from '@/hooks/useAuthIdValidator'
 
 const Step1AuthId = () => {
   const [tab, setTab] = useState('phoneNumber')
@@ -18,7 +17,6 @@ const Step1AuthId = () => {
   const { triggerSnackbar } = useSnackbar()
   const router = useRouter()
   const [sendOtp, { isLoading: isSendingOtp }] = useSendOtpMutation()
-  const isAuthIdInvalid = useAuthIdValidator()
 
   const handleOtpRequest = async () => {
     try {
@@ -40,7 +38,7 @@ const Step1AuthId = () => {
   }
 
   const handlePhoneNumberChange = text => {
-    if (text.length <= 9) setPhoneNumber(text)
+    setPhoneNumber(text)
   }
 
   return (
@@ -57,7 +55,7 @@ const Step1AuthId = () => {
       <Button
         style={styles.button}
         onPress={handleOtpRequest}
-        isDisabled={isAuthIdInvalid(authId) || isSendingOtp}
+        isDisabled={isSendingOtp}
         isLoading={isSendingOtp}
         title="Send OTP"
       />

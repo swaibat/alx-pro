@@ -76,7 +76,10 @@ const Input = ({
       >
         {prefix && (
           <IconContext.Provider
-            value={{ size: 24, color: isFocused ? '#6200ea' : '#aaa' }}
+            value={{
+              size: 24,
+              color: isFocused ? colors.orange[300] : colors.grey[900],
+            }}
           >
             <View style={styles.prefix}>{prefix}</View>
           </IconContext.Provider>
@@ -86,8 +89,6 @@ const Input = ({
           ref={inputRef}
           style={[
             styles.input,
-            prefix && styles.paddingLeft40,
-            // (suffix || (clearable && value)) && styles.paddingLeft40,
             styles.mediumInput,
             size === 'large' && styles.largeInput,
             size === 'small' && styles.smallInput,
@@ -154,17 +155,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10, // Reduced horizontal padding
   },
   prefix: {
-    // position styling as needed
     marginBottom: -2,
-  },
-  suffix: {
-    // position styling as needed
   },
   clearIcon: {
     position: 'absolute',
     right: 10,
   },
-  paddingLeft40: { paddingLeft: 40 },
   inputContainer: { marginVertical: 7 },
 })
 

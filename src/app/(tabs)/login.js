@@ -32,7 +32,7 @@ const LoginScreen = () => {
 
   const handleLogin = async () => {
     if (activeTab === 'phone') {
-      if (!phoneNumber || !phoneValidationRegex.test(phoneNumber)) {
+      if (!phoneNumber) {
         triggerSnackbar('Please enter a valid phone number', 'error')
         return
       }
@@ -71,19 +71,11 @@ const LoginScreen = () => {
     }
   }
 
-  const isPhoneNumberValid = phoneValidationRegex.test(phoneNumber)
   const isEmailValid = emailValidationRegex.test(email)
   const isFormFilled =
     activeTab === 'phone'
       ? phoneNumber.length > 0 && password.length > 0
       : email.length > 0 && password.length > 0
-
-  const renderPhoneAccessoryRight = () =>
-    isPhoneNumberValid ? (
-      <CheckCircle size={24} weight="fill" />
-    ) : (
-      <Question size={24} weight="fill" />
-    )
 
   const renderEmailAccessoryRight = () =>
     isEmailValid ? (
@@ -126,7 +118,6 @@ const LoginScreen = () => {
                 accessoryLeft={() => (
                   <Text style={styles.countryCode}>+256</Text>
                 )}
-                accessoryRight={renderPhoneAccessoryRight}
                 keyboardType="numeric"
               />
             ) : (
@@ -167,7 +158,6 @@ const LoginScreen = () => {
               isDisabled={
                 isLoading ||
                 !isFormFilled ||
-                (activeTab === 'phone' && !isPhoneNumberValid) ||
                 (activeTab === 'email' && !isEmailValid)
               }
             />

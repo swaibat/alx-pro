@@ -20,6 +20,7 @@ const SendTextMessage = ({
 
   const handleSendMessage = async () => {
     if (!newMessage.trim()) return
+
     const newMessageObj = {
       _id: Date.now(),
       message: newMessage,
@@ -28,19 +29,25 @@ const SendTextMessage = ({
         ? { replyToProductDetails: replyingTo?.message }
         : { replyTo: replyingTo }),
     }
-    dispatch(addMessage(newMessageObj))
-    setNewMessage('')
-    replyingTo && clearReplyingTo()
 
-    await sendMessage({
-      ...newMessageObj,
-      ...(replyingTo?.type === 'product'
-        ? { replyTo: undefined, replyToProduct: replyingTo?.message?._id }
-        : { replyTo: replyingTo?._id }),
-    }).unwrap()
-    refetch()
-    setReplyingTo(null)
+    try {
+      dispatch(addMessage(newMessageObj))
+      setNewMessage('')
+      replyingTo && clearReplyingTo()
+      await sendMessage({
+        ...newMessageObj,
+        ...(replyingTo?.type === 'product'
+          ? { replyTo: undefined, replyToProduct: replyingTo?.message?._id }
+          : { replyTo: replyingTo?._id }),
+      }).unwrap()
+
+      refetch()
+      setReplyingTo(null)
+    } catch (error) {
+      // console.error('Error sending message:', error)
+    }
   }
+
   return (
     <TouchableOpacity
       onPress={handleSendMessage}

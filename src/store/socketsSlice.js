@@ -1,5 +1,6 @@
 import { api } from '@/api'
 import { createSlice } from '@reduxjs/toolkit'
+import { DateTime } from 'luxon';
 
 const initialState = {
   messages: {},
@@ -18,13 +19,17 @@ const socketsSlice = createSlice({
     },
     addMessage: (state, action) => {
       const newMessage = action.payload
-      const messageDate = new Date().toLocaleDateString('en-CA')
+      const messageDate = DateTime.now().toFormat('yyyy-MM-dd')
       if (state?.messages?.docs) {
         const dateGroup = state.messages.docs.find(group => {
+          console.log('==xxx===', group.date, messageDate)
           return group.date === messageDate
         })
+
+        // console.log('messageDate',state.messages.docs, messageDate)
+
         if (dateGroup) {
-          dateGroup.messages.docs.push(newMessage)
+          dateGroup.messages?.push(newMessage)
         } else {
           state.messages.docs.push({
             date: messageDate,
