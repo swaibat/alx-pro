@@ -7,27 +7,20 @@ const AppImg = ({
   placeholder = require('@/assets/placeholder.png'),
   ...props
 }) => {
-  const [loaded, setLoaded] = useState(false)
-  const [hasError, setHasError] = useState(false)
+  const [isError, setIsError] = useState(false)
+
+  // Determine the image source
+  const getImageSource = () => {
+    if (isError) return placeholder
+    if (typeof src === 'string') return { uri: src }
+    return src || placeholder
+  }
 
   return (
     <Image
-      source={
-        hasError
-          ? placeholder // Show placeholder if there's an error
-          : loaded
-            ? typeof src === 'string'
-              ? { uri: src }
-              : src
-            : placeholder // Show placeholder until image is loaded
-      }
+      source={getImageSource()}
       style={StyleSheet.compose(style)}
-      onLoad={() => setLoaded(true)} // Set loaded to true when the image loads
-      defaultSource={placeholder}
-      onError={() => {
-        setHasError(true)
-        setLoaded(true) // Ensure the placeholder is shown in case of an error
-      }}
+      onError={() => setIsError(true)}
       {...props}
     />
   )

@@ -9,10 +9,8 @@ import {
   fetchCurrentLocationAddress,
   fetchPlaceDetails,
   fetchPlacePredictions,
+  staticMapUri,
 } from '@/scripts/locations'
-import Constants from 'expo-constants'
-
-const { MAPS_API_URL, GOOGLE_API_KEY } = Constants.expoConfig.extra
 
 const PlacesAutocomplete = ({ onPress, showMap = true }) => {
   const [inputText, setInputText] = useState('')
@@ -85,7 +83,7 @@ const PlacesAutocomplete = ({ onPress, showMap = true }) => {
               source={
                 details?.geo
                   ? {
-                      uri: `${MAPS_API_URL}/staticmap?key=${GOOGLE_API_KEY}&center=${details.geo[0]},${details.geo[1]}&zoom=15&size=370x100&maptype=roadmap&&markers=${details.geo[0]},${details.geo[1]}&sensor=false&style=feature:all|element:geometry|color:0xf2e5d4&style=feature:road|element:geometry.stroke|color:0xd0b084&style=feature:road.highway|element:geometry.fill|color:0xfbc590&style=feature:road.local|element:geometry.fill|color:0xffdfa6&style=feature:water|element:geometry.fill|color:0xaadaff&style=feature:landscape|element:geometry.fill|color:0xf5f5f2`,
+                      uri: staticMapUri(details?.geo),
                     }
                   : null
               }

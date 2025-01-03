@@ -22,7 +22,6 @@ const socketsSlice = createSlice({
       const messageDate = DateTime.now().toFormat('yyyy-MM-dd')
       if (state?.messages?.docs) {
         const dateGroup = state.messages.docs.find(group => {
-          console.log('==xxx===', group.date, messageDate)
           return group.date === messageDate
         })
 
@@ -44,7 +43,7 @@ const socketsSlice = createSlice({
     builder.addMatcher(
       api.endpoints.getMessages.matchFulfilled,
       (state, action) => {
-        state.messages = action.payload.data // Update messages when data is fetched
+        state.messages = action.payload.data
       }
     )
   },

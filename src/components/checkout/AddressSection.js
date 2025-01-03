@@ -10,6 +10,12 @@ import { colors } from '@/constants/theme'
 const ShippingAddress = ({ selectedAddress }) => {
   const router = useRouter()
 
+  // useEffect(() => {
+  //   if (selectedAddress) {
+  //     router.push(`/address?edit=true`)
+  //   }
+  // }, [selectedAddress, router])
+
   return (
     <View>
       {selectedAddress ? (
@@ -45,9 +51,7 @@ const ShippingAddress = ({ selectedAddress }) => {
           style={styles.addAddressButton}
           title="Add Shipping Address"
           outline
-          onPress={() =>
-            router.push({ pathname: '/addressBook', params: { edit: true } })
-          }
+          onPress={() => router.push(`/address?edit=true`)}
         />
       )}
     </View>

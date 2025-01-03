@@ -1,17 +1,20 @@
 import React from 'react'
-import { View, Image, StyleSheet } from 'react-native'
+import { View, StyleSheet } from 'react-native'
 import { Text } from '@/components/@ui/Text'
 import { Button } from '@/components/@ui/Button'
+import { useRouter } from 'expo-router'
+import AppImg from '@/components/@ui/AppImg'
 
-const EmptyCart = ({ onShopNow }) => {
+const EmptyCart = () => {
+  const router = useRouter()
   return (
     <View style={styles.container}>
-      <Image
-        source={require('@/assets/images/shopping.png')}
+      <AppImg
+        src={require('@/assets/images/shopping.png')}
         style={styles.image}
       />
       <Text style={styles.text}>Your cart is empty!</Text>
-      <Button onPress={onShopNow} title="Shop Now" />
+      <Button onPress={() => router.push('/ads/list')} title="Shop Now" />
     </View>
   )
 }

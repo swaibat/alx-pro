@@ -16,7 +16,7 @@ const OrdersScreen = () => {
     refetchOnMountOrArgChange: true,
     refetchOnFocus: true,
   })
-  const orders = ordersData?.data.docs || []
+  const orders = ordersData?.docs || []
   const renderState = ordersStateLayout({ orders, isLoading, error, refetch })
 
   return (

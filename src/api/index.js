@@ -211,7 +211,7 @@ export const api = createApi({
       }),
     }),
     getFlutterKeys: builder.query({
-      query: () => `/flutter/public_keys`,
+      query: () => `/payment_keys`,
     }),
     createReview: builder.mutation({
       query: ({ productId, reviewData }) => ({
@@ -225,6 +225,13 @@ export const api = createApi({
     }),
     getFlashSales: builder.query({
       query: () => `flash-sales`,
+    }),
+    stripePaymentSheet: builder.mutation({
+      query: data => ({
+        url: 'payment-sheet',
+        method: 'POST',
+        body: data,
+      }),
     }),
     sendMessage: builder.mutation({
       query: newMessage => ({
@@ -274,4 +281,5 @@ export const {
   useSendMessageMutation,
   useMakeDefaultAddressMutation,
   useGetProductReviewsQuery,
+  useStripePaymentSheetMutation,
 } = api

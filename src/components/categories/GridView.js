@@ -21,10 +21,10 @@ const GridScreen = () => {
 
   const renderItem = item => (
     <TouchableOpacity
-      key={item.id}
+      key={item._id}
       style={styles.item}
       onPress={() =>
-        router.replace(`/category?id=${item.id}&name=${item.name.trim()}`)
+        router.replace(`/category?id=${item._id}&name=${item.name.trim()}`)
       }
     >
       <AppImg src={item.imageUrl} style={styles.image} />

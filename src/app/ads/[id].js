@@ -160,28 +160,8 @@ const styles = StyleSheet.create({
   productTitle: {
     flex: 1,
   },
-  sealContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    borderWidth: 0.7,
-    borderRadius: 5,
-    borderColor: colors.grey[300],
-    padding: 10,
-    marginBottom: 10,
-    gap: 3,
-  },
-  sealText: {
-    fontSize: 12,
-  },
   productDescription: {
     fontSize: 12,
-  },
-  logoImg: {
-    borderRadius: 7,
-    width: 30,
-    height: 30,
-    borderWidth: 0.8,
-    borderColor: colors.grey[300],
   },
 })
 

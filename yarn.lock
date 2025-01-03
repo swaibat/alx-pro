@@ -2018,6 +2018,11 @@
   resolved "https://registry.yarnpkg.com/@socket.io/component-emitter/-/component-emitter-3.1.2.tgz#821f8442f4175d8f0467b9daf26e3a18e2d02af2"
   integrity sha512-9BCxFwvbGg/RsZK9tjXd8s4UcwR0MWeFQ1XEKIQVVvAGJyINdrqKMcTRyLoK8Rse1GjzLV9cwjWV1olXRWEXVA==
 
+"@stripe/stripe-react-native@^0.40.0":
+  version "0.40.0"
+  resolved "https://registry.yarnpkg.com/@stripe/stripe-react-native/-/stripe-react-native-0.40.0.tgz#5fb2cfb21d60e995522010b3e20976153f64094e"
+  integrity sha512-zJkGgkohmsV8+HCt5DnJZ4LjdPm0KduJ9z6AzHfQ6dFzJbSeHsl9F+JQDPq+CADrLhHdVb4nkeOT1OwhkEH90Q==
+
 "@stylistic/eslint-plugin@^2.11.0":
   version "2.11.0"
   resolved "https://registry.yarnpkg.com/@stylistic/eslint-plugin/-/eslint-plugin-2.11.0.tgz#50d0289f36f7201055b7fa1729fdc1d8c46e93fa"
@@ -4367,11 +4372,6 @@ expo-auth-session@~6.0.0:
     expo-linking "~7.0.0"
     expo-web-browser "~14.0.0"
     invariant "^2.2.4"
-
-expo-blur@~14.0.1:
-  version "14.0.1"
-  resolved "https://registry.yarnpkg.com/expo-blur/-/expo-blur-14.0.1.tgz#4bdbec43b5015891990e78d31d8ff2f1f5d27464"
-  integrity sha512-3Q6jFBLbY8n2vwk28ycUC+eIlVhnlqwkXUKk/Lfaj+SGV3AZMQyrixe7OYwJdUfwqETBrnYYMB6uNrJzOSbG+g==
 
 expo-constants@~17.0.0, expo-constants@~17.0.3:
   version "17.0.3"

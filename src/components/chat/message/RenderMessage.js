@@ -1,11 +1,16 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Text, TouchableOpacity, View, StyleSheet } from 'react-native'
 import ContentType from './ContentType'
 import { convertTo12HourFormat } from '@/scripts/Time'
 import { colors } from '@/constants/theme'
 import { Chat } from 'phosphor-react-native'
 
-const RenderMessage = ({ item, setSelectedMessage, setPopoverVisible }) => {
+const RenderMessage = ({
+  item,
+  setSelectedMessage,
+  setPopoverVisible,
+  isPopoverVisible,
+}) => {
   const [isLongPressed, setIsLongPressed] = useState(false)
 
   const handleLongPress = message => {
@@ -15,8 +20,16 @@ const RenderMessage = ({ item, setSelectedMessage, setPopoverVisible }) => {
   }
 
   const handlePressOut = () => {
-    setIsLongPressed(false)
+    if (!isPopoverVisible) {
+      setIsLongPressed(false)
+    }
   }
+
+  useEffect(() => {
+    if (!isPopoverVisible) {
+      setIsLongPressed(false)
+    }
+  }, [isPopoverVisible])
 
   return (
     <TouchableOpacity
@@ -52,8 +65,9 @@ export default RenderMessage
 
 export const sx = StyleSheet.create({
   touchableContainer: isLongPressed => ({
-    backgroundColor: isLongPressed ? 'red' : 'transparent',
+    backgroundColor: isLongPressed ? colors.orange[200] : 'transparent',
     marginBottom: 5,
+    borderRadius: 5,
   }),
   messageContainer: {
     marginVertical: 5,

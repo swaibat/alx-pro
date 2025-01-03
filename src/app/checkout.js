@@ -27,16 +27,24 @@ import { colors } from '@/constants/theme'
 import Section from '@/components/@ui/Section'
 import LoadingOverlay from '@/components/@ui/LoadingOverlay'
 import { useSnackbar } from '@/hooks/useSnackbar'
+import { StripeProvider } from '@stripe/stripe-react-native'
+import PaymentOptions from '@/components/checkout/PaymentOptions'
+import StripeBtn from '@/components/checkout/StripeBtn'
 
 const CheckoutScreen = () => {
   const [selectedShipping, setSelectedShipping] = useState(null)
+  const [paymentOption, setPaymentOption] = useState('stripe')
   const { triggerSnackbar } = useSnackbar()
   const dispatch = useDispatch()
   const cartItems = useSelector(state => state.cart)
   const selectedAddress = useSelector(state => state?.address?.defaultAddress)
-  const { isLoading: isFetchingAddress } = useGetAddressQuery(undefined, {
-    skip: selectedAddress,
-  })
+
+  const { data: address, isLoading: isFetchingAddress } = useGetAddressQuery(
+    undefined,
+    {
+      skip: selectedAddress,
+    }
+  )
 
   const [createOrder, { data: orderData, isLoading: isCreating }] =
     useCreateOrderMutation()
@@ -98,99 +106,109 @@ const CheckoutScreen = () => {
     )
   }
 
+  console.log('PUBLISHABLE_KEY', keysData.stripe.PUBLISHABLE_KEY)
+
   return (
     <SecureRoute>
-      <SafeAreaView style={styles.container}>
-        <ScrollView
-          style={styles.content}
-          contentContainerStyle={styles.contentContainerStyle}
-        >
-          <Section
-            title="Shipping Address"
-            borderTop
-            actionBtn={
+      <StripeProvider publishableKey={keysData.stripe.PUBLISHABLE_KEY}>
+        <SafeAreaView style={styles.container}>
+          <ScrollView
+            style={styles.content}
+            contentContainerStyle={styles.contentContainerStyle}
+          >
+            <Section
+              title="Shipping Address"
+              borderTop
+              actionBtn={
+                address && (
+                  <Button
+                    title="Change"
+                    outline
+                    size="tiny"
+                    onPress={() => router.push(`/address?edit=true`)}
+                  />
+                )
+              }
+            >
+              <ShippingAddress selectedAddress={selectedAddress} />
+            </Section>
+            <Section
+              title="Items"
+              actionBtn={
+                <Button
+                  title="Modify"
+                  outline
+                  size="tiny"
+                  onPress={() => router.push({ pathname: '/cart' })}
+                />
+              }
+            >
+              <OrderItems cartItems={cartItems} />
+            </Section>
+            <Section borderBottom={0} title="Shipping">
+              <ShippingOptions
+                address={selectedAddress}
+                selectedShipping={selectedShipping}
+                setSelectedShipping={setSelectedShipping}
+              />
+            </Section>
+
+            <Section borderBottom={0} title="payments">
+              <PaymentOptions
+                options={keysData.options}
+                selectedOption={paymentOption}
+                setPaymentOption={setPaymentOption}
+              />
+            </Section>
+          </ScrollView>
+        </SafeAreaView>
+        <View style={styles.footer}>
+          <StripeBtn />
+          <PayWithFlutterwave
+            onRedirect={async data => {
+              if (data.status !== 'cancelled') {
+                handleUpdateOrder(data)
+              }
+            }}
+            options={{
+              tx_ref: `flw_tx_ref_${keysData?.iat}`,
+              authorization: keysData?.flutter.FLW_PUBLIC_KEY,
+              customer: {
+                email: selectedAddress?.email,
+                phone: selectedAddress?.phonenumber,
+                fullName: selectedAddress?.name,
+              },
+              amount: 1000,
+              // amount: totalPrice + (selectedShipping?.price || 0),
+              currency: 'UGX',
+            }}
+            customButton={props => (
               <Button
-                title="Change"
-                outline
-                size="tiny"
-                onPress={() =>
-                  router.push({
-                    pathname: '/addressBook',
-                    params: { edit: true },
-                  })
+                isLoading={
+                  isCreating ||
+                  props.isInitializing ||
+                  props.disabled ||
+                  isUpdating
+                }
+                textStyle={styles.payBtnTextStyle}
+                style={styles.checkoutButton}
+                onPress={async () => {
+                  if (!orderData?.data?._id) {
+                    await handlePayNow()
+                  }
+                  props.onPress()
+                }}
+                disabled={props.disabled || isCreating}
+                title={`Pay ${(totalPrice + (selectedShipping?.price || 0)).toLocaleString()} /-`}
+                iconLeft={
+                  <LockSimple style={styles.lockIcon} size={17} color="white" />
                 }
               />
-            }
-          >
-            <ShippingAddress selectedAddress={selectedAddress} />
-          </Section>
-          <Section
-            title="Items"
-            actionBtn={
-              <Button
-                title="Modify"
-                outline
-                size="tiny"
-                onPress={() => router.push({ pathname: '/cart' })}
-              />
-            }
-          >
-            <OrderItems cartItems={cartItems} />
-          </Section>
-          <Section borderBottom={0} title="Shipping">
-            <ShippingOptions
-              address={selectedAddress}
-              selectedShipping={selectedShipping}
-              setSelectedShipping={setSelectedShipping}
-            />
-          </Section>
-        </ScrollView>
-      </SafeAreaView>
-      <View style={styles.footer}>
-        <PayWithFlutterwave
-          onRedirect={async data => {
-            if (data.status !== 'cancelled') {
-              handleUpdateOrder(data)
-            }
-          }}
-          options={{
-            tx_ref: `flw_tx_ref_${keysData?.iat}`,
-            authorization: keysData?.keys,
-            customer: {
-              email: selectedAddress?.email,
-              phone: selectedAddress?.phonenumber,
-              fullName: selectedAddress?.name,
-            },
-            amount: 1000,
-            // amount: totalPrice + (selectedShipping?.price || 0),
-            currency: 'UGX',
-          }}
-          customButton={props => (
-            <Button
-              isLoading={
-                isCreating ||
-                props.isInitializing ||
-                props.disabled ||
-                isUpdating
-              }
-              textStyle={styles.payBtnTextStyle}
-              style={styles.checkoutButton}
-              onPress={async () => {
-                if (!orderData?.data?._id) {
-                  await handlePayNow()
-                }
-                props.onPress()
-              }}
-              disabled={props.disabled || isCreating}
-              title={`Pay ${(totalPrice + (selectedShipping?.price || 0)).toLocaleString()} /-`}
-              iconLeft={
-                <LockSimple style={styles.lockIcon} size={17} color="white" />
-              }
-            />
-          )}
-        />
-      </View>
-      <LoadingOverlay visible={isUpdating} />
+            )}
+          />
+        </View>
+        <LoadingOverlay visible={isUpdating} />
+      </StripeProvider>
     </SecureRoute>
   )
 }

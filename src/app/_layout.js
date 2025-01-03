@@ -8,7 +8,7 @@ import { HeaderRight } from '@/components/@ui/HeaderRight'
 import SplashScreenComponent from '@/components/global/SplashScreenComponent'
 import SalesPopup from '@/components/products/SalesPopup'
 import getLocale from '@/hooks/getLocale'
-
+import ActivityProvider from '@/components/@ui/ActivityProvider'
 SplashScreen.preventAutoHideAsync()
 
 SplashScreen.setOptions({
@@ -50,7 +50,10 @@ const RootLayout = () => {
             headerShown: false,
           }}
         />
-        <Stack.Screen name="checkout" options={{ headerShown: false }} />
+        <Stack.Screen
+          name="checkout"
+          options={{ headerShown: true, title: 'Checkout' }}
+        />
         <Stack.Screen name="+not-found" options={{ headerShown: false }} />
         <Stack.Screen
           name="privacy_policy"

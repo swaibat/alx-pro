@@ -18,7 +18,6 @@ const OrderDetailsScreen = () => {
   const { id } = useLocalSearchParams()
   const { data, isLoading, isFetching, refetch, isError } =
     useGetOrderDetailsQuery({ id })
-  const order = data?.order || {}
 
   if (isLoading || isFetching) return <Loading text="Loading details ... " />
   if (isError) return <ErrorScreen refetch={refetch} />
@@ -32,24 +31,24 @@ const OrderDetailsScreen = () => {
         <Section
           title="Activity"
           borderTop
-          actionBtn={<StatusBadge type={order.status} />}
+          actionBtn={<StatusBadge type={data?.status} />}
         >
-          <OrderSummary order={order} />
+          <OrderSummary order={data} />
         </Section>
         <Section title="Address">
-          <AddressItem address={order.address} viewOnly={true} />
+          <AddressItem address={data.address} viewOnly={true} />
         </Section>
         <Section title="Items">
-          <OrderItemsList items={order.items} />
+          <OrderItemsList items={data.items} />
         </Section>
         <Section title="Shipping Method">
-          <ShippingOptionItem option={order.shippingOption} />
+          <ShippingOptionItem option={data.shippingOption} />
         </Section>
         <Section title="Activity">
-          <ActivitySection activities={order.activity} />
+          <ActivitySection activities={data.activity} />
         </Section>
       </ScrollView>
-      <ReviewModal order={order} />
+      <ReviewModal order={data} />
     </SecureRoute>
   )
 }

@@ -12,19 +12,23 @@ const CustomPopover = ({ visible, onClose, options }) => {
       >
         <View style={styles.popoverContainer}>
           <View style={styles.optionsContainer}>
-            {options.map((option, index) => (
-              <TouchableOpacity
-                key={index}
-                style={styles.popoverOption}
-                onPress={() => {
-                  option.action()
-                  onClose()
-                }}
-              >
-                <View style={styles.popoverIcon}>{option.icon}</View>
-                <Text style={styles.popoverText}>{option.label}</Text>
-              </TouchableOpacity>
-            ))}
+            {options.map(
+              (option, index) =>
+                !option.disabled && (
+                  <TouchableOpacity
+                    key={index}
+                    disabled={option.disabled}
+                    style={styles.popoverOption}
+                    onPress={() => {
+                      option.action()
+                      onClose()
+                    }}
+                  >
+                    <View style={styles.popoverIcon}>{option.icon}</View>
+                    <Text style={styles.popoverText}>{option.label}</Text>
+                  </TouchableOpacity>
+                )
+            )}
           </View>
         </View>
       </TouchableOpacity>

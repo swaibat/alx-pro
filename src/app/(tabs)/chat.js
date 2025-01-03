@@ -21,7 +21,6 @@ const ChatScreen = () => {
   const [newMessage, setNewMessage] = useState('')
   const [popoverVisible, setPopoverVisible] = useState(false)
   const [selectedMessage, setSelectedMessage] = useState(null)
-  const [popoverPosition, setPopoverPosition] = useState({ x: 0, y: 0 })
   const [replyingTo, setReplyingTo] = useState('')
   const [pageLimit, setPageLimit] = useState(ITEMS_PER_PAGE)
   const { product } = useLocalSearchParams()
@@ -92,8 +91,8 @@ const ChatScreen = () => {
                   <RenderMessage
                     item={msg}
                     setSelectedMessage={setSelectedMessage}
-                    setPopoverPosition={setPopoverPosition}
                     setPopoverVisible={setPopoverVisible}
+                    isPopoverVisible={popoverVisible}
                   />
                 </View>
               ))}
@@ -139,6 +138,7 @@ const ChatScreen = () => {
               label: 'Delete',
               action: handleDelete,
               icon: <TrashSimple size={16} />,
+              disabled: selectedMessage?.to,
             },
           ]}
         />

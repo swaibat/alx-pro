@@ -4,19 +4,29 @@ import countries from '@/assets/countries.json'
 
 const getLocale = async () => {
   try {
-    const response = await axios.get('https://www.cloudflare.com/cdn-cgi/trace')
+    const response = await axios.get('https://1.1.1.1/cdn-cgi/trace')
     const data = response.data
     const lines = data.split('\n')
+
+    // Extract location and IP address
     const locLine = lines.find(line => line.startsWith('loc='))
+    const ipLine = lines.find(line => line.startsWith('ip='))
+
     const location = locLine?.split('=')[1]
+    const ip = ipLine?.split('=')[1]
+
     if (location) {
-      const data = countries.find(c => c.code === location)
-      if (data) {
-        await AsyncStorage.setItem('loc', JSON.stringify(data))
+      const countryData = countries.find(c => c.code === location)
+      if (countryData) {
+        // Store country data and IP address in AsyncStorage
+        await AsyncStorage.setItem('loc', JSON.stringify(countryData))
+        await AsyncStorage.setItem('ip', ip || '')
       }
     }
   } catch (err) {
+    // Handle error, store empty or fallback values
     await AsyncStorage.setItem('loc', '')
+    await AsyncStorage.setItem('ip', '')
   }
 }
 

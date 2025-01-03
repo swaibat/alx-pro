@@ -10,6 +10,7 @@ import { Text } from '@/components/@ui/Text'
 import { StyleSheet } from 'react-native'
 
 const StatusBadge = ({ type, size = 14 }) => {
+  console.log('type==', type)
   const icons = {
     ORDER_CREATED: {
       color: '#4caf50',

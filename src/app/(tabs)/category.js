@@ -31,8 +31,8 @@ const CategoryScreen = () => {
   }
 
   useEffect(() => {
-    if (params.id) {
-      setExpandedCategory(params.id)
+    if (params._id) {
+      setExpandedCategory(params._id)
     }
   }, [params])
 
@@ -41,7 +41,7 @@ const CategoryScreen = () => {
     return (
       <FlatList
         data={category.children}
-        keyExtractor={item => item.id?.toString()}
+        keyExtractor={item => item._id?.toString()}
         renderItem={({ item }) => (
           <TouchableOpacity
             style={[sx.subcategoryItem, sx.borderStyle]}
@@ -49,7 +49,7 @@ const CategoryScreen = () => {
               router.push({
                 pathname: '/ads/list',
                 params: {
-                  categoryId: item.id,
+                  categoryId: item._id,
                   category: item.name,
                 },
               })
@@ -81,15 +81,15 @@ const CategoryScreen = () => {
         {!expandedCategory && data?.data && (
           <FlatList
             data={data?.data}
-            keyExtractor={item => item.id?.toString()}
+            keyExtractor={item => item._id?.toString()}
             renderItem={({ item }) => (
               <TouchableOpacity
                 style={[
                   sx.categoryItem,
-                  expandedCategory === item.id && sx.selectedCategory,
+                  expandedCategory === item._id && sx.selectedCategory,
                 ]}
                 onPress={() =>
-                  handleCategoryPress(item.id, item.name, item.children)
+                  handleCategoryPress(item._id, item.name, item.children)
                 }
               >
                 <Text>{item.name}</Text>
@@ -101,7 +101,7 @@ const CategoryScreen = () => {
 
         {expandedCategory &&
           renderSubcategories(
-            data.data.find(category => category.id === expandedCategory)
+            data.data.find(category => category._id === expandedCategory)
           )}
       </View>
     </SafeAreaView>

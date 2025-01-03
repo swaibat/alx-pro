@@ -33,7 +33,7 @@ const Registration = ({ name, authId }) => {
   const emailValidationRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/
 
   const validateForm = () => {
-    if (!fullName || !password || !email || !phoneNumber) {
+    if (!fullName || !password) {
       triggerSnackbar('Please fill in all fields.', 'error')
       return false
     }
@@ -102,14 +102,16 @@ const Registration = ({ name, authId }) => {
         accessoryLeft={<User size={20} />}
         testID="fullNameInput"
       />
-      <Input
-        style={styles.input}
-        accessoryLeft={<Phone size={20} />}
-        label="Phone Number"
-        readOnly={authId && !authId?.match('@')}
-        value={phoneNumber}
-        testID="phoneNumberInput"
-      />
+      {!authId?.match('@') && (
+        <Input
+          style={styles.input}
+          accessoryLeft={<Phone size={20} />}
+          label="Phone Number"
+          readOnly={authId && !authId?.match('@')}
+          value={phoneNumber}
+          testID="phoneNumberInput"
+        />
+      )}
       <Input
         style={styles.input}
         value={email}

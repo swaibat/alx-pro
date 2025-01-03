@@ -38,7 +38,7 @@ const CategoryChipsList = () => {
   useEffect(() => {
     setActiveChip(initialCategoryId)
     if (initialCategoryId) {
-      const category = data?.data?.find(cat => cat.id === initialCategoryId)
+      const category = data?.data?.find(cat => cat._id === initialCategoryId)
       if (category && category.children) {
         setCurrentCategories(category.children)
         setParentCategory(category)
@@ -51,8 +51,8 @@ const CategoryChipsList = () => {
   const handleChipPress = categoryId => {
     setActiveChip(categoryId)
     const category =
-      currentCategories.find(cat => cat.id === categoryId) ||
-      data?.data?.find(cat => cat.id === categoryId)
+      currentCategories.find(cat => cat._id === categoryId) ||
+      data?.data?.find(cat => cat._id === categoryId)
 
     if (category && category.children && category.children.length > 0) {
       setChildrenCategories(category.children)
@@ -65,7 +65,7 @@ const CategoryChipsList = () => {
 
   const handleCategorySelect = categoryId => {
     setIsModalVisible(false)
-    const category = childrenCategories.find(cat => cat.id === categoryId)
+    const category = childrenCategories.find(cat => cat._id === categoryId)
     if (category) {
       router.push(
         `/ads/list?categoryId=${categoryId}&category=${category.name}`
@@ -125,18 +125,18 @@ const CategoryChipsList = () => {
 
         {currentCategories.map(category => (
           <TouchableOpacity
-            key={category.id}
+            key={category._id}
             style={[
               styles.chip,
-              activeChip === category.id && styles.activeChip,
+              activeChip === category._id && styles.activeChip,
             ]}
-            onPress={() => handleChipPress(category.id)}
+            onPress={() => handleChipPress(category._id)}
           >
             <Image source={{ uri: category.imageUrl }} />
             <Text
               style={[
                 styles.chipText,
-                activeChip === category.id && styles.activeChipText,
+                activeChip === category._id && styles.activeChipText,
               ]}
             >
               {category.name}
@@ -164,9 +164,9 @@ const CategoryChipsList = () => {
             <ScrollView style={styles.modalList}>
               {childrenCategories.map(category => (
                 <TouchableOpacity
-                  key={category.id}
+                  key={category._id}
                   style={styles.modalItem}
-                  onPress={() => handleCategorySelect(category.id)}
+                  onPress={() => handleCategorySelect(category._id)}
                 >
                   <Text style={styles.modalItemText}>{category.name}</Text>
                 </TouchableOpacity>

@@ -42,6 +42,12 @@
         {
           "cameraPermission": "Allow $(PRODUCT_NAME) to access your camera to let you ..."
         }
+      ],
+      [
+        "@stripe/stripe-react-native",
+        {
+          "enableGooglePay": true
+        }
       ]
     ],
     "experiments": {
